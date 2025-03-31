@@ -37,13 +37,8 @@ router.post('/', async (req, res) => {
     }
 })
 
-router.delete('/:heroId', async function(req, res) {
-    console.log('Deleting ', req.params.heroId)
-    res.sendStatus(200)
-})
-
 // get a particular superhero
-router.get('/:heroId/contact-info', async function (req, res) {
+router.get('/:heroId', async function (req, res) {
     console.log('Handling request for individual hero')
     const id = req.params.heroId
     console.log(req.params)
@@ -55,6 +50,12 @@ router.get('/:heroId/contact-info', async function (req, res) {
         res.sendStatus(500)
     }
 })
+
+router.delete('/:heroId', async function(req, res) {
+    console.log('Deleting ', req.params.heroId)
+    res.sendStatus(200)
+})
+
 
 
 export default router
