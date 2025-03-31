@@ -4,7 +4,6 @@ import { createHero, findAllHeroes, findHeroById } from "../models/superheroes.j
 
 const router = Router();
 
-
 // list all superheros
 router.get('/', async function (req, res) {
     try {
@@ -47,7 +46,5 @@ router.delete('/:heroId', async function(req, res) {
     console.log('Deleting ', req.params.heroId)
     res.sendStatus(200)
 })
-
-
 
 export default router
