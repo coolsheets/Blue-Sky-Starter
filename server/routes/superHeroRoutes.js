@@ -1,22 +1,15 @@
 import { Router } from "express";
 
+import { createHero, findAllHeroes, findHeroById } from "../models/superheroes.js";
+
 const router = Router();
 
 
 // list all superheros
 router.get('/', async function (req, res) {
-    console.log('In get for all superheroes')
-    console.log(req.query)
-
     try {
-        // do something with them
-        res.send([
-            {name: "Superman"},
-            {name: "Ironman"},
-            {name: "Spiderman"},
-            {name: "Black Panther"},
-            {name: "Spawn"}
-        ])
+        const heroes = await findAllHeroes()
+        res.send(heroes)
     }
     catch (error) {
         console.log(error)
@@ -26,11 +19,11 @@ router.get('/', async function (req, res) {
 
 // create a new superhero
 router.post('/', async (req, res) => {
-    console.log('Incoming POST on /api/superheroes with data')
-    console.log(req.body)
+    const {name, powers, alias} = req.body
 
     if (req.body) {       
-        return res.send("created a hero")
+        const hero = await createHero(name, powers, alias)
+        return res.send(hero)
     }
     else {
         return res.sendStatus(400)
@@ -39,11 +32,10 @@ router.post('/', async (req, res) => {
 
 // get a particular superhero
 router.get('/:heroId', async function (req, res) {
-    console.log('Handling request for individual hero')
     const id = req.params.heroId
-    console.log(req.params)
     try {
-        res.send("got a hero name")
+        const hero = findHeroById(id)
+        res.send(hero)
     }
     catch (error) {
         console.log(error)
