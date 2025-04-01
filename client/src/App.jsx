@@ -2,6 +2,7 @@ import { useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
+import './SuperheroRegistry.jsx'
 
 // React requires first letter acps for functions!!!
 function App(props) {
