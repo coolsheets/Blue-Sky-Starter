@@ -3,10 +3,13 @@ import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
 
-function App() {
+// React requires first letter acps for functions!!!
+function App(props) {
   const [count, setCount] = useState(0)
 
+// jsx MUST have a return
   return (
+// return must have a single wrapping tag, hence the fragment <>
     <>
       <div>
         <a href="https://vite.dev" target="_blank">
