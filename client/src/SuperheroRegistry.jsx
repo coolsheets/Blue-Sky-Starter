@@ -6,6 +6,36 @@ function SuperheroRegistry() {
   const [hero, setHero] = useState({ name: "", powers: "", alias: "" });
   const [heroes, setHeroes] = useState([]);
 
+  // Fetch all heroes on page load
+  useEffect(() => {
+    fetch(API_URL)
+      .then((res) => res.json())
+      .then(setHeroes)
+      .catch((err) => console.error("Fetch error:", err));
+  }, []);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setHero((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const res = await fetch(API_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(hero),
+      });
+      const newHero = await res.json();
+      setHeroes((prev) => [...prev, newHero]);
+      setHero({ name: "", powers: "", alias: "" }); // Reset form
+    } catch (err) {
+      console.error("Post error:", err);
+    }
+  };
+
   return (
     <div style={{ padding: "2rem" }}>
       <h1>Superhero Registry</h1>
