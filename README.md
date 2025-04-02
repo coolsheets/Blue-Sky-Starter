@@ -14,3 +14,10 @@ cd server
 npm install
 npm run dev
 ```
+
+## Local Env
+```
+cd client
+npm install
+npm run dev
+```
