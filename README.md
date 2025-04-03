@@ -1,4 +1,4 @@
-# C14-P2-Starter
+# Blue-Sky-Starter
 
 examples for MERN Stack for project 2
 
