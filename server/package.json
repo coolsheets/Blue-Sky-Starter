@@ -6,7 +6,9 @@
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon server.js"
+    "dev": "nodemon -r dotenv/config server.js",
+    "debug": "node --inspect -r dotenv/config server.js",
+    "debug-dev": "nodemon --inspect -r dotenv/config server.js"
   },
   "repository": {
     "type": "git",
@@ -20,6 +22,7 @@
   "homepage": "https://github.com/EvolveU-FSD/C14-P2-Starter#readme",
   "dependencies": {
     "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
     "express": "^4.21.2",
     "mongoose": "^8.13.1"
   },
