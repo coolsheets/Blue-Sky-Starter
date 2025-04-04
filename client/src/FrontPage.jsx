@@ -1,16 +1,16 @@
 import { useState, useEffect } from "react";
 import "./FrontPage.css";
 
-const API_URL = "http://localhost:3000/superheroes";
+// Use your actual API endpoint for camera data
+const API_URL = "http://localhost:3000/cameralocations"; // Or whatever route you're using
 
 function CityCameras() {
-  const [heroes, setHeroes] = useState([]);
+  const [cameraLocations, setCameraLocations] = useState([]);
 
-  // Fetch superheroes from the backend
   useEffect(() => {
     fetch(API_URL)
       .then((res) => res.json())
-      .then(setHeroes)
+      .then(setCameraLocations)
       .catch((err) => console.error("Fetch error:", err));
   }, []);
 
@@ -19,14 +19,17 @@ function CityCameras() {
       <nav className="navbar">
         <h1>Blue Sky City Watcher</h1>
       </nav>
+
       <div className="gallery">
-        {heroes.slice(0, 10).map((hero) => (
-          <div key={hero._id} className="gallery-item">
-            <img 
-              src={hero.name}  
-              alt={hero.name} 
-              onError={(e) => e.target.src = "/images/default.jpg"} // Fallback image
+        {cameraLocations.slice(0, 10).map((camera) => (
+          <div key={camera._id} className="gallery-item">
+            <img
+              src={camera.Camera_URL}
+              alt={camera.Camera_Name}
+              onError={(e) => (e.target.src = "/images/default.jpg")}
             />
+            <p>{camera.Camera_Location}</p>
+            <small>{camera.Quadrant}</small>
           </div>
         ))}
       </div>
