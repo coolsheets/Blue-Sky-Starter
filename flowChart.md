@@ -1,4 +1,4 @@
-```mermaid;
+```mermaid
 flowchart LR;
 
     A[project_root] --> B[client];
