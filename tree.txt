@@ -3721,6 +3721,8 @@
 │   ├── package.json
 │   ├── package-lock.json
 │   ├── public
+│   │   ├── videos
+│   │   │   └── output_2x_looped.mp4
 │   │   └── vite.svg
 │   ├── README.md
 │   ├── src
@@ -3732,9 +3734,11 @@
 │   │   ├── CounterButton.jsx
 │   │   ├── FrontPage.css
 │   │   ├── FrontPage.jsx
+│   │   ├── images
 │   │   ├── index.css
 │   │   ├── main.jsx
-│   │   └── SuperheroRegistry.jsx
+│   │   ├── SuperheroRegistry.jsx
+│   │   └── TrafficVideo.jsx
 │   └── vite.config.js
 ├── docs
 │   ├── mondoDB
@@ -5860,6 +5864,6 @@
 │   │   ├── frontPageRoutes.js
 │   │   └── superHeroRoutes.js
 │   └── server.js
-└── tree.md
+└── tree.txt
 
-721 directories, 5142 files
+723 directories, 5144 files
