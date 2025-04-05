@@ -15,6 +15,6 @@ flowchart LR;
     C --> J[models];
     C --> K[node_modules];
     C --> L[routes];
-    C --> db.js ----> M[(atlasdb)];
-    C --> server.js --cors--> N[(vite_dev_server)]
+    C --> DB['db.js'] ----> M[(atlasdb)];
+    C --> SERVER['server.js'] --cors--> N[(vite_dev_server)]
 ```;
