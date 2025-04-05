@@ -32,6 +32,8 @@ Tony O has cloned this file on April 4/2/2025 ---
 
 [Directory tree](./tree.txt)
 
+[Flow Chart](flowChart.md)
+
 # Time-Lapse
 <i><b>(these are bash script processes, the intent is to migrate to javascript)</b></i>
 
