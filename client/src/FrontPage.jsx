@@ -15,11 +15,10 @@ function CityCameras() {
   }, []);
 
   return (
-    <div>
+    <div className="flex-container">
       <nav className="navbar">
         <h1>Blue Sky City Watcher</h1>
       </nav>
-
       <div className="gallery">
         {cameraLocations.slice(0, 10).map((camera) => (
           <div key={camera._id} className="gallery-item">
