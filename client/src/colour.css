@@ -1,5 +1,4 @@
 * {
-
     /* eyedrop from https://www.visitcalgary.com/ */
     --main-background-color: white;
     --main-color: black;
@@ -15,7 +14,4 @@
 	--calgary-grey: #4b4f55;
 	--calgary-light-grey: #ededee;
 	--calgary-header-background: #f6f6f6;
-/*	--color-blue: #0071CE;
-    --color-yellow: #FCDF51;
-*/
 }

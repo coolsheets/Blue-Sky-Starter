@@ -15,7 +15,7 @@ function CityCameras() {
   }, []);
 
   return (
-    <div>
+    <div className="flex-container">
       <nav className="navbar">
         <h1>Blue Sky City Watcher</h1>
       </nav>
