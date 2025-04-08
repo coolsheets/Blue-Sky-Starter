@@ -4,9 +4,10 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 
+import authRoutes from "./routes/auth.js";
 import superHeroRoutes from "./routes/superHeroRoutes.js";
 import cityRoutes from "./routes/cityRoutes.js";
-// import frontPageRoutes from './routes/frontPageRoutes.js';
+import frontPageRoutes from "./routes/frontPageRoutes.js";
 import cameraLocationRoutes from "./routes/cameraLocations.js";
 
 // Load environment variables
