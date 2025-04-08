@@ -9,7 +9,7 @@ const mongo_uri =
 
 console.log(mongo_uri);
 
-let connectionPromise = null;
+let connectionPromise = null
 
 export async function connectDb() {
   if (!connectionPromise) {
