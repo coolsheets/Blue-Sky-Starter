@@ -1,7 +1,8 @@
 # Time-Lapse
 <i><b>(these are bash script processes, the intent is to migrate to javascript)</b></i>
 
-Recommended naming convention for images <b>###_image_yyyymmddThhmmssssZ.jpeg</b>, where ### = camera id to three places, ex. <i>054_image_20250404T234000326Z.jpeg</i>
+Recommended naming convention for images <b>###_image_yyyymmddThhmmssssZ.jpeg</b>, where ### = camera id to three places, ex. <i>054_image_20250404T234000326Z.jpeg</i>.
+ It may be more appropriate to use <b>local time</b> versus Zulu.
 
 make a folder called <i>rename</i> and copy the images you wish to rename to it.
 also copy <i>rename_files.sh</i> to that folder
