@@ -6,7 +6,7 @@ import dotenv from "dotenv";
 
 import superHeroRoutes from './routes/superHeroRoutes.js';
 import cityRoutes from './routes/cityRoutes.js';
-import frontPageRoutes from './routes/frontPageRoutes.js';
+// import frontPageRoutes from './routes/frontPageRoutes.js';
 import cameraLocationRoutes from './routes/cameraLocations.js';
 import reactionsRoutes from './routes/reactionsRoutes.js';
 
@@ -21,7 +21,8 @@ app.use(express.json());
 
 app.use('/superheroes', superHeroRoutes);
 app.use('/cities', cityRoutes);
-app.use('/cameras', frontPageRoutes);
+
+// app.use('/cameras', frontPageRoutes);
 // app.use()
 app.use('/cameralocations', cameraLocationRoutes);
 app.use('/reactions', reactionsRoutes);
