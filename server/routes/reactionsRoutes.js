@@ -33,7 +33,7 @@ router.post('/', async (req, res) => {
 router.get('/:videourl', async function (req, res) {
     const videourl = req.params.videourl
     try {
-        const data = findReactionByVideoURL(videourl)
+        const data = await findReactionByVideoURL(videourl)
         res.send(data)
     }
     catch (error) {

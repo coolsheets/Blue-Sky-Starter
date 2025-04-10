@@ -23,7 +23,7 @@ router.post("/", async (req, res) => {
   const { name } = req.body;
 
   if (req.body) {
-    const camera = createCameraLocation(name);
+    const camera = await createCameraLocation(name);
     return res.send(camera);
   } else {
     return res.sendStatus(400);
@@ -34,7 +34,7 @@ router.post("/", async (req, res) => {
 router.get("/:cameraId", async function (req, res) {
   const id = req.params.cityId;
   try {
-    const camera = findCameraLocationById(id);
+    const camera = await findCameraLocationById(id);
     res.send(camera);
   } catch (error) {
     console.log(error);
