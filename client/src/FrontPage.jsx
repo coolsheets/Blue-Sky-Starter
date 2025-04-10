@@ -59,7 +59,7 @@ const TrafficVideo = () => {
               <video
                 className="polaroid-video"
                 controls
-                autoPlay
+                // autoPlay
                 loop
                 muted
                 playsInline
@@ -85,7 +85,7 @@ const TrafficVideo = () => {
             <video
               className="polaroid-video"
               controls
-              autoPlay
+              // autoPlay
               loop
               muted
               playsInline
