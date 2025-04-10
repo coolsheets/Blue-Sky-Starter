@@ -20,7 +20,7 @@ router.post('/', async (req, res) => {
     const {name} = req.body
 
     if (req.body) {       
-        const city = createCity(name)
+        const city = await createCity(name)
         return res.send(city)
     }
     else {
@@ -32,7 +32,7 @@ router.post('/', async (req, res) => {
 router.get('/:cityId', async function (req, res) {
     const id = req.params.cityId
     try {
-        const city = findCityById(id)
+        const city = await findCityById(id)
         res.send(city)
     }
     catch (error) {
