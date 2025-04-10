@@ -9,6 +9,7 @@ import superHeroRoutes from "./routes/superHeroRoutes.js";
 import cityRoutes from "./routes/cityRoutes.js";
 import frontPageRoutes from "./routes/frontPageRoutes.js";
 import cameraLocationRoutes from "./routes/cameraLocations.js";
+import reactionsRoutes from './routes/reactionsRoutes.js';
 
 // Load environment variables
 dotenv.config();
@@ -28,6 +29,7 @@ app.use("/frontPage", frontPageRoutes); // <-- Added this line of code to includ
 // app.use('/cameras', frontPageRoutes);
 // app.use()
 app.use("/cameralocations", cameraLocationRoutes);
+app.use('/reactions', reactionsRoutes);
 
 const server = app.listen(PORT, () => {
   console.log("Server listening on port " + PORT);
