@@ -23,7 +23,7 @@ router.post('/', async (req, res) => {
         Pointme } = req.body
 
     if (req.body) {
-        const data = createCameraLocation(Camera_Name,
+        const data = await createCameraLocation(Camera_Name,
             Camera_URL,
             Quadrant,
             Camera_Location,
@@ -39,7 +39,7 @@ router.post('/', async (req, res) => {
 router.get('/:id', async function (req, res) {
     const id = req.params.id
     try {
-        const data = findCameraLocationById(id)
+        const data = await findCameraLocationById(id)
         res.send(data)
     }
     catch (error) {
