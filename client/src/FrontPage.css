@@ -1,48 +1,230 @@
-* {
-  /* eyedrop from https://www.visitcalgary.com/ */
-  --main-background-color: white;
-  --main-color: black;
-  --blue-sky-color: #0064ff;
-  --sun-color: #ffda24;
-  --newsletter-background-color: #40c2f3;
-  --newsletter-color: #003b95;
-  --chat-icon-color: #e70033;
-/* from https://www.flagcolorcodes.com/ukraine */
-  --ukraine-blue: #0057B7;
-  --ukraine-yellow: #FFDD00;
-  --calgary-red: #c8102e;
-  --calgary-grey: #4b4f55;
-  --calgary-light-grey: #ededee;
-  --calgary-header-background: #f6f6f6;
+/* General styles */
+body, html {
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+  background-color: #f0f0f0;
 }
 
-.navbar {
-    background-color: var(--ukraine-blue);
-    color: var(--calgary-light-grey);
-    padding: 1rem;
-    text-align: center;
-  }
-  
-  .gallery {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 1rem;
-    padding: 2rem;
-    text-align: center;
-  }
-  
-  .gallery-item img {
-    width: 100%;
-    height: auto;
-    border-radius: 8px;
-  }
-  
-  .gallery-item p {
-    margin-top: 0.5rem;
-    font-weight: bold;
-  }
+.app-container {
+  padding-top: 50px;
+}
 
-  .flex-container {
-    display:flex;
-    flex-direction: row;
-  }
+/* Navbar */
+.navbar {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  height: 50px;
+  background-color: #007BFF;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+  z-index: 1000;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-left {
+  font-size: 1.1rem;
+  font-weight: bold;
+}
+
+.navbar-right {
+  display: flex;
+  gap: 10px;
+}
+
+.nav-placeholder {
+  width: 20px;
+  height: 20px;
+  background-color: rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+}
+
+/* Fullscreen Placeholder */
+.fullscreen-placeholder {
+  width: 100%;
+  height: 100vh;
+  background-color: #4b4f55;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.placeholder-text {
+  font-size: 2rem;
+  color: #fffbfb;
+}
+
+/* Gallery */
+.gallery {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  justify-items: center;
+  gap: 30px;
+  padding: 60px 20px;
+  background-color: #e0e0e0;
+}
+
+.polaroid {
+  background-color: white;
+  padding: 12px;
+  width: 300px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+  text-align: center;
+  transition: transform 0.2s ease;
+}
+
+.polaroid:hover {
+  transform: scale(1.03);
+}
+
+.polaroid-video {
+  width: 100%;
+  height: auto;
+  border-radius: 6px;
+}
+
+.caption {
+  margin-top: 10px;
+  font-size: 0.95rem;
+  color: #555;
+}
+
+.fullscreen-placeholder {
+  position: relative;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+/* Main Polaroid */
+.main-polaroid-on-stack {
+  background: white;
+  border: 1px solid #ccc;
+  padding: 10px;
+  box-shadow: 2px 4px 12px rgba(0, 0, 0, 0.3);
+  text-align: center;
+  width: 300px;
+  z-index: 10;
+  position: relative;
+}
+
+/* Polaroid video styling */
+.polaroid-video {
+  width: 100%;
+  border-radius: 4px;
+  display: block;
+  margin-bottom: 8px;
+}
+
+/* Pile of Polaroids under the main one */
+.polaroid-pile {
+  position: absolute;
+  top: 55%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1;
+}
+
+/* Polaroid style pile */
+.pile-polaroid {
+  position: absolute;
+  width: 220px;
+  background: white;
+  border: 1px solid #ccc;
+  padding: 8px;
+  box-shadow: 2px 4px 10px rgba(0, 0, 0, 0.2);
+  text-align: center;
+}
+
+/* Random rotation and offset (for static layout) */
+.pile-0 { transform: rotate(-12deg) translate(-150px, -80px); z-index: 1; }
+.pile-1 { transform: rotate(15deg) translate(120px, 60px); z-index: 2; }
+.pile-2 { transform: rotate(-8deg) translate(-120px, 100px); z-index: 3; }
+.pile-3 { transform: rotate(10deg) translate(140px, -100px); z-index: 4; }
+.pile-4 { transform: rotate(-5deg) translate(70px, -220px); z-index: 5; }
+.pile-5 { transform: rotate(-25deg) translate(160px, 200px); z-index: 6; }
+.pile-6 { transform: rotate(-5deg) translate(70px, 120px); z-index: 7; }
+.pile-7 { transform: rotate(-15deg) translate(-180px, -160px); z-index: 8; }
+.pile-8 { transform: rotate(-5deg) translate(70px, 120px); z-index: 9; }
+.pile-9 { transform: rotate(-5deg) translate(70px, 120px); z-index: 10; }
+
+.caption {
+  font-size: 0.9rem;
+  margin-top: 4px;
+  color: #333;
+}
+
+/* Button styling */
+.shift-button {
+  position: absolute;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  padding: 10px 20px;
+  background-color: #007BFF;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s;
+}
+
+.shift-button:hover {
+  background-color: #0056b3;
+}
+
+/* Add animation when button is clicked */
+.polaroid-pile.shifted .pile-polaroid {
+  transition: transform 0.5s ease-in-out;
+}
+
+/* Change the position of the pile when 'shifted' class is added */
+.polaroid-pile.shifted .pile-0 {
+  transform: rotate(-12deg) translate(-200px, -100px);
+}
+
+.polaroid-pile.shifted .pile-1 {
+  transform: rotate(15deg) translate(160px, 70px);
+}
+
+.polaroid-pile.shifted .pile-2 {
+  transform: rotate(-8deg) translate(-150px, 120px);
+}
+
+.polaroid-pile.shifted .pile-3 {
+  transform: rotate(10deg) translate(180px, -120px);
+}
+
+.polaroid-pile.shifted .pile-4 {
+  transform: rotate(-5deg) translate(100px, 140px);
+}
+
+.polaroid-pile.shifted .pile-5 {
+  transform: rotate(-25deg) translate(220px, 250px);
+}
+
+.polaroid-pile.shifted .pile-6 {
+  transform: rotate(-5deg) translate(100px, 140px);
+}
+
+.polaroid-pile.shifted .pile-7 {
+  transform: rotate(-15deg) translate(-220px, -200px);
+}
+
+.polaroid-pile.shifted .pile-8 {
+  transform: rotate(-5deg) translate(100px, 140px);
+}
+
+.polaroid-pile.shifted .pile-9 {
+  transform: rotate(-5deg) translate(100px, 140px);
+}
