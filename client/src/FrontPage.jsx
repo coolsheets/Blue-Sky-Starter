@@ -1,9 +1,47 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './FrontPage.css';
 
 const TrafficVideo = () => {
+  // State to store all video filenames
+  const [videoFiles, setVideoFiles] = useState([]);
+  // State to store randomized videos for the Polaroid pile
+  const [polaroidVideos, setPolaroidVideos] = useState([]);
+  // State to store sorted videos for the Gallery
+  const [galleryVideos, setGalleryVideos] = useState([]);
   // State to store random transformations for each polaroid
-  const [transformations, setTransformations] = useState(Array(10).fill(""));
+  const [transformations, setTransformations] = useState([]);
+
+  // Fetch video files dynamically
+  const fetchVideoFiles = async () => {
+    try {
+      const response = await fetch('/api/videos');
+      const files = await response.json();
+      console.log('Fetched video files:', files); // Debugging
+      setVideoFiles(files);
+    } catch (error) {
+      console.error('Error fetching video files:', error);
+    }
+  };
+
+  useEffect(() => {
+    // Fetch video files on component mount
+    fetchVideoFiles();
+  }, []);
+
+  useEffect(() => {
+    if (videoFiles.length > 0) {
+      // Randomize videos for the Polaroid pile
+      const shuffledVideos = [...videoFiles].sort(() => Math.random() - 0.5).slice(0, 10);
+      setPolaroidVideos(shuffledVideos);
+
+      // Sort videos for the Gallery in ascending order
+      const sortedVideos = [...videoFiles].sort();
+      setGalleryVideos(sortedVideos);
+
+      // Initialize random transformations for the Polaroid pile
+      setTransformations(Array(shuffledVideos.length).fill(''));
+    }
+  }, [videoFiles]);
 
   // Handle button click to trigger random transformations
   const handleShiftPile = () => {
@@ -33,24 +71,26 @@ const TrafficVideo = () => {
       {/* Fullscreen Placeholder */}
       <div className="fullscreen-placeholder">
         {/* Main Polaroid on top of the stack */}
-        <div className="main-polaroid-on-stack">
-          <video
-            className="polaroid-video"
-            controls
-            autoPlay
-            loop
-            muted
-            playsInline
-          >
-            <source src="./videos/output_2x_looped.mp4" type="video/mp4" />
-            Your browser does not support the video tag.
-          </video>
-          <p className="caption">Main Snapshot</p>
-        </div>
+        {videoFiles.length > 0 && (
+          <div className="main-polaroid-on-stack">
+            <video
+              className="polaroid-video"
+              controls
+              autoPlay
+              loop
+              muted
+              playsInline
+            >
+              <source src={`/videos/${videoFiles[0]}`} type="video/mp4" />
+              Your browser does not support the video tag.
+            </video>
+            <p className="caption">Main Snapshot</p>
+          </div>
+        )}
 
         {/* Polaroid pile underneath */}
         <div className="polaroid-pile">
-          {Array.from({ length: 10 }).map((_, i) => (
+          {polaroidVideos.map((video, i) => (
             <div
               className={`pile-polaroid pile-${i}`}
               key={i}
@@ -59,12 +99,11 @@ const TrafficVideo = () => {
               <video
                 className="polaroid-video"
                 controls
-                // autoPlay
                 loop
                 muted
                 playsInline
               >
-                <source src="./videos/output_2x_looped.mp4" type="video/mp4" />
+                <source src={`/videos/${video}`} type="video/mp4" />
                 Your browser does not support the video tag.
               </video>
               <p className="caption">Snapshot {i + 1}</p>
@@ -80,17 +119,16 @@ const TrafficVideo = () => {
 
       {/* Polaroid-style Gallery */}
       <div className="gallery">
-        {Array.from({ length: 9 }).map((_, i) => (
+        {galleryVideos.map((video, i) => (
           <div className="polaroid" key={i}>
             <video
               className="polaroid-video"
               controls
-              // autoPlay
               loop
               muted
               playsInline
             >
-              <source src="./videos/output_2x_looped.mp4" type="video/mp4" />
+              <source src={`/videos/${video}`} type="video/mp4" />
               Your browser does not support the video tag.
             </video>
             <p className="caption">Snapshot {i + 1}</p>
