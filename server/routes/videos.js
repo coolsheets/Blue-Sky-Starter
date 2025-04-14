@@ -40,17 +40,17 @@ router.get('/', async (req, res) => {
   }
 });
 
-router.get('/test', async (req, res) => {
-  try {
-    const cameraName = "Camera 30"; // Replace with a valid Camera_Name
-    console.log("Testing query with Camera_Name:", cameraName);
-    const cameraInfo = await findCameraLocationByName(cameraName);
-    console.log("Query result:", cameraInfo);
-    res.json(cameraInfo);
-  } catch (error) {
-    console.error('Error testing query:', error);
-    res.status(500).json({ error: 'Failed to test query' });
-  }
-});
+// router.get('/test', async (req, res) => {
+//   try {
+//     const cameraName = "Camera 30"; // Replace with a valid Camera_Name
+//     console.log("Testing query with Camera_Name:", cameraName);
+//     const cameraInfo = await findCameraLocationByName(cameraName);
+//     console.log("Query result:", cameraInfo);
+//     res.json(cameraInfo);
+//   } catch (error) {
+//     console.error('Error testing query:', error);
+//     res.status(500).json({ error: 'Failed to test query' });
+//   }
+// });
 
 export default router;
