@@ -1,8 +1,8 @@
 import { Router } from "express";
 
-// Below are the imports for the login routes for later use
-import bcrypt from "bcryptjs";
-import jwt from "jsonwebtoken";
+// // Below are the imports for the login routes for later use
+// import bcrypt from "bcryptjs";
+// import jwt from "jsonwebtoken";
 
 // Above import is for use.
 
@@ -49,38 +49,38 @@ router.get("/:cameraId", async function (req, res) {
   }
 });
 
-// == ----------------- user logging to the web console ==
-// routes/auth.js
+// // == ----------------- user logging to the web console ==
+// // routes/auth.js
 
-// Note: this is just an example for the hardcorded user login, which would be replaced with DB logic
-const users = [
-  {
-    id: 1,
-    email: "user@test.com",
-    passwordHash: bcrypt.hashSync("password123", 10),
-  },
-];
+// // Note: this is just an example for the hardcorded user login, which would be replaced with DB logic
+// const users = [
+//   {
+//     id: 1,
+//     email: "user@test.com",
+//     passwordHash: bcrypt.hashSync("password123", 10),
+//   },
+// ];
 
-// POST /login
-router.post("/login", async (req, res) => {
-  const { email, password } = req.body;
+// // POST /login
+// router.post("/login", async (req, res) => {
+//   const { email, password } = req.body;
 
-  const user = users.find((u) => u.email === email);
-  if (!user)
-    return res.status(401).json({ message: "Invalid email or password." });
+//   const user = users.find((u) => u.email === email);
+//   if (!user)
+//     return res.status(401).json({ message: "Invalid email or password." });
 
-  const isMatch = await bcrypt.compare(password, user.passwordHash);
-  if (!isMatch)
-    return res.status(401).json({ message: "Invalid email or password." });
+//   const isMatch = await bcrypt.compare(password, user.passwordHash);
+//   if (!isMatch)
+//     return res.status(401).json({ message: "Invalid email or password." });
 
-  const token = jwt.sign({ userId: user.id }, "your_jwt_secret", {
-    expiresIn: "1h",
-  });
+//   const token = jwt.sign({ userId: user.id }, "your_jwt_secret", {
+//     expiresIn: "1h",
+//   });
 
-  res.json({ token, user: { id: user.id, email: user.email } });
-});
+//   res.json({ token, user: { id: user.id, email: user.email } });
+// });
 
-// == ---------------- user logging to the web console ==
+// // == ---------------- user logging to the web console ==
 
 // update a camera
 router.put("/:cameraId", async function (req, res) {
