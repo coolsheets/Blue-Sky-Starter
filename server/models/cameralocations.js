@@ -21,9 +21,11 @@ const cameralocationSchema = new mongoose.Schema({
     Point: String,
 })
 
-
 // Models
-const CameraLocation = mongoose.model('cameralocation', cameralocationSchema, 'cameralocations')
+const CameraLocation = mongoose.model('cameralocation', cameralocationSchema, 'cameralocations');
+
+console.log("Database connection:", CameraLocation.db.name);
+console.log("Collection name:", CameraLocation.collection.name);
 
 // Functions to expose to the outside world!
 export async function createCameraLocation(Camera_Name, Camera_URL, Quadrant, Camera_Location, Point) {
@@ -46,4 +48,11 @@ export async function findCameraLocationById(id) {
     console.log("findCameraLocationById", id)
     const location = await CameraLocation.findById(new mongoose.Types.ObjectId(id))
     return location
+}
+
+export async function findCameraLocationByName(cameraName) {
+    console.log("findCameraLocationByName", cameraName);
+    const location = await CameraLocation.findOne({ Camera_Name: { $regex: `^${cameraName}$`, $options: 'i' } });
+    console.log("Database result:", location);
+    return location;
 }

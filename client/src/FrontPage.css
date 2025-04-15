@@ -84,8 +84,17 @@ body, html {
 
 .polaroid-video {
   width: 100%;
-  height: auto;
-  border-radius: 6px;
+  border-radius: 4px;
+  display: block;
+  margin-bottom: 8px;
+}
+
+.polaroid-video::-webkit-media-controls {
+  display: none; /* Hide controls by default */
+}
+
+.polaroid-video:hover::-webkit-media-controls {
+  display: block; /* Show controls on hover */
 }
 
 .caption {
@@ -123,6 +132,14 @@ body, html {
   display: block;
   margin-bottom: 8px;
 }
+
+/* .polaroid-video::-webkit-media-controls {
+  display: none; /* Hide controls by default
+}
+
+.polaroid-video:hover::-webkit-media-controls {
+  display: block; /* Show controls on hover
+} */
 
 /* Pile of Polaroids under the main one */
 .polaroid-pile {
@@ -227,4 +244,10 @@ body, html {
 
 .polaroid-pile.shifted .pile-9 {
   transform: rotate(-5deg) translate(100px, 140px);
+}
+
+/* FrontPage.css */
+#pileSizeSlider {
+  width: 400px; /* Increase the width of the slider bar */
+  margin: 10px 0; /* Optional: Add some spacing */
 }
