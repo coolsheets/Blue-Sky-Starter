@@ -38,4 +38,5 @@ Tony O has cloned this file on April 4/2/2025 ---
 
 ### [Time-Lapse](timeLapse.md)
 
-# Add new branch to fix cloning.
+# Repo Cloning!
+Cloning this repo will take some time due to the videos in the public folder.  However, once those are on your local system, you should be good to go.
