@@ -11,52 +11,21 @@ body, html {
   overflow: hidden;
 }
 
-/* Navbar */
-.navbar {
-  width: 100%;
-  height: 60px;
-  background-color: #003366;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0 30px;
-  color: white;
-  position: fixed;
-  top: 0;
-  z-index: 1000;
-}
-
-.navbar-logo {
-  font-size: 1.2rem;
-  font-weight: bold;
-}
-
-.navbar-links a {
-  margin-left: 20px;
-  color: white;
-  text-decoration: none;
-  font-size: 1rem;
-}
-
-.navbar-links a:hover {
-  text-decoration: underline;
-}
-
-/* Hero Section */
-.hero {
+/* Title Picture Section */
+.title-picture {
   position: relative;
   height: 70vh; /* Trim the background height */
   width: 100%;
   overflow: hidden;
 }
 
-.hero-image {
+.title-picture-image {
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
-/* Hero Text Overlay */
-.hero-text {
+
+.title-picture-text {
   position: absolute;
   top: 50%;
   left: 10%;
@@ -65,23 +34,23 @@ body, html {
   max-width: 500px;
 }
 
-.hero-text p {
+.title-picture-text p {
   font-size: 1rem;
   margin-bottom: 10px;
   letter-spacing: 1px;
 }
 
-.hero-text h1 {
+.title-picture-text h1 {
   font-size: 3rem;
   margin: 0;
 }
 
-.hero-text h1 span {
+.title-picture-text h1 span {
   font-weight: bold;
   color: #ffffff;
 }
 
-.hero-text button {
+.title-picture-text button {
   margin-top: 20px;
   padding: 10px 20px;
   font-size: 1rem;
@@ -92,7 +61,7 @@ body, html {
   transition: 0.3s ease-in-out;
 }
 
-.hero-text button:hover {
+.title-picture-text button:hover {
   background-color: white;
   color: #003366;
 }
@@ -102,7 +71,7 @@ body, html {
   display: flex;
   justify-content: center;
   gap: 70px;
-  margin-top: -80px; /* Pull videos up over the hero image */
+  margin-top: -80px; /* Pull videos up over the title picture */
   padding: 0 20px 60px;
   position: relative;
   z-index: 10;

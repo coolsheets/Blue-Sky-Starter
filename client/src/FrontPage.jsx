@@ -1,4 +1,5 @@
 import React from "react";
+import Navbar from "./Navbar";
 import "./FrontPage.css";
 
 const FrontPage = () => {
@@ -11,19 +12,12 @@ const FrontPage = () => {
   return (
     <div className="front-page-container">
       {/* Navbar */}
-      <nav className="navbar">
-        <div className="navbar-logo">Blue Sky City Watchers</div>
-        <div className="navbar-links">
-          <a href="#">Home</a>
-          <a href="#">Gallery</a>
-          <a href="#">Map</a>
-        </div>
-      </nav>
+      <Navbar />
 
-      {/* Hero Section */}
-      <header className="hero">
-        <img src="/img/calgary2.jpg" alt="Scenic Calgary" className="hero-image" />
-        <div className="hero-text">
+      {/* Title Picture Section */}
+      <header className="title-picture">
+        <img src="/img/calgary2.jpg" alt="Scenic Calgary" className="title-picture-image" />
+        <div className="title-picture-text">
           <p>Explore City timelaps</p>
           <h1>Choose <span> the best one</span></h1>
           <button>Vote</button>
