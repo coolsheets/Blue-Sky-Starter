@@ -1,6 +1,7 @@
 import React from "react";
 import Navbar from "./Navbar";
 import "./FrontPage.css";
+import Footer from "./Footer";
 
 const FrontPage = () => {
   const videoFiles = [
@@ -32,6 +33,7 @@ const FrontPage = () => {
           </div>
         ))}
       </section>
+      <Footer />
     </div>
   );
 };

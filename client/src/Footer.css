@@ -1,0 +1,82 @@
+/* Footer */
+.footer {
+    width: 100%;
+    height: 60px; /* Default height for larger screens */
+    background-color: #003366;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    /* padding: 0 2px; */
+    box-shadow: 0 -4px 6px rgba(0, 0, 0, 0.1);
+    position: fixed;
+    bottom: 0;
+    z-index: 1000;
+  }
+  
+  .footer-content {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+  }
+  
+  .footer-content p {
+    margin: 0;
+    font-size: 1rem;
+  }
+  
+  /* Social Media Buttons */
+  .social-media-buttons {
+    display: flex;
+    gap: 15px;
+    padding: 20px;
+  }
+  
+  .social-button {
+    color: white;
+    transition: transform 0.3s ease, color 0.3s ease;
+  }
+  
+  .social-button:hover {
+    transform: scale(1.1);
+    color: #ddd;
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .footer {
+      height: auto; /* Adjust height dynamically for smaller screens */
+      padding: 10px 15px; /* Reduced padding */
+      flex-direction: column; /* Stack content vertically */
+    }
+  
+    .footer-content {
+      flex-direction: column; /* Stack items vertically */
+      gap: 10px; /* Add spacing between items */
+      text-align: center; /* Center align content */
+    }
+  
+    .footer-content p {
+      font-size: 0.9rem; /* Reduce text size for smaller screens */
+    }
+  
+    .social-media-buttons {
+      justify-content: center; /* Center the social media buttons */
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .footer {
+      padding: 10px; /* Further reduce padding for very small screens */
+    }
+  
+    .footer-content p {
+      font-size: 0.8rem; /* Reduce text size further for smaller screens */
+    }
+  
+    .social-button {
+      font-size: 20px; /* Slightly smaller icons */
+    }
+  }

@@ -1,14 +1,14 @@
 /* Navbar */
 .navbar {
     width: 100%;
-    height: 80px; /* Fixed height */
+    height: 60px; /* Default height for larger screens */
     background-color: #003366;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    /* padding: 0 20px; */
+    padding: 0 20px; /* Default padding for larger screens */
     color: white;
-    position: fixed; /* Sticks the navbar to the top */
+    position: fixed; /* Stick the navbar to the top */
     top: 0;
     z-index: 1000;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -26,43 +26,67 @@
   
   .navbar-links {
     display: flex;
-    flex-wrap: wrap;
+    flex-wrap: wrap; /* Allows wrapping on smaller screens */
+    gap: 15px; /* Add space between links */
+    padding: 40px;
   }
   
   .navbar-links a {
-    margin-left: 15px;
     color: white;
     text-decoration: none;
     font-size: 1rem;
-    transition: color 0.3s ease;
+    transition: color 0.3s ease, transform 0.3s ease;
   }
   
   .navbar-links a:hover {
     text-decoration: underline;
     color: #ddd;
+    transform: scale(1.1); /* Add slight zoom effect */
   }
   
   /* Responsive Design */
   @media (max-width: 768px) {
     .navbar {
       height: 70px; /* Adjust height for smaller screens */
-      padding: 0 15px;
+      padding: 0 15px; /* Reduce padding for smaller screens */
+      flex-direction: column; /* Stack navbar items vertically */
     }
   
     body {
       padding-top: 70px; /* Match navbar height */
     }
   
+    .navbar-logo {
+      font-size: 1.2rem; /* Reduce logo size for smaller screens */
+      margin-bottom: 10px; /* Add spacing below the logo */
+    }
+  
     .navbar-links {
-      justify-content: space-between;
+      justify-content: center; /* Center links on smaller screens */
+      gap: 10px; /* Reduce spacing between links */
     }
   
     .navbar-links a {
-      font-size: 0.9rem;
+      font-size: 0.9rem; /* Reduce font size for smaller screens */
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .navbar {
+      height: auto; /* Adjust height dynamically */
+      padding: 10px; /* Further reduce padding for very small screens */
+    }
+  
+    body {
+      padding-top: auto; /* Dynamically adjust padding if navbar height changes */
     }
   
     .navbar-logo {
-      font-size: 1.2rem;
+      font-size: 1rem; /* Further reduce logo size for smaller devices */
+    }
+  
+    .navbar-links a {
+      font-size: 0.8rem; /* Reduce link size for small screens */
     }
   }
   
