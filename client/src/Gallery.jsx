@@ -2,72 +2,67 @@ import React, { useState, useEffect } from "react";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
 import "./Gallery.css";
-import { useSearchParams } from "react-router-dom";
-
-const ITEMS_PER_PAGE = 20;
 
 const Gallery = () => {
-  const [searchParams, setSearchParams] = useSearchParams();
-  const [videoList, setVideoList] = useState([]);
-  const [currentPage, setCurrentPage] = useState(
-    parseInt(searchParams.get("page")) || 1
-  );
+  const videosPerPage = 12;
+  const [currentPage, setCurrentPage] = useState(1);
+  const [videoFiles, setVideoFiles] = useState([]);
 
   useEffect(() => {
-    // Grab all video filenames based on pattern
-    const allVideos = [];
+    // Generate file names from 1 to 204, skipping known invalids if needed
+    const files = [];
     for (let i = 1; i <= 204; i++) {
-      const padded = String(i).padStart(3, "0");
-      const filename = `${padded}.mp4`;
-      allVideos.push(filename);
+      const filename = String(i).padStart(3, "0") + ".mp4";
+      files.push(filename);
     }
-
-    setVideoList(allVideos);
+    setVideoFiles(files);
   }, []);
 
-  useEffect(() => {
-    setSearchParams({ page: currentPage });
-  }, [currentPage, setSearchParams]);
+  const indexOfLastVideo = currentPage * videosPerPage;
+  const indexOfFirstVideo = indexOfLastVideo - videosPerPage;
+  const currentVideos = videoFiles.slice(indexOfFirstVideo, indexOfLastVideo);
 
-  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
-  const endIndex = startIndex + ITEMS_PER_PAGE;
-  const paginatedVideos = videoList.slice(startIndex, endIndex);
-  const totalPages = Math.ceil(videoList.length / ITEMS_PER_PAGE);
+  const totalPages = Math.ceil(videoFiles.length / videosPerPage);
 
   return (
-    <div className="gallery-container">
+    <div className="gallery-page">
       <Navbar />
-      <div className="gallery-content">
-        {paginatedVideos.map((file, index) => (
-          <div className="gallery-item" key={index}>
+      <div className="gallery-container">
+        {currentVideos.map((file, index) => (
+          <div key={index} className="video-tile">
             <video
               src={`/videos/${file}`}
               muted
               loop
+              playsInline
               preload="metadata"
-              onMouseOver={e => e.target.play()}
-              onMouseOut={e => e.target.pause()}
-              poster={`/img/video-placeholder.jpg`} // fallback if needed
+              poster={`/videos/${file}#t=0.1`}
+              onMouseOver={(e) => e.target.play()}
+              onMouseOut={(e) => {
+                e.target.pause();
+                e.target.currentTime = 0;
+              }}
             />
           </div>
         ))}
       </div>
 
-      <div className="gallery-pagination">
+      <div className="pagination">
         <button
+          onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
           disabled={currentPage === 1}
-          onClick={() => setCurrentPage(prev => prev - 1)}
         >
-          ← Previous
+          Prev
         </button>
         <span>Page {currentPage} of {totalPages}</span>
         <button
+          onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
           disabled={currentPage === totalPages}
-          onClick={() => setCurrentPage(prev => prev + 1)}
         >
-          Next →
+          Next
         </button>
       </div>
+
       <Footer />
     </div>
   );
