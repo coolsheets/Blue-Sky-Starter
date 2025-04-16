@@ -30,7 +30,7 @@ function App(props) {
         </p>
       </div>
       <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
+        We're still working on this, so check back in a bit for more info.
       </p>
     </>
   )
