@@ -3,13 +3,12 @@ import dotenv from "dotenv";
 dotenv.config();
 
 // const mongo_uri =
-//   process.env.MONGO_URI ||
-const mongo_uri =
-  process.env.MONGO_URI || "mongodb://localhost:27017/c14-superheroes";
+//   process.env.MONGO_URI || "mongodb://localhost:27017/blueskyDb";
+const mongo_uri = "mongodb://127.0.0.1:27017/blueskyDb";
 
 console.log(mongo_uri);
 
-let connectionPromise = null
+let connectionPromise = null;
 
 export async function connectDb() {
   if (!connectionPromise) {
