@@ -2,6 +2,8 @@ import React from "react";
 import Navbar from "./Navbar";
 import "./FrontPage.css";
 import Footer from "./Footer";
+import VideoReactionCard from "./component/VideoReactionCard.jsx";
+
 
 const FrontPage = () => {
   const videoFiles = [
@@ -21,7 +23,8 @@ const FrontPage = () => {
         <div className="title-picture-text">
           <p>Explore City timelaps</p>
           <h1>Choose <span> the best one</span></h1>
-          <button>Vote</button>
+          {/* <button>Vote</button> */}
+          <VideoReactionCard>Vote</VideoReactionCard>
         </div>
       </header>
 
