@@ -1,16 +1,22 @@
-import React from "react";
-import Navbar from "./Navbar";
+import React, { useState } from "react";
+import Navbar from "./Navbar.jsx";
 import "./FrontPage.css";
-import Footer from "./Footer";
+import Footer from "./Footer.jsx";
 import VideoReactionCard from "./component/VideoReactionCard.jsx";
+import { Dialog, DialogContent } from "@mui/material";
 
 
 const FrontPage = () => {
-  const videoFiles = [
-    "003.mp4",
-    "006.mp4",
-    "009.mp4"
-  ];
+
+   const [open, setOpen] = useState(false);
+
+  const handleOpenModal = () => setOpen(true);
+  const handleCloseModal = () => setOpen(false);
+  // const videoFiles = [
+  //   "003.mp4",
+  //   "006.mp4",
+  //   "009.mp4"
+  // ];
 
   return (
     <div className="front-page-container">
@@ -23,19 +29,39 @@ const FrontPage = () => {
         <div className="title-picture-text">
           <p>Explore City timelaps</p>
           <h1>Choose <span> the best one</span></h1>
+          <button onClick={handleOpenModal}>Vote</button>
           {/* <button>Vote</button> */}
-          <VideoReactionCard>Vote</VideoReactionCard>
         </div>
       </header>
 
       {/* Video Thumbnails */}
       <section className="video-preview">
-        {videoFiles.map((file, index) => (
+        {/* {videoFiles.map((file, index) => (
           <div key={index} className="video-card">
             <video src={`/videos/${file}`} muted loop autoPlay />
+            <VideoReactionCard/>
           </div>
-        ))}
+        ))} */}
+        
+        {/*         
+        <VideoReactionCard userId={"user"} /> {/* Pass userId as a prop *//*}
+           */}
+          
+        {/* Modal */}
+      <Dialog
+        open={open}
+        onClose={handleCloseModal}
+        maxWidth="md"
+        fullWidth
+        classes={{ backdrop: "custom-dialog-backdrop" }}
+      >
+        <DialogContent className="custom-dialog-content">
+          <VideoReactionCard videoUrl="/videos/003.mp4" />
+        </DialogContent>
+      </Dialog>
+
       </section>
+
       <Footer />
     </div>
   );

@@ -30,16 +30,15 @@ router.post('/', async (req, res) => {
 })
 
 
-router.get('/:videourl', async function (req, res) {
-    const videourl = req.params.videourl
-    try {
-        const data = await findReactionByVideoURL(videourl)
-        res.send(data)
-    }
-    catch (error) {
-        console.log(error)
-        res.sendStatus(500)
-    }   
-})
+router.get("/:videoUrl", async function (req, res) {
+  try {
+    const videoUrl = decodeURIComponent(req.params.videoUrl);
+    const reactions = await findReactionsByVideoURL(videoUrl); // match exactly what's stored
+    res.send(reactions);
+  } catch (error) {
+    console.error(error);
+    res.sendStatus(500);
+  }
+});
 
 export default router

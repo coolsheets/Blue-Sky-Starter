@@ -45,3 +45,13 @@ Cloning this repo will take some time due to the videos in the public folder. Ho
 ## npm i @mui/material
 
 @mui/material is utilized in the client component to create video reactions from users with their like, comment and share. So, there's need to run the install in the destination system
+
+## Video folder to become json index
+Based on recent research using Stackoverflow and AI, it's suggested to make the video folder to become json as shown below. So, I'm suggesting making the modification to reflect that:
+
+../public/videos/index.json
+[
+  "sample1.mp4",
+  "sample2.mp4",
+  "sample3.mp4"
+]
