@@ -1,0 +1,10 @@
+/* Modal backdrop styling */
+.custom-dialog-backdrop {
+    background-color: rgba(0, 0, 0, 0.7) !important;
+    backdrop-filter: blur(4px);
+  }
+  
+  /* Modal content padding */
+  .custom-dialog-content {
+    padding: 20px;
+  }
