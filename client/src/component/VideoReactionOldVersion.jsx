@@ -1,5 +1,4 @@
-import React from 'react';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import {
   Card,
   CardContent,
@@ -22,11 +21,8 @@ export default function VideoReactionCard({ videoUrl }) {
   const [comments, setComments] = useState([]);
   const [alert, setAlert] = useState({ open: false, message: '', severity: 'success' });
 
-  useEffect(() => {
-    fetchReactions();
-  }, []);
-
-  const fetchReactions = async () => {
+  // Wrap fetchReactions in useCallback to ensure stable reference
+  const fetchReactions = useCallback(async () => {
     try {
       const res = await fetch(`/api/reactions/${encodeURIComponent(videoUrl)}`);
       const data = await res.json();
@@ -34,7 +30,11 @@ export default function VideoReactionCard({ videoUrl }) {
     } catch (error) {
       console.error('Failed to fetch reactions', error);
     }
-  };
+  }, [videoUrl]);
+
+  useEffect(() => {
+    fetchReactions();
+  }, [fetchReactions]); // Include fetchReactions in the dependency array
 
   const handleReaction = async (type) => {
     try {
@@ -118,4 +118,3 @@ export default function VideoReactionCard({ videoUrl }) {
     </Card>
   );
 }
-// This component is a video reaction card that allows users to react to a video and post comments. It fetches reactions from the server, handles user interactions, and displays alerts for feedback.
