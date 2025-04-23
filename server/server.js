@@ -13,6 +13,8 @@ import cityRoutes from "./routes/cityRoutes.js";
 import frontPageRoutes from "./routes/frontPageRoutes.js";
 import cameraLocationRoutes from "./routes/cameraLocations.js";
 import reactionsRoutes from './routes/reactionsRoutes.js';
+import userRoutes from './routes/userRoutes.js'; // <-- Added this line of code to include the user routes, Tony
+
 
 // Fix for __dirname in ES modules
 const __filename = fileURLToPath(import.meta.url);
@@ -41,6 +43,8 @@ app.use(express.static(path.join(__dirname, '../client/public')));
 
 app.use("/login", authRoutes); // <-- Added this line of code to include the auth routes, Tony
 app.use("/frontPage", frontPageRoutes); // <-- Added this line of code to include the frontPage routes, Tony
+
+app.use("/user",userRoutes); // <-- Added this line of code to include the user routes, Tony
 
 // Start the server
 app.listen(PORT, () => {

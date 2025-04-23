@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { createReaction,findAllReactions,findReactionByVideoURL } from "../models/reactions.js";
+import {authenticateToken} from "../middleware/authMiddleware.js";
 
 const router = Router();
 
@@ -15,7 +16,7 @@ router.get('/', async function (req, res) {
 })
 
 
-router.post('/', async (req, res) => {
+router.post('/', authenticateToken,async (req, res) => {
     const { Video_URL,
         User_ID,
         Reaction_Type,
