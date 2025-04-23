@@ -100,8 +100,8 @@ useEffect(() => {
 
       <Dialog open={Boolean(selectedVideo)} onClose={() => setSelectedVideo(null)} maxWidth="md" fullWidth>
         <DialogContent>
-          <Box component="video" src={`../public/jsonVideo/${selectedVideo}`} controls width="100%" sx={{ mb: 2 }} />
-
+          <Box component="video" src={`../public/videos/001.mp4`} controls width="100%" sx={{ mb: 2 }} />
+            {/* jsonVideo/${selectedVideo} */}
           <Stack direction="row" spacing={2}>
             <IconButton onClick={() => setLiked(!liked)} color={liked ? 'primary' : 'default'}>
               <ThumbUpIcon />
