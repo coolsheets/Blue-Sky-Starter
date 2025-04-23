@@ -6,8 +6,8 @@ const mongoose = await connectDb();
 const reactionSchema = new mongoose.Schema({
   Video_URL: { type: String, required: true },
   User_ID: { type: String, required: true },
-  Reaction_Type: { type: Boolean, default: false }, // true = like, false = dislike
-  Star: { type: Number, min: 1, max: 5 },
+  Reaction_Type: { type: String }, // true = like, false = dislike
+  Star: { type: Number, min: 0, max: 5 },
   Comment: { type: String },
   Created_At: { type: Date, default: Date.now },
 });

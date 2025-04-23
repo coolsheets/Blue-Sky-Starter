@@ -39,6 +39,27 @@ export default function VideoReactionCard({ userId }) {
       .catch(err => console.error('Failed to load videos', err));
   }, []);
 
+  // Fetch reactions for the selected video
+useEffect(() => {
+  if (selectedVideo) {
+    const fetchReactions = async () => {
+      try {
+        const response = await fetch(`/api/reactions/${encodeURIComponent(selectedVideo.split('/').pop())}`);
+        if (response.ok) {
+          const data = await response.json();
+          setReactions(data); // Update the reactions state with the fetched data
+        } else {
+          console.error('Failed to fetch reactions');
+        }
+      } catch (error) {
+        console.error('Error fetching reactions:', error);
+      }
+    };
+
+    fetchReactions();
+  }
+}, [selectedVideo]);
+
   const handleShareClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -120,18 +141,60 @@ export default function VideoReactionCard({ userId }) {
             onChange={(e) => setComment(e.target.value)}
             sx={{ mt: 2 }}
           />
-          <Button variant="contained" sx={{ mt: 1 }} onClick={() => {}}>
-            Submit Reaction
-          </Button>
+          <Button
+  variant="contained"
+  sx={{ mt: 1 }}
+  onClick={async () => {
+    if (!selectedVideo || !comment.trim()) {
+      setAlert({ open: true, message: 'Please select a video and write a comment.', severity: 'warning' });
+      return;
+    }
 
-          <Box sx={{ mt: 2 }}>
-            <Typography variant="subtitle2">Reactions:</Typography>
-            {reactions.map((r, i) => (
+    try {
+      const payload = {
+        Video_URL: selectedVideo.split('/').pop(), // Extract only the file name
+        User_ID: 1, // Default user ID
+        Reaction_Type: "like", // Default reaction type
+        Star: star, // Star rating from UI
+        Comment: comment.trim(), // Comment from UI
+      };
+
+      const response = await fetch('/api/reactions', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+
+      if (response.ok) {
+        setAlert({ open: true, message: 'Reaction submitted successfully!', severity: 'success' });
+        setComment(''); // Clear the comment field
+        setStar(0); // Reset the star rating
+        setLiked(false); // Reset the like state
+      } else {
+        throw new Error('Failed to submit reaction');
+      }
+    } catch (error) {
+      console.error(error);
+      setAlert({ open: true, message: 'Failed to submit reaction. Please try again.', severity: 'error' });
+    }
+  }}
+>
+  Submit Reaction
+</Button>
+
+        <Box sx={{ mt: 2 }}>
+          <Typography variant="subtitle2">Reactions:</Typography>
+          {reactions.length > 0 ? (
+            reactions.map((r, i) => (
               <Typography key={i} variant="body2">
-                {r.User_ID}: {r.Reaction_Type ? 'Liked' : 'Disliked'}, {r.Star}★, "{r.Comment}"
+                {/* User {r.User_ID}: {r.Reaction_Type ? 'Liked' : 'Disliked'}, {r.Star}★, "{r.Comment}" */}
+                {r.Star}★, "{r.Comment}"
               </Typography>
-            ))}
-          </Box>
+            ))
+          ) : (
+            <Typography variant="body2">No reactions yet.</Typography>
+          )}
+        </Box>
         </DialogContent>
         <DialogActions>
           <Button
