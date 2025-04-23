@@ -32,6 +32,7 @@ app.use("/cities", cityRoutes);
 
 // Use the videos route
 app.use('/api/videos', videosRoute);
+app.use('/api/reactions', reactionsRoutes); // <-- Added this line of code to include the reactions routes, Tony
 
 // Serve static files from the "public" folder
 app.use(express.static(path.join(__dirname, '../client/public')));

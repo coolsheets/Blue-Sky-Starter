@@ -17,11 +17,17 @@ router.get('/', async function (req, res) {
 
 router.post('/', async (req, res) => {
     const { Video_URL,
-        Reaction_Type } = req.body
+        User_ID,
+        Reaction_Type,
+        Star,
+        Comment } = req.body
 
     if (req.body) {
-        const data = createReaction(Video_URL,  
-            Reaction_Type)
+        const data = createReaction( Video_URL,
+            User_ID,
+            Reaction_Type,
+            Star,
+            Comment)
         return res.send(data)
     }
     else {
@@ -33,7 +39,7 @@ router.post('/', async (req, res) => {
 router.get("/:videoUrl", async function (req, res) {
   try {
     const videoUrl = decodeURIComponent(req.params.videoUrl);
-    const reactions = await findReactionsByVideoURL(videoUrl); // match exactly what's stored
+    const reactions = await findReactionByVideoURL(videoUrl); // match exactly what's stored
     res.send(reactions);
   } catch (error) {
     console.error(error);
