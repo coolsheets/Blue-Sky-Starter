@@ -99,60 +99,88 @@ useEffect(() => {
       </Stack>
 
       <Dialog open={Boolean(selectedVideo)} onClose={() => setSelectedVideo(null)} maxWidth="md" fullWidth>
-        <DialogContent>
-          <Box component="video" src={`../public/jsonVideo/${selectedVideo}`} controls width="100%" sx={{ mb: 2 }} />
+  <DialogContent>
+    <Box sx={{ position: 'relative', mb: 2 }}>
+      <Box component="video" src={`../videos/${selectedVideo}`} controls width="100%" />
 
-          <Stack direction="row" spacing={2}>
-            <IconButton onClick={() => setLiked(!liked)} color={liked ? 'primary' : 'default'}>
-              <ThumbUpIcon />
-            </IconButton>
-            <IconButton>
-              <ShareIcon />
-            </IconButton>
-            <Rating
-              name="star-rating"
-              value={star}
-              onChange={(event, newValue) => setStar(newValue)}
-              max={5}
-            />
-          </Stack>
+      {/* Previous and Next Buttons */}
+      <Button
+        variant="contained"
+        sx={{ position: 'absolute', top: '50%', left: 0, transform: 'translateY(-50%)' }}
+        onClick={() => {
+          const currentIndex = videoFiles.indexOf(selectedVideo);
+          const prevIndex = (currentIndex - 1 + videoFiles.length) % videoFiles.length;
+          setSelectedVideo(videoFiles[prevIndex]);
+        }}
+      >
+        Previous
+      </Button>
+      <Button
+        variant="contained"
+        sx={{ position: 'absolute', top: '50%', right: 0, transform: 'translateY(-50%)' }}
+        onClick={() => {
+          const currentIndex = videoFiles.indexOf(selectedVideo);
+          const nextIndex = (currentIndex + 1) % videoFiles.length;
+          setSelectedVideo(videoFiles[nextIndex]);
+        }}
+      >
+        Next
+      </Button>
+    </Box>
 
-          <TextField
-            label="Write a comment"
-            variant="outlined"
-            fullWidth
-            multiline
-            rows={2}
-            value={comment}
-            onChange={(e) => setComment(e.target.value)}
-            sx={{ mt: 2 }}
-          />
-          <Button variant="contained" sx={{ mt: 1 }} onClick={handleReaction}>
-            Submit Reaction
-          </Button>
+    <Stack direction="row" spacing={2}>
+      <IconButton onClick={() => setLiked(!liked)} color={liked ? 'primary' : 'default'}>
+        <ThumbUpIcon />
+      </IconButton>
+      <IconButton>
+        <ShareIcon />
+      </IconButton>
+      <Rating
+        name="star-rating"
+        value={star}
+        onChange={(event, newValue) => setStar(newValue)}
+        max={5}
+      />
+    </Stack>
 
-          <Box sx={{ mt: 2 }}>
-            <Typography variant="subtitle2">Reactions:</Typography>
-            {reactions.map((r, i) => (
-              <Typography key={i} variant="body2">
-                {r.User_ID}: {r.Reaction_Type ? 'Liked' : 'Disliked'}, {r.Star}★, "{r.Comment}"
-              </Typography>
-            ))}
-          </Box>
-        </DialogContent>
-           <DialogActions>
-          <Button onClick={() => {
-            setSelectedVideo(null);
-            setLiked(false);
-            setStar(0);
-            setComment('');
-            setReactions([]);
-          }} color="secondary">
-            Close
-          </Button>
-        </DialogActions>
+    <TextField
+      label="Write a comment"
+      variant="outlined"
+      fullWidth
+      multiline
+      rows={2}
+      value={comment}
+      onChange={(e) => setComment(e.target.value)}
+      sx={{ mt: 2 }}
+    />
+    <Button variant="contained" sx={{ mt: 1 }} onClick={handleReaction}>
+      Submit Reaction
+    </Button>
 
-      </Dialog>
+    <Box sx={{ mt: 2 }}>
+      <Typography variant="subtitle2">Reactions:</Typography>
+      {reactions.map((r, i) => (
+        <Typography key={i} variant="body2">
+          {r.User_ID}: {r.Reaction_Type ? 'Liked' : 'Disliked'}, {r.Star}★, "{r.Comment}"
+        </Typography>
+      ))}
+    </Box>
+  </DialogContent>
+  <DialogActions>
+    <Button
+      onClick={() => {
+        setSelectedVideo(null);
+        setLiked(false);
+        setStar(0);
+        setComment('');
+        setReactions([]);
+      }}
+      color="secondary"
+    >
+      Close
+    </Button>
+  </DialogActions>
+</Dialog>
 
       <Snackbar
         open={alert.open}
