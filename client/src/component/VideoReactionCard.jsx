@@ -16,7 +16,8 @@ import {
   DialogActions,
 } from '@mui/material';
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
-import ShareIcon from '@mui/icons-material/Share';
+// import ShareIcon from '@mui/icons-material/Share';
+import SharePopup from './SharePopup'; 
 
 export default function VideoReactionCard({ userId }) {
   const [selectedVideo, setSelectedVideo] = useState(null);
@@ -85,7 +86,7 @@ useEffect(() => {
 
   return (
     <Box sx={{ padding: 4 }}>
-      <Typography variant="h5" sx={{ mb: 2 }}>Available Videos</Typography>
+      <Typography variant="h5" sx={{ mb: 2 }}>Choose to play timelapse Videos</Typography>
       <Stack direction="column" spacing={2}>
         {videoFiles.map((file, idx) => (
           <Button
@@ -133,7 +134,7 @@ useEffect(() => {
         <ThumbUpIcon />
       </IconButton>
       <IconButton>
-        <ShareIcon />
+        <SharePopup videoName={selectedVideo} />
       </IconButton>
       <Rating
         name="star-rating"
