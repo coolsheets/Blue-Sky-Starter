@@ -1,15 +1,17 @@
-import { connectDb } from "../db.js";
-// import mongoose from "mongoose";
+import mongoose from "mongoose";
 
-const mongoose = await connectDb();
+const userSchema = new mongoose.Schema({
+  username: { type: String, required: true, unique: true },
+  password: { type: String, required: true }, // In production, hash passwords!
+});
 
-// Schema 
-const UserSchema = new mongoose.Schema({
-    email:    { type: String, required: true, unique: true },
-    password: { type: String, required: true },
-  });
+export default mongoose.model("User", userSchema);
 
-// Models
-const User = mongoose.model("User", UserSchema);
 
-export default User;
+export async function createUser(username, password) {
+  const newUser = await User.create({ username, password });
+  return newUser;
+}
+export async function findUserByUsername(username) {
+  return await User.findOne({ username });
+}
