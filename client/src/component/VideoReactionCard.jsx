@@ -20,7 +20,7 @@ import {
   ListItemText,
 } from '@mui/material';
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
-// import ShareIcon from '@mui/icons-material/Share';
+import ShareIcon from '@mui/icons-material/Share';
 import SharePopup from './SharePopup'; 
 
 export default function VideoReactionCard({ userId }) {
