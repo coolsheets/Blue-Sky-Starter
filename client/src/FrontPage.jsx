@@ -12,7 +12,7 @@ const FrontPage = () => {
   const handleOpenModal = () => setOpen(true);
   const handleCloseModal = () => setOpen(false);
 
-  const videoFiles = ["003.mp4", "006.mp4", "009.mp4"];
+  // const videoFiles = ["003.mp4", "006.mp4", "009.mp4"];
 
   return (
     <div className="front-page-container">
