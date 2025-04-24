@@ -44,7 +44,7 @@ app.use(express.static(path.join(__dirname, '../client/public')));
 app.use("/login", authRoutes); // <-- Added this line of code to include the auth routes, Tony
 app.use("/frontPage", frontPageRoutes); // <-- Added this line of code to include the frontPage routes, Tony
 
-app.use("/user",userRoutes); // <-- Added this line of code to include the user routes, Tony
+app.use("/users",userRoutes); // <-- Added this line of code to include the user routes, Tony
 
 // Start the server
 app.listen(PORT, () => {

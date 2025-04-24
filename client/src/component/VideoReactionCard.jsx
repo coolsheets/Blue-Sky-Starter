@@ -161,7 +161,9 @@ useEffect(() => {
 
       const response = await fetch('/api/reactions', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json' ,
+          'Authorization': `Bearer ${localStorage.getItem('token')}` // Include token for authentication,
+        },
         body: JSON.stringify(payload),
       });
 
