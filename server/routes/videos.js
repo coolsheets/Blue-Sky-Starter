@@ -2,7 +2,8 @@ import express from 'express';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { findCameraLocationByName } from '../models/cameralocations.js'; // Import the new function
+import { findCameraLocationByName } from '../models/cameralocations.js';
+import Video from '../models/video.js'; // ✅ Import the Video model
 
 const router = express.Router();
 
@@ -10,25 +11,21 @@ const router = express.Router();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+// 🟦 Default route: Get all video files and try to map them with location
 router.get('/', async (req, res) => {
   try {
-    // Get video files from the videos folder
     const videoDir = path.join(__dirname, '../../client/public/videos');
     const files = fs.readdirSync(videoDir).filter(file => file.endsWith('.mp4'));
 
-    // Fetch Camera_Location for each video
     const videoData = await Promise.all(
       files.map(async (file) => {
-        // Extract the number from the filename and construct Camera_Name without padding
-        const cameraNumber = file.split('_')[0]; // Extract the number part (e.g., "15" from "15_video_20250403.mp4")
-        const cameraName = `Camera ${parseInt(cameraNumber, 10)}`; // Convert to integer to remove padding
-        console.log('Extracted Camera_Name:', cameraName);
-
-        // Query the database for the Camera_Location
+        const cameraNumber = file.split('_')[0];
+        const cameraName = `Camera ${parseInt(cameraNumber, 10)}`;
         const cameraInfo = await findCameraLocationByName(cameraName);
+
         return {
           filename: file,
-          location: cameraInfo ? cameraInfo.Camera_Location : 'Unknown Location', // Default to 'Unknown Location' if not found
+          location: cameraInfo ? cameraInfo.Camera_Location : 'Unknown Location',
         };
       })
     );
@@ -40,17 +37,17 @@ router.get('/', async (req, res) => {
   }
 });
 
-// router.get('/test', async (req, res) => {
-//   try {
-//     const cameraName = "Camera 30"; // Replace with a valid Camera_Name
-//     console.log("Testing query with Camera_Name:", cameraName);
-//     const cameraInfo = await findCameraLocationByName(cameraName);
-//     console.log("Query result:", cameraInfo);
-//     res.json(cameraInfo);
-//   } catch (error) {
-//     console.error('Error testing query:', error);
-//     res.status(500).json({ error: 'Failed to test query' });
-//   }
-// });
+// 🟨 New route: Get top 3 videos by likes from DB
+router.get('/top-liked', async (req, res) => {
+  try {
+    const topVideos = await Video.find()
+      .sort({ 'stats.likes': -1 })
+      .limit(3);
+    res.json(topVideos);
+  } catch (error) {
+    console.error('Error fetching top liked videos:', error);
+    res.status(500).json({ error: 'Failed to fetch top liked videos' });
+  }
+});
 
 export default router;
