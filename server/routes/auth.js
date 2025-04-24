@@ -1,70 +1,52 @@
 import express from "express";
-import bcrypt from "bcryptjs";
-import jwt from "jsonwebtoken";
+import User from "./models/User.js";
+import bcrypt from "bcrypt";
 
 const router = express.Router();
 
-// As an example: I've hardcoded the user credentials, which would be replaced with DB logic, when implemented.
-// Just like in a live application, where we would fetch this from a database.
-
-const users = [
-  {
-    id: 1,
-    email: "user@example.com",
-    passwordHash: bcrypt.hashSync("password123", 10),
-  },
-];
-
-// POST /login
 router.post("/login", async (req, res) => {
-  const { email, password } = req.body;
+  const { username, password } = req.body;
+  try {
+    // Find the user by username
+    const user = await User.findOne({ username });
+    if (!user) {
+      return res.status(401).json({ error: "Invalid username or password" });
+    }
 
-  const user = users.find((u) => u.email === email);
-  if (!user)
-    return res.status(401).json({ message: "Invalid email or password." });
+    // Compare the provided password with the hashed password
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+    if (!isPasswordValid) {
+      return res.status(401).json({ error: "Invalid username or password" });
+    }
 
-  const isMatch = await bcrypt.compare(password, user.passwordHash);
-  if (!isMatch)
-    return res.status(401).json({ message: "Invalid email or password." });
-
-  const token = jwt.sign({ userId: user.id }, "your_jwt_secret", {
-    expiresIn: "1h",
-  });
-
-  res.json({ token, user: { id: user.id, email: user.email } });
+    res.json({ username: user.username, message: "Login successful" });
+  } catch (err) {
+    console.error("Error logging in:", err);
+    res.status(500).json({ error: "Failed to log in" });
+  }
 });
 
-// // == ----------------- user logging to the web console ==
-// // routes/auth.js
+router.post("/register", async (req, res) => {
+  const { username, password } = req.body;
+  try {
+    // Check if the username already exists
+    const existingUser = await User.findOne({ username });
+    if (existingUser) {
+      return res.status(400).json({ error: "Username already exists" });
+    }
 
-// // Note: this is just an example for the hardcorded user login, which would be replaced with DB logic
-// const users = [
-//   {
-//     id: 1,
-//     email: "user@test.com",
-//     passwordHash: bcrypt.hashSync("password123", 10),
-//   },
-// ];
+    // Hash the password
+    const hashedPassword = await bcrypt.hash(password, 10);
 
-// // POST /login
-// router.post("/login", async (req, res) => {
-//   const { email, password } = req.body;
+    // Create and save the new user
+    const newUser = new User({ username, password: hashedPassword });
+    await newUser.save();
 
-//   const user = users.find((u) => u.email === email);
-//   if (!user)
-//     return res.status(401).json({ message: "Invalid email or password." });
-
-//   const isMatch = await bcrypt.compare(password, user.passwordHash);
-//   if (!isMatch)
-//     return res.status(401).json({ message: "Invalid email or password." });
-
-//   const token = jwt.sign({ userId: user.id }, "your_jwt_secret", {
-//     expiresIn: "1h",
-//   });
-
-//   res.json({ token, user: { id: user.id, email: user.email } });
-// });
-
-// // == ---------------- user logging to the web console ==
+    res.status(201).json({ message: "User registered successfully" });
+  } catch (err) {
+    console.error("Error registering user:", err);
+    res.status(500).json({ error: "Failed to register user" });
+  }
+});
 
 export default router;
