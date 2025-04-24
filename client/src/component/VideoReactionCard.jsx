@@ -1,12 +1,10 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
-  Card,
-  CardContent,
+  Box,
   Typography,
   IconButton,
   TextField,
   Button,
-  Box,
   Stack,
   Snackbar,
   Alert,
@@ -23,43 +21,51 @@ import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 import ShareIcon from '@mui/icons-material/Share';
 import SharePopup from './SharePopup'; 
 
-export default function VideoReactionCard({ userId }) {
-  const [selectedVideo, setSelectedVideo] = useState(null);
+export default function VideoReactionCard({ videoUrl }) {
+  const [selectedVideo, setSelectedVideo] = useState(videoUrl);
+  const [videoFiles, setVideoFiles] = useState([]);
   const [reactions, setReactions] = useState([]);
   const [comment, setComment] = useState('');
-  const [alert, setAlert] = useState({ open: false, message: '', severity: 'success' });
   const [liked, setLiked] = useState(false);
   const [star, setStar] = useState(0);
-  const [videoFiles, setVideoFiles] = useState([]);
-  const [anchorEl, setAnchorEl] = useState(null); // For Popover
+  const [alert, setAlert] = useState({ open: false, message: '', severity: 'success' });
+  const [anchorEl, setAnchorEl] = useState(null);
 
+  // Load list of video files from JSON
   useEffect(() => {
     fetch('../public/jsonVideo/index.json')
       .then(res => res.json())
-      .then(data => setVideoFiles(data))
+      .then(data => {
+        setVideoFiles(data);
+
+        // Pick a random video if none is selected yet
+        if (!videoUrl && data.length > 0) {
+          const randomIndex = Math.floor(Math.random() * data.length);
+          setSelectedVideo(data[randomIndex]);
+        }
+      })
       .catch(err => console.error('Failed to load videos', err));
-  }, []);
+  }, [videoUrl]);
 
   // Fetch reactions for the selected video
-useEffect(() => {
-  if (selectedVideo) {
-    const fetchReactions = async () => {
-      try {
-        const response = await fetch(`/api/reactions/${encodeURIComponent(selectedVideo.split('/').pop())}`);
-        if (response.ok) {
-          const data = await response.json();
-          setReactions(data); // Update the reactions state with the fetched data
-        } else {
-          console.error('Failed to fetch reactions');
+  useEffect(() => {
+    if (selectedVideo) {
+      const fetchReactions = async () => {
+        try {
+          const response = await fetch(`/api/reactions/${encodeURIComponent(selectedVideo.split('/').pop())}`);
+          if (response.ok) {
+            const data = await response.json();
+            setReactions(data);
+          } else {
+            console.error('Failed to fetch reactions');
+          }
+        } catch (error) {
+          console.error('Error fetching reactions:', error);
         }
-      } catch (error) {
-        console.error('Error fetching reactions:', error);
-      }
-    };
-
-    fetchReactions();
-  }
-}, [selectedVideo]);
+      };
+      fetchReactions();
+    }
+  }, [selectedVideo]);
 
   const handleShareClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -69,189 +75,146 @@ useEffect(() => {
     setAnchorEl(null);
   };
 
-  const open = Boolean(anchorEl);
-  const shareUrl = `${window.location.origin}/videos/${selectedVideo}`; // Dynamically generate the full video URL
+  const shareUrl = `${window.location.origin}/videos/${selectedVideo}`;
 
   return (
     <Box sx={{ padding: 4 }}>
-      <Typography variant="h5" sx={{ mb: 2 }}>Choose to play timelapse Videos</Typography>
-      <Stack direction="column" spacing={2}>
-        {videoFiles.map((file, idx) => (
+      <Typography variant="h5" sx={{ mb: 2 }}>
+        Timelapse Video
+      </Typography>
+
+      {selectedVideo && (
+        <Box sx={{ position: 'relative', mb: 2 }}>
+          <video src={`../videos/${selectedVideo}`} controls width="100%" />
+
+          {/* Next/Previous Controls (Optional) */}
           <Button
-            key={idx}
-            variant="outlined"
-            onClick={() => setSelectedVideo(file)}
+            variant="contained"
+            sx={{ position: 'absolute', top: '50%', left: 0, transform: 'translateY(-50%)' }}
+            onClick={() => {
+              const currentIndex = videoFiles.indexOf(selectedVideo);
+              const prevIndex = (currentIndex - 1 + videoFiles.length) % videoFiles.length;
+              setSelectedVideo(videoFiles[prevIndex]);
+            }}
           >
-            {file}
+            Previous
           </Button>
-        ))}
+          <Button
+            variant="contained"
+            sx={{ position: 'absolute', top: '50%', right: 0, transform: 'translateY(-50%)' }}
+            onClick={() => {
+              const currentIndex = videoFiles.indexOf(selectedVideo);
+              const nextIndex = (currentIndex + 1) % videoFiles.length;
+              setSelectedVideo(videoFiles[nextIndex]);
+            }}
+          >
+            Next
+          </Button>
+        </Box>
+      )}
+
+      <Stack direction="row" spacing={2}>
+        <IconButton onClick={() => setLiked(!liked)} color={liked ? 'primary' : 'default'}>
+          <ThumbUpIcon />
+        </IconButton>
+        <IconButton onClick={handleShareClick}>
+          <ShareIcon />
+        </IconButton>
+        <Rating
+          name="star-rating"
+          value={star}
+          onChange={(event, newValue) => setStar(newValue)}
+          max={5}
+        />
       </Stack>
 
-      <Dialog open={Boolean(selectedVideo)} onClose={() => setSelectedVideo(null)} maxWidth="md" fullWidth>
-        <DialogContent>
-          <Box sx={{ position: 'relative', mb: 2 }}>
-            <Box component="video" src={`../videos/${selectedVideo}`} controls width="100%" />
+      <TextField
+        label="Write a comment"
+        variant="outlined"
+        fullWidth
+        multiline
+        rows={2}
+        value={comment}
+        onChange={(e) => setComment(e.target.value)}
+        sx={{ mt: 2 }}
+      />
 
-            {/* Previous and Next Buttons */}
-            <Button
-              variant="contained"
-              sx={{ position: 'absolute', top: '50%', left: 0, transform: 'translateY(-50%)' }}
-              onClick={() => {
-                const currentIndex = videoFiles.indexOf(selectedVideo);
-                const prevIndex = (currentIndex - 1 + videoFiles.length) % videoFiles.length;
-                setSelectedVideo(videoFiles[prevIndex]);
-              }}
-            >
-              Previous
-            </Button>
-            <Button
-              variant="contained"
-              sx={{ position: 'absolute', top: '50%', right: 0, transform: 'translateY(-50%)' }}
-              onClick={() => {
-                const currentIndex = videoFiles.indexOf(selectedVideo);
-                const nextIndex = (currentIndex + 1) % videoFiles.length;
-                setSelectedVideo(videoFiles[nextIndex]);
-              }}
-            >
-              Next
-            </Button>
-          </Box>
+      <Button
+        variant="contained"
+        sx={{ mt: 1 }}
+        onClick={async () => {
+          if (!selectedVideo || !comment.trim()) {
+            setAlert({ open: true, message: 'Please select a video and write a comment.', severity: 'warning' });
+            return;
+          }
 
-          <Stack direction="row" spacing={2}>
-            <IconButton onClick={() => setLiked(!liked)} color={liked ? 'primary' : 'default'}>
-              <ThumbUpIcon />
-            </IconButton>
-            <IconButton onClick={handleShareClick}>
-              <ShareIcon />
-            </IconButton>
-            <Rating
-              name="star-rating"
-              value={star}
-              onChange={(event, newValue) => setStar(newValue)}
-              max={5}
-            />
-          </Stack>
+          try {
+            const payload = {
+              Video_URL: selectedVideo.split('/').pop(),
+              User_ID: 1,
+              Reaction_Type: "like",
+              Star: star,
+              Comment: comment.trim(),
+            };
 
-          <TextField
-            label="Write a comment"
-            variant="outlined"
-            fullWidth
-            multiline
-            rows={2}
-            value={comment}
-            onChange={(e) => setComment(e.target.value)}
-            sx={{ mt: 2 }}
-          />
-          <Button
-  variant="contained"
-  sx={{ mt: 1 }}
-  onClick={async () => {
-    if (!selectedVideo || !comment.trim()) {
-      setAlert({ open: true, message: 'Please select a video and write a comment.', severity: 'warning' });
-      return;
-    }
+            const response = await fetch('/api/reactions', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('token')}`,
+              },
+              body: JSON.stringify(payload),
+            });
 
-    try {
-      const payload = {
-        Video_URL: selectedVideo.split('/').pop(), // Extract only the file name
-        User_ID: 1, // Default user ID
-        Reaction_Type: "like", // Default reaction type
-        Star: star, // Star rating from UI
-        Comment: comment.trim(), // Comment from UI
-      };
-
-      const response = await fetch('/api/reactions', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' ,
-          'Authorization': `Bearer ${localStorage.getItem('token')}` // Include token for authentication,
-        },
-        body: JSON.stringify(payload),
-      });
-
-      if (response.ok) {
-        setAlert({ open: true, message: 'Reaction submitted successfully!', severity: 'success' });
-        setComment(''); // Clear the comment field
-        setStar(0); // Reset the star rating
-        setLiked(false); // Reset the like state
-      } else {
-        throw new Error('Failed to submit reaction');
-      }
-    } catch (error) {
-      console.error(error);
-      setAlert({ open: true, message: 'Failed to submit reaction. Please try again.', severity: 'error' });
-    }
-  }}
->
-  Submit Reaction
-</Button>
-
-        <Box sx={{ mt: 2 }}>
-          <Typography variant="subtitle2">Reactions:</Typography>
-          {reactions.length > 0 ? (
-            reactions.map((r, i) => (
-              <Typography key={i} variant="body2">
-                {/* User {r.User_ID}: {r.Reaction_Type ? 'Liked' : 'Disliked'}, {r.Star}★, "{r.Comment}" */}
-                {r.Star}★, "{r.Comment}"
-              </Typography>
-            ))
-          ) : (
-            <Typography variant="body2">No reactions yet.</Typography>
-          )}
-        </Box>
-        </DialogContent>
-        <DialogActions>
-          <Button
-            onClick={() => {
-              setSelectedVideo(null);
-              setLiked(false);
-              setStar(0);
+            if (response.ok) {
+              setAlert({ open: true, message: 'Reaction submitted successfully!', severity: 'success' });
               setComment('');
-              setReactions([]);
-            }}
-            color="secondary"
-          >
-            Close
-          </Button>
-        </DialogActions>
-      </Dialog>
+              setStar(0);
+              setLiked(false);
+            } else {
+              throw new Error('Failed to submit reaction');
+            }
+          } catch (error) {
+            console.error(error);
+            setAlert({ open: true, message: 'Failed to submit reaction. Please try again.', severity: 'error' });
+          }
+        }}
+      >
+        Submit Reaction
+      </Button>
 
-      {/* Popover for Share Options */}
+      <Box sx={{ mt: 2 }}>
+        <Typography variant="subtitle2">Reactions:</Typography>
+        {reactions.length > 0 ? (
+          reactions.map((r, i) => (
+            <Typography key={i} variant="body2">
+              {r.Star}★ — "{r.Comment}"
+            </Typography>
+          ))
+        ) : (
+          <Typography variant="body2">No reactions yet.</Typography>
+        )}
+      </Box>
+
+      {/* Share popover */}
       <Popover
-  open={open}
-  anchorEl={anchorEl}
-  onClose={handleShareClose}
-  anchorOrigin={{
-    vertical: 'bottom',
-    horizontal: 'left',
-  }}
->
-  <List>
-    <ListItem
-      button
-      component="a"
-      href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`}
-      target="_blank"
-    >
-      <ListItemText primary="Share on Facebook" />
-    </ListItem>
-    <ListItem
-      button
-      component="a"
-      href={`https://www.linkedin.com/shareArticle?url=${encodeURIComponent(shareUrl)}`}
-      target="_blank"
-    >
-      <ListItemText primary="Share on LinkedIn" />
-    </ListItem>
-    <ListItem
-      button
-      component="a"
-      href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(shareUrl)}`}
-      target="_blank"
-    >
-      <ListItemText primary="Share on Twitter" />
-    </ListItem>
-  </List>
-</Popover>
+        open={Boolean(anchorEl)}
+        anchorEl={anchorEl}
+        onClose={handleShareClose}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
+      >
+        <List>
+          <ListItem button component="a" href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`} target="_blank">
+            <ListItemText primary="Share on Facebook" />
+          </ListItem>
+          <ListItem button component="a" href={`https://www.linkedin.com/shareArticle?url=${encodeURIComponent(shareUrl)}`} target="_blank">
+            <ListItemText primary="Share on LinkedIn" />
+          </ListItem>
+          <ListItem button component="a" href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(shareUrl)}`} target="_blank">
+            <ListItemText primary="Share on Twitter" />
+          </ListItem>
+        </List>
+      </Popover>
 
       <Snackbar
         open={alert.open}
