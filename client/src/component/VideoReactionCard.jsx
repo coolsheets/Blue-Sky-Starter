@@ -14,9 +14,13 @@ import {
   Dialog,
   DialogContent,
   DialogActions,
+  Popover,
+  List,
+  ListItem,
+  ListItemText,
 } from '@mui/material';
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
-// import ShareIcon from '@mui/icons-material/Share';
+import ShareIcon from '@mui/icons-material/Share';
 import SharePopup from './SharePopup'; 
 
 export default function VideoReactionCard({ userId }) {
@@ -26,63 +30,47 @@ export default function VideoReactionCard({ userId }) {
   const [alert, setAlert] = useState({ open: false, message: '', severity: 'success' });
   const [liked, setLiked] = useState(false);
   const [star, setStar] = useState(0);
-  
   const [videoFiles, setVideoFiles] = useState([]);
-
-useEffect(() => {
-  fetch('../public/jsonVideo/index.json')
-    .then(res => res.json())
-    .then(data => setVideoFiles(data))
-    .catch(err => console.error('Failed to load videos', err));
-}, []);
-
-
-
-  const fetchReactions = useCallback(async () => {
-    if (!selectedVideo) {
-      console.error("No video selected");
-      return;
-    }
-
-    try {
-      const res = await fetch(`/api/reactions/${encodeURIComponent(selectedVideo)}`);
-      if (!res.ok) {
-        throw new Error(`Failed to fetch reactions: ${res.statusText}`);
-      }
-      const data = await res.json();
-      setReactions(data);
-    } catch (error) {
-      console.error("Failed to fetch reactions", error);
-    }
-  }, [selectedVideo]);
+  const [anchorEl, setAnchorEl] = useState(null); // For Popover
 
   useEffect(() => {
-    if (selectedVideo) fetchReactions();
-  }, [selectedVideo, fetchReactions]);
+    fetch('../public/jsonVideo/index.json')
+      .then(res => res.json())
+      .then(data => setVideoFiles(data))
+      .catch(err => console.error('Failed to load videos', err));
+  }, []);
 
-  // Removed duplicate fetchReactions declaration
+  // Fetch reactions for the selected video
+useEffect(() => {
+  if (selectedVideo) {
+    const fetchReactions = async () => {
+      try {
+        const response = await fetch(`/api/reactions/${encodeURIComponent(selectedVideo.split('/').pop())}`);
+        if (response.ok) {
+          const data = await response.json();
+          setReactions(data); // Update the reactions state with the fetched data
+        } else {
+          console.error('Failed to fetch reactions');
+        }
+      } catch (error) {
+        console.error('Error fetching reactions:', error);
+      }
+    };
 
-  const handleReaction = async () => {
-    try {
-      await fetch('/api/reactions', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          Video_URL: selectedVideo,
-          User_ID: userId,
-          Reaction_Type: liked,
-          Star: star,
-          Comment: comment.trim(),
-        }),
-      });
-      setComment('');
-      setAlert({ open: true, message: 'Your reaction has been submitted!', severity: 'success' });
-      fetchReactions();
-    } catch (error) {
-      console.error(error);
-      setAlert({ open: true, message: 'Failed to submit reaction', severity: 'error' });
-    }
+    fetchReactions();
+  }
+}, [selectedVideo]);
+
+  const handleShareClick = (event) => {
+    setAnchorEl(event.currentTarget);
   };
+
+  const handleShareClose = () => {
+    setAnchorEl(null);
+  };
+
+  const open = Boolean(anchorEl);
+  const shareUrl = `${window.location.origin}/videos/${selectedVideo}`; // Dynamically generate the full video URL
 
   return (
     <Box sx={{ padding: 4 }}>
@@ -100,88 +88,170 @@ useEffect(() => {
       </Stack>
 
       <Dialog open={Boolean(selectedVideo)} onClose={() => setSelectedVideo(null)} maxWidth="md" fullWidth>
-  <DialogContent>
-    <Box sx={{ position: 'relative', mb: 2 }}>
-      <Box component="video" src={`../videos/${selectedVideo}`} controls width="100%" />
+        <DialogContent>
+          <Box sx={{ position: 'relative', mb: 2 }}>
+            <Box component="video" src={`../videos/${selectedVideo}`} controls width="100%" />
 
-      {/* Previous and Next Buttons */}
-      <Button
-        variant="contained"
-        sx={{ position: 'absolute', top: '50%', left: 0, transform: 'translateY(-50%)' }}
-        onClick={() => {
-          const currentIndex = videoFiles.indexOf(selectedVideo);
-          const prevIndex = (currentIndex - 1 + videoFiles.length) % videoFiles.length;
-          setSelectedVideo(videoFiles[prevIndex]);
-        }}
-      >
-        Previous
-      </Button>
-      <Button
-        variant="contained"
-        sx={{ position: 'absolute', top: '50%', right: 0, transform: 'translateY(-50%)' }}
-        onClick={() => {
-          const currentIndex = videoFiles.indexOf(selectedVideo);
-          const nextIndex = (currentIndex + 1) % videoFiles.length;
-          setSelectedVideo(videoFiles[nextIndex]);
-        }}
-      >
-        Next
-      </Button>
-    </Box>
+            {/* Previous and Next Buttons */}
+            <Button
+              variant="contained"
+              sx={{ position: 'absolute', top: '50%', left: 0, transform: 'translateY(-50%)' }}
+              onClick={() => {
+                const currentIndex = videoFiles.indexOf(selectedVideo);
+                const prevIndex = (currentIndex - 1 + videoFiles.length) % videoFiles.length;
+                setSelectedVideo(videoFiles[prevIndex]);
+              }}
+            >
+              Previous
+            </Button>
+            <Button
+              variant="contained"
+              sx={{ position: 'absolute', top: '50%', right: 0, transform: 'translateY(-50%)' }}
+              onClick={() => {
+                const currentIndex = videoFiles.indexOf(selectedVideo);
+                const nextIndex = (currentIndex + 1) % videoFiles.length;
+                setSelectedVideo(videoFiles[nextIndex]);
+              }}
+            >
+              Next
+            </Button>
+          </Box>
 
-    <Stack direction="row" spacing={2}>
-      <IconButton onClick={() => setLiked(!liked)} color={liked ? 'primary' : 'default'}>
-        <ThumbUpIcon />
-      </IconButton>
-      <IconButton>
-        <SharePopup videoName={selectedVideo} />
-      </IconButton>
-      <Rating
-        name="star-rating"
-        value={star}
-        onChange={(event, newValue) => setStar(newValue)}
-        max={5}
-      />
-    </Stack>
+          <Stack direction="row" spacing={2}>
+            <IconButton onClick={() => setLiked(!liked)} color={liked ? 'primary' : 'default'}>
+              <ThumbUpIcon />
+            </IconButton>
+            <IconButton onClick={handleShareClick}>
+              <ShareIcon />
+            </IconButton>
+            <Rating
+              name="star-rating"
+              value={star}
+              onChange={(event, newValue) => setStar(newValue)}
+              max={5}
+            />
+          </Stack>
 
-    <TextField
-      label="Write a comment"
-      variant="outlined"
-      fullWidth
-      multiline
-      rows={2}
-      value={comment}
-      onChange={(e) => setComment(e.target.value)}
-      sx={{ mt: 2 }}
-    />
-    <Button variant="contained" sx={{ mt: 1 }} onClick={handleReaction}>
-      Submit Reaction
-    </Button>
+          <TextField
+            label="Write a comment"
+            variant="outlined"
+            fullWidth
+            multiline
+            rows={2}
+            value={comment}
+            onChange={(e) => setComment(e.target.value)}
+            sx={{ mt: 2 }}
+          />
+          <Button
+  variant="contained"
+  sx={{ mt: 1 }}
+  onClick={async () => {
+    if (!selectedVideo || !comment.trim()) {
+      setAlert({ open: true, message: 'Please select a video and write a comment.', severity: 'warning' });
+      return;
+    }
 
-    <Box sx={{ mt: 2 }}>
-      <Typography variant="subtitle2">Reactions:</Typography>
-      {reactions.map((r, i) => (
-        <Typography key={i} variant="body2">
-          {r.User_ID}: {r.Reaction_Type ? 'Liked' : 'Disliked'}, {r.Star}★, "{r.Comment}"
-        </Typography>
-      ))}
-    </Box>
-  </DialogContent>
-  <DialogActions>
-    <Button
-      onClick={() => {
-        setSelectedVideo(null);
-        setLiked(false);
-        setStar(0);
-        setComment('');
-        setReactions([]);
-      }}
-      color="secondary"
+    try {
+      const payload = {
+        Video_URL: selectedVideo.split('/').pop(), // Extract only the file name
+        User_ID: 1, // Default user ID
+        Reaction_Type: "like", // Default reaction type
+        Star: star, // Star rating from UI
+        Comment: comment.trim(), // Comment from UI
+      };
+
+      const response = await fetch('/api/reactions', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' ,
+          'Authorization': `Bearer ${localStorage.getItem('token')}` // Include token for authentication,
+        },
+        body: JSON.stringify(payload),
+      });
+
+      if (response.ok) {
+        setAlert({ open: true, message: 'Reaction submitted successfully!', severity: 'success' });
+        setComment(''); // Clear the comment field
+        setStar(0); // Reset the star rating
+        setLiked(false); // Reset the like state
+      } else {
+        throw new Error('Failed to submit reaction');
+      }
+    } catch (error) {
+      console.error(error);
+      setAlert({ open: true, message: 'Failed to submit reaction. Please try again.', severity: 'error' });
+    }
+  }}
+>
+  Submit Reaction
+</Button>
+
+        <Box sx={{ mt: 2 }}>
+          <Typography variant="subtitle2">Reactions:</Typography>
+          {reactions.length > 0 ? (
+            reactions.map((r, i) => (
+              <Typography key={i} variant="body2">
+                {/* User {r.User_ID}: {r.Reaction_Type ? 'Liked' : 'Disliked'}, {r.Star}★, "{r.Comment}" */}
+                {r.Star}★, "{r.Comment}"
+              </Typography>
+            ))
+          ) : (
+            <Typography variant="body2">No reactions yet.</Typography>
+          )}
+        </Box>
+        </DialogContent>
+        <DialogActions>
+          <Button
+            onClick={() => {
+              setSelectedVideo(null);
+              setLiked(false);
+              setStar(0);
+              setComment('');
+              setReactions([]);
+            }}
+            color="secondary"
+          >
+            Close
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      {/* Popover for Share Options */}
+      <Popover
+  open={open}
+  anchorEl={anchorEl}
+  onClose={handleShareClose}
+  anchorOrigin={{
+    vertical: 'bottom',
+    horizontal: 'left',
+  }}
+>
+  <List>
+    <ListItem
+      button
+      component="a"
+      href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`}
+      target="_blank"
     >
-      Close
-    </Button>
-  </DialogActions>
-</Dialog>
+      <ListItemText primary="Share on Facebook" />
+    </ListItem>
+    <ListItem
+      button
+      component="a"
+      href={`https://www.linkedin.com/shareArticle?url=${encodeURIComponent(shareUrl)}`}
+      target="_blank"
+    >
+      <ListItemText primary="Share on LinkedIn" />
+    </ListItem>
+    <ListItem
+      button
+      component="a"
+      href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(shareUrl)}`}
+      target="_blank"
+    >
+      <ListItemText primary="Share on Twitter" />
+    </ListItem>
+  </List>
+</Popover>
 
       <Snackbar
         open={alert.open}
@@ -195,53 +265,3 @@ useEffect(() => {
     </Box>
   );
 }
-// This code defines a React component that allows users to react to videos by liking, disliking, and commenting. It uses Material-UI for styling and layout. The component fetches reactions from the server and displays them in a dialog when a video is selected. Users can submit their reactions, which are then sent to the server. The component also includes a Snackbar for displaying alerts to the user.
-
-// The component is designed to be reusable and can be integrated into a larger application. It uses hooks like useState and useEffect to manage state and side effects. The video files are hardcoded for demonstration purposes, but they can be replaced with dynamic data from a server or database. The component is styled using Material-UI components like Box, Stack, Typography, and Button.
-// The video is displayed using the HTML <video> element, and the reactions are displayed in a list format. The component also includes a rating system using Material-UI's Rating component, allowing users to rate the video on a scale of 1 to 5 stars. The component is designed to be user-friendly and provides feedback through alerts when actions are performed.
-
-// This component is a video reaction card that allows users to react to a video and post comments. It fetches reactions from the server, handles user interactions, and displays alerts for feedback.
-
-
-// <Box component="video" src="../public/videos/001.mp4" controls width="100%" />
-{/* {videoUrl} */ } /* Uncomment this line to display the video URL and replace at src=" " */
-
-/*  const handleCommentSubmit = async () => {
-    if (comment.trim()) {
-      try {
-        await fetch('/api/comments', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ Video_URL: videoUrl, User_ID: userId, Comment_Text: comment.trim() }),
-        });
-        setComments([...comments, comment.trim()]);
-        setComment('');
-        setAlert({ open: true, message: 'Comment posted!', severity: 'success' });
-      } catch (err) {
-        console.error(err);
-        setAlert({ open: true, message: 'Failed to post comment', severity: 'error' });
-      }
-    }
-  }; 
-  
-  */
-//===========================Need to be added to setVideoFiles========================
- /*
-useEffect(() => {
-  fetch('/videos/index.json')
-    .then(res => res.json())
-    .then(data => setVideoFiles(data))
-    .catch(err => console.error('Failed to load videos', err));
-}, []);
-
-// ==========
- Below will be for videos/index.json
-
-[
-  "001.mp4",
-  "002.mp4",
-  "0033.mp4"
-]
-
-*/
-//=============================================================
