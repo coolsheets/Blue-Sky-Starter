@@ -6,14 +6,14 @@ const router = Router();
 
 router.get('/', async function (req, res) {
     try {
-        const data = await findAllReactions()
-        res.send(data)
-    }
-    catch (error) {
-        console.log(error)
-        res.sendStatus(500)
-    }
-})
+            const data = await findAllReactions()
+            res.send(data)
+        }
+        catch (error) {
+            console.log(error)
+            res.sendStatus(500)
+        }
+    })
 
 
 router.post('/', authenticateToken,async (req, res) => {
@@ -24,8 +24,9 @@ router.post('/', authenticateToken,async (req, res) => {
         Comment } = req.body
 
     if (req.body) {
+        // const=req.user.userId; // Get the user ID from the token
         const data = createReaction( Video_URL,
-            User_ID,
+            req.user.userId,
             Reaction_Type,
             Star,
             Comment)
