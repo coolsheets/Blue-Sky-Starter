@@ -18,11 +18,11 @@ const Login = ({ onSuccess, switchToRegister }) => {
       });
 
       const data = await response.json();
-      if (response.ok) {
+      if (response.ok && data.token) {
         localStorage.setItem("token", data.token);
         setMessage("Login successful!");
-        onSuccess(); // ✅ Close modal
-        navigate("/"); // Optional redirect
+        onSuccess(); // Tell App to close modal and update login state
+        navigate("/"); // Optional: redirect to homepage
       } else {
         setMessage(data.message || "Login failed.");
       }

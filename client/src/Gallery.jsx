@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import Navbar from "./Navbar";
 import Footer from "./Footer";
 import "./Gallery.css";
 
@@ -9,7 +8,6 @@ const Gallery = () => {
   const [videoFiles, setVideoFiles] = useState([]);
 
   useEffect(() => {
-    // Generate file names from 1 to 204, skipping known invalids if needed
     const files = [];
     for (let i = 1; i <= 204; i++) {
       const filename = String(i).padStart(3, "0") + ".mp4";
@@ -21,12 +19,10 @@ const Gallery = () => {
   const indexOfLastVideo = currentPage * videosPerPage;
   const indexOfFirstVideo = indexOfLastVideo - videosPerPage;
   const currentVideos = videoFiles.slice(indexOfFirstVideo, indexOfLastVideo);
-
   const totalPages = Math.ceil(videoFiles.length / videosPerPage);
 
   return (
     <div className="gallery-page">
-      <Navbar />
       <div className="gallery-container">
         {currentVideos.map((file, index) => (
           <div key={index} className="video-tile">
