@@ -55,24 +55,35 @@ const Gallery = () => {
             onClick={() => handleVideoClick(file)}
           >
             <video
-              src={`/videos/${file}`}
-              muted
-              loop
-              playsInline
-              preload="metadata"
-              poster={`/videos/${file}#t=0.1`}
-              onMouseOver={async (e) => {
-                try {
-                  await e.target.play();
-                } catch (err) {}
-              }}
-              onMouseOut={(e) => {
-                try {
-                  e.target.pause();
-                  e.target.currentTime = 0;
-                } catch (err) {}
-              }}
-            />
+  ref={(el) => {
+    if (el) {
+      el.play().then(() => {
+        setTimeout(() => {
+          el.pause();
+          el.currentTime = 0;
+        }, 1000); // ⏱️ pause after 1 sec
+      }).catch((err) => {
+        console.error("Autoplay failed:", err);
+      });
+    }
+  }}
+  src={`/videos/${file}`}
+  muted
+  playsInline
+  preload="auto"
+  onMouseOver={async (e) => {
+    try {
+      await e.target.play();
+    } catch (err) {}
+  }}
+  onMouseOut={(e) => {
+    try {
+      e.target.pause();
+      e.target.currentTime = 0;
+    } catch (err) {}
+  }}
+/>
+
           </div>
         ))}
       </div>
