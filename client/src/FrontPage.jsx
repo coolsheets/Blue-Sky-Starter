@@ -15,11 +15,10 @@ const FrontPage = () => {
   const [topLikedVideos, setTopLikedVideos] = useState([]);
   const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem("token"));
 
-  // Vote modal handlers
+  // Modal handlers
   const handleOpenModal = () => setOpen(true);
   const handleCloseModal = () => setOpen(false);
 
-  // Login/Register modal handlers
   const handleLoginOpen = () => {
     setLoginOpen(true);
     setRegisterOpen(false);
@@ -33,7 +32,7 @@ const FrontPage = () => {
   const handleCloseModals = () => {
     setLoginOpen(false);
     setRegisterOpen(false);
-    setIsLoggedIn(!!localStorage.getItem("token")); // Re-check login status
+    setIsLoggedIn(!!localStorage.getItem("token"));
   };
 
   const handleLogout = () => {
@@ -41,7 +40,6 @@ const FrontPage = () => {
     setIsLoggedIn(false);
   };
 
-  // Fetch top liked videos on mount
   useEffect(() => {
     fetch("http://localhost:3000/api/videos/top-liked")
       .then((res) => res.json())
@@ -68,7 +66,12 @@ const FrontPage = () => {
           <h1>
             Choose <span> the best one</span>
           </h1>
-          <button onClick={handleOpenModal}>Vote</button>
+
+          {isLoggedIn ? (
+            <button onClick={handleOpenModal}>Vote</button>
+          ) : (
+            <button onClick={handleLoginOpen}>Login to Vote</button>
+          )}
         </div>
       </header>
 
@@ -86,7 +89,7 @@ const FrontPage = () => {
         ))}
       </section>
 
-      {/* Vote modal */}
+      {/* Vote Modal */}
       <Dialog
         open={open}
         onClose={handleCloseModal}
@@ -99,7 +102,7 @@ const FrontPage = () => {
         </DialogContent>
       </Dialog>
 
-      {/* Login modal */}
+      {/* Login Modal */}
       <Dialog
         open={loginOpen}
         onClose={handleCloseModals}
@@ -115,7 +118,7 @@ const FrontPage = () => {
         </DialogContent>
       </Dialog>
 
-      {/* Register modal */}
+      {/* Register Modal */}
       <Dialog
         open={registerOpen}
         onClose={handleCloseModals}
