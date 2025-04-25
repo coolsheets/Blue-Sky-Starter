@@ -13,6 +13,7 @@ import {
   List,
   ListItem,
   ListItemText,
+  Badge,
 } from '@mui/material';
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 import ShareIcon from '@mui/icons-material/Share';
@@ -24,9 +25,12 @@ export default function VideoReactionCard({ videoUrl }) {
   const [reactions, setReactions] = useState([]);
   const [comment, setComment] = useState('');
   const [liked, setLiked] = useState(false);
+  const [likesCount, setLikesCount] = useState(0);
   const [star, setStar] = useState(0);
   const [alert, setAlert] = useState({ open: false, message: '', severity: 'success' });
   const [anchorEl, setAnchorEl] = useState(null);
+
+  const isLoggedIn = !!localStorage.getItem("token");
 
   useEffect(() => {
     fetch('/api/videos')
@@ -44,26 +48,50 @@ export default function VideoReactionCard({ videoUrl }) {
 
   useEffect(() => {
     if (selectedVideo) {
-      const fetchReactions = async () => {
-        try {
-          const response = await fetch(`/api/reactions/${encodeURIComponent(selectedVideo)}`);
-          if (response.ok) {
-            const data = await response.json();
-            setReactions(data);
-          } else {
-            console.error('Failed to fetch reactions');
-          }
-        } catch (error) {
-          console.error('Error fetching reactions:', error);
-        }
-      };
-      fetchReactions();
+      // Fetch reactions
+      fetch(`/api/reactions/${encodeURIComponent(selectedVideo)}`)
+        .then(res => res.ok ? res.json() : [])
+        .then(setReactions)
+        .catch(err => console.error('Error fetching reactions:', err));
+
+      // Fetch likes
+      fetch('/api/videos')
+        .then(res => res.json())
+        .then(data => {
+          const videoData = data.find(v => v.filename === selectedVideo);
+          if (videoData) setLikesCount(videoData.stats.likes);
+        });
     }
   }, [selectedVideo]);
 
   const handleShareClick = (event) => setAnchorEl(event.currentTarget);
   const handleShareClose = () => setAnchorEl(null);
   const shareUrl = `${window.location.origin}/videos/${selectedVideo}`;
+
+  const handleLike = async () => {
+    if (!isLoggedIn) {
+      setAlert({ open: true, message: 'You must be logged in to like videos.', severity: 'info' });
+      return;
+    }
+
+    try {
+      const res = await fetch(`/api/videos/${selectedVideo}/like`, {
+        method: 'PUT',
+        headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
+      });
+
+      if (res.ok) {
+        const updated = await res.json();
+        setLikesCount(updated.stats.likes);
+        setLiked(true);
+      } else {
+        throw new Error('Failed to like');
+      }
+    } catch (err) {
+      console.error(err);
+      setAlert({ open: true, message: 'Like failed.', severity: 'error' });
+    }
+  };
 
   return (
     <Box className="video-reaction-wrapper">
@@ -98,35 +126,23 @@ export default function VideoReactionCard({ videoUrl }) {
         </Box>
       )}
 
-<Stack
-  direction="row"
-  spacing={2}
-  alignItems="center"
-  justifyContent="center"
-  sx={{ mt: 2 }}
->
-  <IconButton
-    onClick={() => setLiked(!liked)}
-    color={liked ? 'primary' : 'default'}
-    aria-label="like"
-  >
-    <ThumbUpIcon />
-  </IconButton>
+      <Stack direction="row" spacing={2} justifyContent="center" sx={{ mt: 2 }}>
+        <IconButton onClick={handleLike} color={liked ? 'primary' : 'default'}>
+        <Badge badgeContent={likesCount} color="secondary" showZero max={9999}>
+        <ThumbUpIcon />
+        </Badge>
+        </IconButton>
 
-  <IconButton
-    onClick={handleShareClick}
-    aria-label="share"
-  >
-    <ShareIcon />
-    </IconButton>
+        <IconButton onClick={handleShareClick}>
+          <ShareIcon />
+        </IconButton>
 
-      <Rating
-      name="star-rating"
-      value={star}
-      onChange={(event, newValue) => setStar(newValue)}
-      max={5}
-      size="medium"
-       />
+        <Rating
+          name="star-rating"
+          value={star}
+          onChange={(event, newValue) => setStar(newValue)}
+          max={5}
+        />
       </Stack>
 
       <TextField

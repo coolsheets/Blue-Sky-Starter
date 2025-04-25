@@ -34,6 +34,26 @@ router.get('/top-liked', async (req, res) => {
   }
 });
 
+router.put('/:filename/like', async (req, res) => {
+  try {
+    const { filename } = req.params;
+    const video = await Video.findOneAndUpdate(
+      { filename },
+      { $inc: { 'stats.likes': 1 } },
+      { new: true }
+    );
+
+    if (!video) {
+      return res.status(404).json({ error: "Video not found" });
+    }
+
+    res.json(video);
+  } catch (error) {
+    console.error("Error incrementing like:", error);
+    res.status(500).json({ error: "Failed to update like" });
+  }
+});
+
 // 🟨 Legacy (optional): Map local videos to camera locations — not used right now
 router.get('/local-map', async (req, res) => {
   try {
