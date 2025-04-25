@@ -7,5 +7,6 @@ export default defineConfig({
     proxy: {
       '/api': 'http://localhost:3000', // Proxy API requests to the backend
     },
+    host: '0.0.0.0',
   },
 });
