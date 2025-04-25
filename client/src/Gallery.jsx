@@ -1,31 +1,59 @@
 import React, { useState, useEffect } from "react";
 import Footer from "./Footer";
+import VideoReactionCard from "./component/VideoReactionCard";
+import { Dialog, DialogContent } from "@mui/material";
 import "./Gallery.css";
 
 const Gallery = () => {
-  const videosPerPage = 12;
-  const [currentPage, setCurrentPage] = useState(1);
   const [videoFiles, setVideoFiles] = useState([]);
+  const [visibleCount, setVisibleCount] = useState(12);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [selectedVideo, setSelectedVideo] = useState(null);
 
+  // Load from MongoDB
   useEffect(() => {
-    const files = [];
-    for (let i = 1; i <= 204; i++) {
-      const filename = String(i).padStart(3, "0") + ".mp4";
-      files.push(filename);
-    }
-    setVideoFiles(files);
+    fetch("http://localhost:3000/api/videos")
+      .then((res) => res.json())
+      .then((data) => {
+        const filenames = data.map((video) => video.filename);
+        setVideoFiles(filenames);
+      })
+      .catch((err) => console.error("Error loading videos:", err));
   }, []);
 
-  const indexOfLastVideo = currentPage * videosPerPage;
-  const indexOfFirstVideo = indexOfLastVideo - videosPerPage;
-  const currentVideos = videoFiles.slice(indexOfFirstVideo, indexOfLastVideo);
-  const totalPages = Math.ceil(videoFiles.length / videosPerPage);
+  // Lazy loading on scroll
+  useEffect(() => {
+    const handleScroll = () => {
+      const bottom =
+        window.innerHeight + window.scrollY >=
+        document.body.offsetHeight - 100;
+      if (bottom && visibleCount < videoFiles.length) {
+        setVisibleCount((prev) => prev + 12);
+      }
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [visibleCount, videoFiles.length]);
+
+  const handleVideoClick = (file) => {
+    setSelectedVideo(file);
+    setModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setModalOpen(false);
+    setSelectedVideo(null);
+  };
 
   return (
     <div className="gallery-page">
       <div className="gallery-container">
-        {currentVideos.map((file, index) => (
-          <div key={index} className="video-tile">
+        {videoFiles.slice(0, visibleCount).map((file, index) => (
+          <div
+            key={index}
+            className="video-tile"
+            onClick={() => handleVideoClick(file)}
+          >
             <video
               src={`/videos/${file}`}
               muted
@@ -33,31 +61,37 @@ const Gallery = () => {
               playsInline
               preload="metadata"
               poster={`/videos/${file}#t=0.1`}
-              onMouseOver={(e) => e.target.play()}
+              onMouseOver={async (e) => {
+                try {
+                  await e.target.play();
+                } catch (err) {}
+              }}
               onMouseOut={(e) => {
-                e.target.pause();
-                e.target.currentTime = 0;
+                try {
+                  e.target.pause();
+                  e.target.currentTime = 0;
+                } catch (err) {}
               }}
             />
           </div>
         ))}
       </div>
 
-      <div className="pagination">
-        <button
-          onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-          disabled={currentPage === 1}
-        >
-          Prev
-        </button>
-        <span>Page {currentPage} of {totalPages}</span>
-        <button
-          onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
-          disabled={currentPage === totalPages}
-        >
-          Next
-        </button>
-      </div>
+      {visibleCount < videoFiles.length && (
+        <div className="loading-indicator">Loading more videos...</div>
+      )}
+
+      <Dialog
+        open={modalOpen}
+        onClose={handleCloseModal}
+        maxWidth="md"
+        fullWidth
+        classes={{ backdrop: "custom-dialog-backdrop" }}
+      >
+        <DialogContent className="custom-dialog-content">
+          <VideoReactionCard videoUrl={selectedVideo} />
+        </DialogContent>
+      </Dialog>
 
       <Footer />
     </div>

@@ -1,9 +1,8 @@
 import express from 'express';
-import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import Video from '../models/video.js';
 import { findCameraLocationByName } from '../models/cameralocations.js';
-import Video from '../models/video.js'; // ✅ Import the Video model
 
 const router = express.Router();
 
@@ -11,33 +10,18 @@ const router = express.Router();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// 🟦 Default route: Get all video files and try to map them with location
+// 🟩 Route: Get all videos from MongoDB (for Gallery)
 router.get('/', async (req, res) => {
   try {
-    const videoDir = path.join(__dirname, '../../client/public/videos');
-    const files = fs.readdirSync(videoDir).filter(file => file.endsWith('.mp4'));
-
-    const videoData = await Promise.all(
-      files.map(async (file) => {
-        const cameraNumber = file.split('_')[0];
-        const cameraName = `Camera ${parseInt(cameraNumber, 10)}`;
-        const cameraInfo = await findCameraLocationByName(cameraName);
-
-        return {
-          filename: file,
-          location: cameraInfo ? cameraInfo.Camera_Location : 'Unknown Location',
-        };
-      })
-    );
-
-    res.json(videoData);
+    const videos = await Video.find().sort({ filename: 1 });
+    res.json(videos);
   } catch (error) {
-    console.error('Error fetching video data:', error);
-    res.status(500).json({ error: 'Failed to fetch video data' });
+    console.error("Error fetching videos from DB:", error);
+    res.status(500).json({ error: "Failed to fetch videos" });
   }
 });
 
-// 🟨 New route: Get top 3 videos by likes from DB
+// 🟦 Route: Get top 3 videos sorted by likes (for FrontPage)
 router.get('/top-liked', async (req, res) => {
   try {
     const topVideos = await Video.find()
@@ -47,6 +31,32 @@ router.get('/top-liked', async (req, res) => {
   } catch (error) {
     console.error('Error fetching top liked videos:', error);
     res.status(500).json({ error: 'Failed to fetch top liked videos' });
+  }
+});
+
+// 🟨 Legacy (optional): Map local videos to camera locations — not used right now
+router.get('/local-map', async (req, res) => {
+  try {
+    const videoDir = path.join(__dirname, '../../client/public/videos');
+    const fs = await import('fs/promises');
+    const files = (await fs.readdir(videoDir)).filter(file => file.endsWith('.mp4'));
+
+    const videoData = await Promise.all(
+      files.map(async (file) => {
+        const cameraNumber = file.split('_')[0];
+        const cameraName = `Camera ${parseInt(cameraNumber, 10)}`;
+        const cameraInfo = await findCameraLocationByName(cameraName);
+        return {
+          filename: file,
+          location: cameraInfo ? cameraInfo.Camera_Location : 'Unknown Location',
+        };
+      })
+    );
+
+    res.json(videoData);
+  } catch (error) {
+    console.error('Error mapping local videos:', error);
+    res.status(500).json({ error: 'Failed to fetch video data' });
   }
 });
 
