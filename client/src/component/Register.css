@@ -1,0 +1,99 @@
+.register-modal {
+    font-family: 'Segoe UI', sans-serif;
+    text-align: center;
+    padding: 20px 10px;
+    max-width: 400px;        /* Restrict modal width */
+    width: 100%;             /* Fill available modal space */
+    margin: 0 auto;          /* Center in Dialog */
+    box-sizing: border-box;  /* Prevent padding from pushing content wider */
+    overflow-x: hidden;      /* Avoid horizontal scrollbars */
+  }
+  
+  .register-title {
+    font-size: 2rem;
+    margin-bottom: 20px;
+    color: #003366;
+  }
+  
+  .register-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .register-input {
+    padding: 12px;
+    font-size: 1rem;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+  }
+  
+  .register-button {
+    padding: 12px;
+    background-color: #003366;
+    color: white;
+    border: none;
+    font-size: 1rem;
+    cursor: pointer;
+    border-radius: 6px;
+    transition: 0.3s;
+  }
+  
+  .link-button {
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+    font: inherit;
+    color: #0057b7;
+    cursor: pointer;
+    text-decoration: underline;
+  }
+  
+  .link-button:hover {
+    color: #003366;
+  }
+  
+  
+  .register-message {
+    margin-top: 10px;
+    font-size: 0.95rem;
+    color: red;
+  }
+  
+  .register-switch-link {
+    margin-top: 20px;
+    font-size: 0.95rem;
+  }
+  
+  .register-switch-link .link-button {
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+    font: inherit;
+    color: #0057b7;
+    cursor: pointer;
+    text-decoration: underline;
+  }
+  
+  .register-switch-link .link-button:hover {
+    color: #003366;
+  }
+  
+  /* Responsive tweaks */
+  @media (max-width: 480px) {
+    .register-title {
+      font-size: 1.5rem;
+    }
+  
+    .register-input,
+    .register-button {
+      font-size: 0.95rem;
+      padding: 10px;
+    }
+  
+    .register-switch-link {
+      font-size: 0.85rem;
+    }
+  }

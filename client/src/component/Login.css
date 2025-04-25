@@ -1,0 +1,77 @@
+.login-modal {
+    font-family: 'Segoe UI', sans-serif;
+    text-align: center;
+    padding: 20px 10px;
+  }
+  
+  .login-title {
+    font-size: 2rem;
+    margin-bottom: 20px;
+    color: #003366;
+  }
+  
+  .login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .login-input {
+    padding: 12px;
+    font-size: 1rem;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+  }
+  
+  .login-button {
+    padding: 12px;
+    background-color: #003366;
+    color: white;
+    border: none;
+    font-size: 1rem;
+    cursor: pointer;
+    border-radius: 6px;
+    transition: 0.3s;
+  }
+  
+  .login-button:hover {
+    background-color: #0057b7;
+  }
+  
+  .login-message {
+    margin-top: 10px;
+    font-size: 0.95rem;
+    color: red;
+  }
+  
+  .register-link {
+    margin-top: 20px;
+    font-size: 0.95rem;
+  }
+  
+  .register-link a {
+    color: #0057b7;
+    text-decoration: none;
+    font-weight: 500;
+  }
+  
+  .register-link a:hover {
+    text-decoration: underline;
+  }
+  
+  /* Responsive tweaks */
+  @media (max-width: 480px) {
+    .login-title {
+      font-size: 1.5rem;
+    }
+  
+    .login-input,
+    .login-button {
+      font-size: 0.95rem;
+      padding: 10px;
+    }
+  
+    .register-link {
+      font-size: 0.85rem;
+    }
+  }

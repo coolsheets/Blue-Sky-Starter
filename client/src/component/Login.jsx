@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import "./Login.css";
 
-const Login = () => {
+const Login = ({ onSuccess, switchToRegister }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
@@ -18,9 +19,10 @@ const Login = () => {
 
       const data = await response.json();
       if (response.ok) {
-        localStorage.setItem("token", data.token); // Save the token in localStorage
+        localStorage.setItem("token", data.token);
         setMessage("Login successful!");
-        navigate("/"); // Redirect to the home page
+        onSuccess(); // ✅ Close modal
+        navigate("/"); // Optional redirect
       } else {
         setMessage(data.message || "Login failed.");
       }
@@ -31,10 +33,11 @@ const Login = () => {
   };
 
   return (
-    <div>
-      <h2>Login</h2>
-      <form onSubmit={handleLogin}>
+    <div className="login-modal">
+      <h2 className="login-title">Login</h2>
+      <form onSubmit={handleLogin} className="login-form">
         <input
+          className="login-input"
           type="email"
           placeholder="Email"
           value={email}
@@ -42,15 +45,23 @@ const Login = () => {
           required
         />
         <input
+          className="login-input"
           type="password"
           placeholder="Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
         />
-        <button type="submit">Login</button>
+        <button className="login-button" type="submit">Login</button>
+        {message && <p className="login-message">{message}</p>}
       </form>
-      {message && <p>{message}</p>}
+
+      <p className="register-link">
+        Not a user yet?{" "}
+        <button onClick={switchToRegister} className="link-button">
+          Register here
+        </button>
+      </p>
     </div>
   );
 };

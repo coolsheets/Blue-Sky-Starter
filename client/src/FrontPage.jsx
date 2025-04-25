@@ -2,16 +2,38 @@ import React, { useState, useEffect } from "react";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
 import VideoReactionCard from "./component/VideoReactionCard.jsx";
+import Login from "./component/Login.jsx";
+import Register from "./component/Register.jsx";
 import { Dialog, DialogContent } from "@mui/material";
 import "./FrontPage.css";
 import "./component/VideoReactionCard.css";
 
 const FrontPage = () => {
   const [open, setOpen] = useState(false);
+  const [loginOpen, setLoginOpen] = useState(false);
+  const [registerOpen, setRegisterOpen] = useState(false);
   const [topLikedVideos, setTopLikedVideos] = useState([]);
 
+  // Vote modal handlers
   const handleOpenModal = () => setOpen(true);
   const handleCloseModal = () => setOpen(false);
+
+  // Login/Register modal handlers
+  const handleLoginOpen = () => {
+    setLoginOpen(true);
+    setRegisterOpen(false);
+  };
+  
+
+  const handleRegisterOpen = () => {
+    setRegisterOpen(true);
+    setLoginOpen(false);
+  };
+
+  const handleCloseModals = () => {
+    setLoginOpen(false);
+    setRegisterOpen(false);
+  };
 
   // Fetch top liked videos on mount
   useEffect(() => {
@@ -23,8 +45,10 @@ const FrontPage = () => {
 
   return (
     <div className="front-page-container">
-      <Navbar />
+      {/* Navbar with login modal trigger */}
+      <Navbar onLoginClick={handleLoginOpen} />
 
+      {/* Hero header */}
       <header className="title-picture">
         <img
           src="/img/calgary2.jpg"
@@ -40,7 +64,7 @@ const FrontPage = () => {
         </div>
       </header>
 
-      {/* Show only the 3 videos, no reaction cards */}
+      {/* Show 3 most liked videos */}
       <section className="video-preview">
         {topLikedVideos.map((video, index) => (
           <div key={video._id || index} className="video-card">
@@ -55,7 +79,7 @@ const FrontPage = () => {
         ))}
       </section>
 
-      {/* Keep modal for Vote button (VideoReactionCard inside) */}
+      {/* Vote modal */}
       <Dialog
         open={open}
         onClose={handleCloseModal}
@@ -65,6 +89,32 @@ const FrontPage = () => {
       >
         <DialogContent className="custom-dialog-content">
           <VideoReactionCard />
+        </DialogContent>
+      </Dialog>
+
+      {/* Login modal */}
+      <Dialog
+        open={loginOpen}
+        onClose={handleCloseModals}
+        maxWidth="xs"
+        fullWidth
+        classes={{ backdrop: "custom-dialog-backdrop" }}
+      >
+        <DialogContent className="custom-dialog-content">
+          <Login onSuccess={handleCloseModals} switchToRegister={handleRegisterOpen} />
+        </DialogContent>
+      </Dialog>
+
+      {/* Register modal */}
+      <Dialog
+        open={registerOpen}
+        onClose={handleCloseModals}
+        maxWidth="xs"
+        fullWidth
+        classes={{ backdrop: "custom-dialog-backdrop" }}
+      >
+        <DialogContent className="custom-dialog-content">
+          <Register onSuccess={handleCloseModals} switchToLogin={handleLoginOpen} />
         </DialogContent>
       </Dialog>
 
