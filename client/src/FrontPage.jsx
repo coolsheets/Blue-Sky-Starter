@@ -64,7 +64,7 @@ const FrontPage = () => {
         classes={{ backdrop: "custom-dialog-backdrop" }}
       >
         <DialogContent className="custom-dialog-content">
-          <VideoReactionCard videoUrl="/videos/003.mp4" />
+          <VideoReactionCard />
         </DialogContent>
       </Dialog>
 
