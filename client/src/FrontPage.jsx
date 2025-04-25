@@ -13,6 +13,7 @@ const FrontPage = () => {
   const [loginOpen, setLoginOpen] = useState(false);
   const [registerOpen, setRegisterOpen] = useState(false);
   const [topLikedVideos, setTopLikedVideos] = useState([]);
+  const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem("token"));
 
   // Vote modal handlers
   const handleOpenModal = () => setOpen(true);
@@ -23,7 +24,6 @@ const FrontPage = () => {
     setLoginOpen(true);
     setRegisterOpen(false);
   };
-  
 
   const handleRegisterOpen = () => {
     setRegisterOpen(true);
@@ -33,6 +33,12 @@ const FrontPage = () => {
   const handleCloseModals = () => {
     setLoginOpen(false);
     setRegisterOpen(false);
+    setIsLoggedIn(!!localStorage.getItem("token")); // Re-check login status
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    setIsLoggedIn(false);
   };
 
   // Fetch top liked videos on mount
@@ -45,10 +51,12 @@ const FrontPage = () => {
 
   return (
     <div className="front-page-container">
-      {/* Navbar with login modal trigger */}
-      <Navbar onLoginClick={handleLoginOpen} />
+      <Navbar
+        onLoginClick={handleLoginOpen}
+        onLogoutClick={handleLogout}
+        isLoggedIn={isLoggedIn}
+      />
 
-      {/* Hero header */}
       <header className="title-picture">
         <img
           src="/img/calgary2.jpg"
@@ -64,7 +72,6 @@ const FrontPage = () => {
         </div>
       </header>
 
-      {/* Show 3 most liked videos */}
       <section className="video-preview">
         {topLikedVideos.map((video, index) => (
           <div key={video._id || index} className="video-card">
@@ -101,7 +108,10 @@ const FrontPage = () => {
         classes={{ backdrop: "custom-dialog-backdrop" }}
       >
         <DialogContent className="custom-dialog-content">
-          <Login onSuccess={handleCloseModals} switchToRegister={handleRegisterOpen} />
+          <Login
+            onSuccess={handleCloseModals}
+            switchToRegister={handleRegisterOpen}
+          />
         </DialogContent>
       </Dialog>
 
@@ -114,7 +124,10 @@ const FrontPage = () => {
         classes={{ backdrop: "custom-dialog-backdrop" }}
       >
         <DialogContent className="custom-dialog-content">
-          <Register onSuccess={handleCloseModals} switchToLogin={handleLoginOpen} />
+          <Register
+            onSuccess={handleCloseModals}
+            switchToLogin={handleLoginOpen}
+          />
         </DialogContent>
       </Dialog>
 
