@@ -49,15 +49,17 @@ export default function VideoReactionCard({ videoUrl }) {
       .catch(err => console.error('Failed to load videos', err));
   }, [videoUrl]);
 
+  const loadReactions = () => {
+    fetch(`/api/reactions/${encodeURIComponent(selectedVideo)}`)
+      .then(res => res.ok ? res.json() : [])
+      .then(setReactions)
+      .catch(err => console.error('Error fetching reactions:', err));
+  };
+
   useEffect(() => {
     if (selectedVideo) {
-      // Reactions
-      fetch(`/api/reactions/${encodeURIComponent(selectedVideo)}`)
-        .then(res => res.ok ? res.json() : [])
-        .then(setReactions)
-        .catch(err => console.error('Error fetching reactions:', err));
+      loadReactions();
 
-      // Likes
       fetch('/api/videos')
         .then(res => res.json())
         .then(data => {
@@ -65,7 +67,6 @@ export default function VideoReactionCard({ videoUrl }) {
           if (videoData) setLikesCount(videoData.stats.likes);
         });
 
-      // Favorite status
       if (isLoggedIn) {
         fetch(`/api/reactions/favorite/${selectedVideo}`, {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
@@ -127,6 +128,44 @@ export default function VideoReactionCard({ videoUrl }) {
     } catch (error) {
       console.error(error);
       setAlert({ open: true, message: 'Failed to toggle favorite.', severity: 'error' });
+    }
+  };
+
+  const handleSubmitReaction = async () => {
+    if (!selectedVideo || !comment.trim()) {
+      setAlert({ open: true, message: 'Please select a video and write a comment.', severity: 'warning' });
+      return;
+    }
+
+    try {
+      const payload = {
+        Video_URL: selectedVideo,
+        Reaction_Type: "like",
+        Star: star,
+        Comment: comment.trim(),
+      };
+
+      const response = await fetch('/api/reactions', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('token')}`,
+        },
+        body: JSON.stringify(payload),
+      });
+
+      if (response.ok) {
+        setAlert({ open: true, message: 'Reaction submitted successfully!', severity: 'success' });
+        setComment('');
+        setStar(0);
+        setLiked(false);
+        loadReactions(); // ⬅ Refresh the reactions right after submit
+      } else {
+        throw new Error('Failed to submit reaction');
+      }
+    } catch (error) {
+      console.error(error);
+      setAlert({ open: true, message: 'Failed to submit reaction. Please try again.', severity: 'error' });
     }
   };
 
@@ -197,45 +236,7 @@ export default function VideoReactionCard({ videoUrl }) {
         sx={{ mt: 2 }}
       />
 
-      <button
-        className="submit-reaction-button"
-        onClick={async () => {
-          if (!selectedVideo || !comment.trim()) {
-            setAlert({ open: true, message: 'Please select a video and write a comment.', severity: 'warning' });
-            return;
-          }
-
-          try {
-            const payload = {
-              Video_URL: selectedVideo,
-              Reaction_Type: "like",
-              Star: star,
-              Comment: comment.trim(),
-            };
-
-            const response = await fetch('/api/reactions', {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${localStorage.getItem('token')}`,
-              },
-              body: JSON.stringify(payload),
-            });
-
-            if (response.ok) {
-              setAlert({ open: true, message: 'Reaction submitted successfully!', severity: 'success' });
-              setComment('');
-              setStar(0);
-              setLiked(false);
-            } else {
-              throw new Error('Failed to submit reaction');
-            }
-          } catch (error) {
-            console.error(error);
-            setAlert({ open: true, message: 'Failed to submit reaction. Please try again.', severity: 'error' });
-          }
-        }}
-      >
+      <button className="submit-reaction-button" onClick={handleSubmitReaction}>
         Submit Reaction
       </button>
 
