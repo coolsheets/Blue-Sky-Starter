@@ -16,6 +16,8 @@ import {
   Badge,
 } from '@mui/material';
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import ShareIcon from '@mui/icons-material/Share';
 import './VideoReactionCard.css';
 
@@ -26,6 +28,7 @@ export default function VideoReactionCard({ videoUrl }) {
   const [comment, setComment] = useState('');
   const [liked, setLiked] = useState(false);
   const [likesCount, setLikesCount] = useState(0);
+  const [favorited, setFavorited] = useState(false);
   const [star, setStar] = useState(0);
   const [alert, setAlert] = useState({ open: false, message: '', severity: 'success' });
   const [anchorEl, setAnchorEl] = useState(null);
@@ -48,19 +51,29 @@ export default function VideoReactionCard({ videoUrl }) {
 
   useEffect(() => {
     if (selectedVideo) {
-      // Fetch reactions
+      // Reactions
       fetch(`/api/reactions/${encodeURIComponent(selectedVideo)}`)
         .then(res => res.ok ? res.json() : [])
         .then(setReactions)
         .catch(err => console.error('Error fetching reactions:', err));
 
-      // Fetch likes
+      // Likes
       fetch('/api/videos')
         .then(res => res.json())
         .then(data => {
           const videoData = data.find(v => v.filename === selectedVideo);
           if (videoData) setLikesCount(videoData.stats.likes);
         });
+
+      // Favorite status
+      if (isLoggedIn) {
+        fetch(`/api/reactions/favorite/${selectedVideo}`, {
+          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
+        })
+          .then(res => res.json())
+          .then(data => setFavorited(data.favorited))
+          .catch(() => setFavorited(false));
+      }
     }
   }, [selectedVideo]);
 
@@ -90,6 +103,30 @@ export default function VideoReactionCard({ videoUrl }) {
     } catch (err) {
       console.error(err);
       setAlert({ open: true, message: 'Like failed.', severity: 'error' });
+    }
+  };
+
+  const handleToggleFavorite = async () => {
+    if (!isLoggedIn) {
+      setAlert({ open: true, message: 'You must be logged in to favorite videos.', severity: 'info' });
+      return;
+    }
+
+    try {
+      const res = await fetch(`/api/reactions/favorite/${selectedVideo}`, {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`
+        }
+      });
+
+      if (res.ok) {
+        const data = await res.json();
+        setFavorited(data.favorited);
+      }
+    } catch (error) {
+      console.error(error);
+      setAlert({ open: true, message: 'Failed to toggle favorite.', severity: 'error' });
     }
   };
 
@@ -128,13 +165,17 @@ export default function VideoReactionCard({ videoUrl }) {
 
       <Stack direction="row" spacing={2} justifyContent="center" sx={{ mt: 2 }}>
         <IconButton onClick={handleLike} color={liked ? 'primary' : 'default'}>
-        <Badge badgeContent={likesCount} color="secondary" showZero max={9999}>
-        <ThumbUpIcon />
-        </Badge>
+          <Badge badgeContent={likesCount} color="secondary" showZero max={9999}>
+            <ThumbUpIcon />
+          </Badge>
         </IconButton>
 
         <IconButton onClick={handleShareClick}>
           <ShareIcon />
+        </IconButton>
+
+        <IconButton onClick={handleToggleFavorite} color={favorited ? 'error' : 'default'}>
+          {favorited ? <FavoriteIcon /> : <FavoriteBorderIcon />}
         </IconButton>
 
         <Rating
@@ -167,7 +208,6 @@ export default function VideoReactionCard({ videoUrl }) {
           try {
             const payload = {
               Video_URL: selectedVideo,
-              User_ID: 1,
               Reaction_Type: "like",
               Star: star,
               Comment: comment.trim(),
