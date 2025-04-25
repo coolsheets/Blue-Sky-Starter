@@ -80,4 +80,25 @@ router.get('/local-map', async (req, res) => {
   }
 });
 
+// Serve video files
+router.get('/:filename', (req, res) => {
+  const filePath = path.join(__dirname, '../../client/public/videos', req.params.filename);
+
+  // Check if the file exists before sending it
+  import('fs').then(fs => {
+    fs.access(filePath, fs.constants.F_OK, (err) => {
+      if (err) {
+        console.error(`Video file not found: ${filePath}`);
+        return res.status(404).json({ error: 'Video file not found' });
+      }
+
+      // Send the file if it exists
+      res.sendFile(filePath);
+    });
+  }).catch(error => {
+    console.error('Error accessing video file:', error);
+    res.status(500).json({ error: 'Failed to serve video file' });
+  });
+});
+
 export default router;

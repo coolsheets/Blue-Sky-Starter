@@ -11,7 +11,7 @@ const Login = ({ onSuccess, switchToRegister }) => {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch("http://localhost:3000/users/login", {
+      const response = await fetch("/users/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
@@ -52,7 +52,9 @@ const Login = ({ onSuccess, switchToRegister }) => {
           onChange={(e) => setPassword(e.target.value)}
           required
         />
-        <button className="login-button" type="submit">Login</button>
+        <button className="login-button" type="submit">
+          Login
+        </button>
         {message && <p className="login-message">{message}</p>}
       </form>
 

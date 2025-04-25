@@ -25,7 +25,27 @@ dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
-app.use(cors({ origin: "http://localhost:5173" })); // <-- Allow Vite dev server
+// app.use(cors({
+//   origin: (origin, callback) => {
+//     if (!origin || /^(http:\/\/10\.|http:\/\/localhost)/.test(origin)) {
+//       callback(null, true);
+//     } else {
+//       callback(new Error('Not allowed by CORS'));
+//     }
+//   },
+//   credentials: true, // Allow cookies and credentials
+// }));
+
+// const cors = require('cors');
+
+app.use(cors({
+  origin: '*', // Allow all origins (or restrict to specific IPs if needed)
+  credentials: true,
+}));
+
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`Server is running on http://0.0.0.0:${PORT}`);
+});
 
 app.use(express.json());
 
@@ -37,8 +57,8 @@ app.use('/api/videos', videosRoute);
 app.use('/api/reactions', reactionsRoutes); // <-- Added this line of code to include the reactions routes, Tony
 
 // Serve static files from the "public" folder
+app.use(express.static(path.join(__dirname, '../client/dist')));
 app.use(express.static(path.join(__dirname, '../client/public')));
-
 
 
 app.use("/login", authRoutes); // <-- Added this line of code to include the auth routes, Tony
@@ -47,6 +67,6 @@ app.use("/frontPage", frontPageRoutes); // <-- Added this line of code to includ
 app.use("/users",userRoutes); // <-- Added this line of code to include the user routes, Tony
 
 // Start the server
-app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
-});
+// app.listen(PORT, () => {
+//   console.log(`Server is running on http://localhost:${PORT}`);
+// });
