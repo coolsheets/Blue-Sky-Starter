@@ -9,9 +9,6 @@ import {
   Snackbar,
   Alert,
   Rating,
-  Dialog,
-  DialogContent,
-  DialogActions,
   Popover,
   List,
   ListItem,
@@ -19,7 +16,7 @@ import {
 } from '@mui/material';
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 import ShareIcon from '@mui/icons-material/Share';
-import SharePopup from './SharePopup'; 
+import './VideoReactionCard.css';
 
 export default function VideoReactionCard({ videoUrl }) {
   const [selectedVideo, setSelectedVideo] = useState(videoUrl);
@@ -31,28 +28,25 @@ export default function VideoReactionCard({ videoUrl }) {
   const [alert, setAlert] = useState({ open: false, message: '', severity: 'success' });
   const [anchorEl, setAnchorEl] = useState(null);
 
-  // Load list of video files from JSON
   useEffect(() => {
-    fetch('../public/jsonVideo/index.json')
+    fetch('/api/videos')
       .then(res => res.json())
       .then(data => {
-        setVideoFiles(data);
-
-        // Pick a random video if none is selected yet
-        if (!videoUrl && data.length > 0) {
-          const randomIndex = Math.floor(Math.random() * data.length);
-          setSelectedVideo(data[randomIndex]);
+        const filenames = data.map(v => v.filename);
+        setVideoFiles(filenames);
+        if (!videoUrl && filenames.length > 0) {
+          const randomIndex = Math.floor(Math.random() * filenames.length);
+          setSelectedVideo(filenames[randomIndex]);
         }
       })
       .catch(err => console.error('Failed to load videos', err));
   }, [videoUrl]);
 
-  // Fetch reactions for the selected video
   useEffect(() => {
     if (selectedVideo) {
       const fetchReactions = async () => {
         try {
-          const response = await fetch(`/api/reactions/${encodeURIComponent(selectedVideo.split('/').pop())}`);
+          const response = await fetch(`/api/reactions/${encodeURIComponent(selectedVideo)}`);
           if (response.ok) {
             const data = await response.json();
             setReactions(data);
@@ -67,65 +61,72 @@ export default function VideoReactionCard({ videoUrl }) {
     }
   }, [selectedVideo]);
 
-  const handleShareClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleShareClose = () => {
-    setAnchorEl(null);
-  };
-
+  const handleShareClick = (event) => setAnchorEl(event.currentTarget);
+  const handleShareClose = () => setAnchorEl(null);
   const shareUrl = `${window.location.origin}/videos/${selectedVideo}`;
 
   return (
-    <Box sx={{ padding: 4 }}>
+    <Box className="video-reaction-wrapper">
       <Typography variant="h5" sx={{ mb: 2 }}>
         Timelapse Video
       </Typography>
 
       {selectedVideo && (
-        <Box sx={{ position: 'relative', mb: 2 }}>
-          <video src={`../videos/${selectedVideo}`} controls width="100%" />
+        <Box sx={{ position: 'relative' }}>
+          <video src={`/videos/${selectedVideo}`} controls />
 
-          {/* Next/Previous Controls (Optional) */}
-          <Button
-            variant="contained"
-            sx={{ position: 'absolute', top: '50%', left: 0, transform: 'translateY(-50%)' }}
+          <button
+            className="video-nav-button left"
             onClick={() => {
               const currentIndex = videoFiles.indexOf(selectedVideo);
               const prevIndex = (currentIndex - 1 + videoFiles.length) % videoFiles.length;
               setSelectedVideo(videoFiles[prevIndex]);
             }}
           >
-            Previous
-          </Button>
-          <Button
-            variant="contained"
-            sx={{ position: 'absolute', top: '50%', right: 0, transform: 'translateY(-50%)' }}
+            ◀
+          </button>
+          <button
+            className="video-nav-button right"
             onClick={() => {
               const currentIndex = videoFiles.indexOf(selectedVideo);
               const nextIndex = (currentIndex + 1) % videoFiles.length;
               setSelectedVideo(videoFiles[nextIndex]);
             }}
           >
-            Next
-          </Button>
+            ▶
+          </button>
         </Box>
       )}
 
-      <Stack direction="row" spacing={2}>
-        <IconButton onClick={() => setLiked(!liked)} color={liked ? 'primary' : 'default'}>
-          <ThumbUpIcon />
-        </IconButton>
-        <IconButton onClick={handleShareClick}>
-          <ShareIcon />
-        </IconButton>
-        <Rating
-          name="star-rating"
-          value={star}
-          onChange={(event, newValue) => setStar(newValue)}
-          max={5}
-        />
+<Stack
+  direction="row"
+  spacing={2}
+  alignItems="center"
+  justifyContent="center"
+  sx={{ mt: 2 }}
+>
+  <IconButton
+    onClick={() => setLiked(!liked)}
+    color={liked ? 'primary' : 'default'}
+    aria-label="like"
+  >
+    <ThumbUpIcon />
+  </IconButton>
+
+  <IconButton
+    onClick={handleShareClick}
+    aria-label="share"
+  >
+    <ShareIcon />
+    </IconButton>
+
+      <Rating
+      name="star-rating"
+      value={star}
+      onChange={(event, newValue) => setStar(newValue)}
+      max={5}
+      size="medium"
+       />
       </Stack>
 
       <TextField
@@ -139,9 +140,8 @@ export default function VideoReactionCard({ videoUrl }) {
         sx={{ mt: 2 }}
       />
 
-      <Button
-        variant="contained"
-        sx={{ mt: 1 }}
+      <button
+        className="submit-reaction-button"
         onClick={async () => {
           if (!selectedVideo || !comment.trim()) {
             setAlert({ open: true, message: 'Please select a video and write a comment.', severity: 'warning' });
@@ -150,7 +150,7 @@ export default function VideoReactionCard({ videoUrl }) {
 
           try {
             const payload = {
-              Video_URL: selectedVideo.split('/').pop(),
+              Video_URL: selectedVideo,
               User_ID: 1,
               Reaction_Type: "like",
               Star: star,
@@ -181,9 +181,9 @@ export default function VideoReactionCard({ videoUrl }) {
         }}
       >
         Submit Reaction
-      </Button>
+      </button>
 
-      <Box sx={{ mt: 2 }}>
+      <Box className="reaction-list">
         <Typography variant="subtitle2">Reactions:</Typography>
         {reactions.length > 0 ? (
           reactions.map((r, i) => (
@@ -196,7 +196,6 @@ export default function VideoReactionCard({ videoUrl }) {
         )}
       </Box>
 
-      {/* Share popover */}
       <Popover
         open={Boolean(anchorEl)}
         anchorEl={anchorEl}

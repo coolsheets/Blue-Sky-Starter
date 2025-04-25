@@ -1,10 +1,100 @@
 /* Modal backdrop styling */
 .custom-dialog-backdrop {
-    background-color: rgba(0, 0, 0, 0.7) !important;
-    backdrop-filter: blur(4px);
-  }
-  
-  /* Modal content padding */
+  background-color: rgba(0, 0, 0, 0.7) !important;
+  backdrop-filter: blur(5px);
+}
+
+/* Modal content layout */
+.custom-dialog-content {
+  padding: 30px;
+  max-width: 800px;
+  margin: auto;
+}
+
+/* Video player wrapper */
+.video-reaction-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Main video styling */
+.video-reaction-wrapper video {
+  width: 100%;
+  border-radius: 12px;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.3);
+}
+
+/* Navigation buttons */
+.video-nav-button {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 2;
+  background-color: rgba(0, 51, 102, 0.8);
+  color: white;
+  border: none;
+  border-radius: 50px;
+  padding: 10px 16px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.video-nav-button:hover {
+  background-color: rgba(0, 87, 183, 1);
+}
+
+.video-nav-button.left {
+  left: 10px;
+}
+
+.video-nav-button.right {
+  right: 10px;
+}
+
+/* Reaction row */
+.reaction-bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Submit button */
+.submit-reaction-button {
+  margin-top: 10px;
+  background-color: #003366;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 8px;
+  border: none;
+  font-weight: bold;
+  transition: 0.2s ease-in-out;
+}
+
+.submit-reaction-button:hover {
+  background-color: #0057b7;
+}
+
+/* Reaction list */
+.reaction-list {
+  margin-top: 15px;
+  padding-left: 10px;
+  font-size: 0.95rem;
+  color: #333;
+}
+
+/* Responsive tweaks */
+@media (max-width: 600px) {
   .custom-dialog-content {
-    padding: 20px;
+    padding: 16px;
   }
+
+  .submit-reaction-button {
+    width: 100%;
+  }
+
+  .reaction-bar {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
