@@ -26,3 +26,6 @@ dist-ssr
 # Testing folders
 exclude
 public/videos
+
+# Old code
+junk
