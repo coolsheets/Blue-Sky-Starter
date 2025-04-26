@@ -6,7 +6,7 @@ const Footer = () => {
   return (
     <footer className="footer">
       <div className="footer-content">
-        <p>© 2025 Blue Sky City Watchers</p>
+        <p>© 2025 Blue Sky City Reactive</p>
         <div className="social-media-buttons">
           <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="social-button">
             <FaFacebook size={24} />
