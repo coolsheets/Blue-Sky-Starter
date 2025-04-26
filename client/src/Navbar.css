@@ -19,6 +19,8 @@ body {
   padding-top: 80px; /* Matches navbar height */
 }
 
+a {text-decoration: none; }
+
 .navbar-logo {
   display: flex;
   align-items: center;
