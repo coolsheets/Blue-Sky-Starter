@@ -15,7 +15,7 @@ const Footer = () => {
         >
           <p>© 2025 Blue Sky City Reactive</p>
           <div className={`hover-popout ${hover ? "visible" : ""}`}>
-            You may notice a subtle difference in our colours versus the official Blue Sky City branding. We have intentionally chosen shades inspired by the Ukrainian flag 🇺🇦 <br/><br/>A quiet but heartfelt expression of solidarity with all those fighting for freedom.
+            You may notice a subtle difference in our colours versus the official Blue Sky City branding. We have intentionally chosen shades inspired by the Ukrainian flag <a href="https://ukraine.ua/" target="_blank">🇺🇦</a><br/><br/>A quiet but heartfelt expression of solidarity with all those fighting for freedom.
           </div>
         </div>
         <div className="social-media-buttons">
