@@ -1,0 +1,16 @@
+{
+    // scan the current directory (you can also set this via CLI)
+    "src": ["."],
+  
+    // treat .js, .jsx, .ts and .tsx files
+    "extensions": ["js","jsx","ts","tsx", "css"],
+  
+    // include NPM‐installed deps in the graph (disabled by default)
+    "includeNpm": true,        
+  
+    // exclude node_modules with a simple glob (avoids invalid regex)
+    "exclude": ["node_modules/**"],
+
+    "image": "docs/dependency-graph.svg"   
+  }
+  

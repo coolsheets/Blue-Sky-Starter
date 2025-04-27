@@ -1,0 +1,98 @@
+{
+  "TonyO/pullTrafficCamerasAPI.js": [],
+  "client/dist/assets/index-DDzKLhhI.js": [],
+  "client/eslint.config.js": [],
+  "client/src/createSuffle.js": [],
+  "client/vite.config.js": [],
+  "findComponentDuplicates.js": [],
+  "server/cli/createCity.js": [
+    "server/db.js",
+    "server/models/cities.js"
+  ],
+  "server/cli/createHero.js": [
+    "server/db.js",
+    "server/models/superheroes.js"
+  ],
+  "server/cli/generateVideoIndex.js": [],
+  "server/cli/listCities.js": [
+    "server/db.js",
+    "server/models/cities.js"
+  ],
+  "server/cli/listHeroes.js": [
+    "server/db.js",
+    "server/models/superheroes.js"
+  ],
+  "server/cli/testCreateReaction.js": [
+    "server/models/reactions.js"
+  ],
+  "server/cli/videoComment.js": [
+    "server/db.js",
+    "server/models/reactions.js"
+  ],
+  "server/controllers/interactionsControllers.js": [],
+  "server/db.js": [],
+  "server/middleware/authMiddleware.js": [],
+  "server/models/cameralocations.js": [
+    "server/db.js"
+  ],
+  "server/models/cities.js": [
+    "server/db.js"
+  ],
+  "server/models/reactions.js": [
+    "server/db.js"
+  ],
+  "server/models/superheroes.js": [
+    "server/db.js"
+  ],
+  "server/models/users.js": [
+    "server/db.js"
+  ],
+  "server/models/video.js": [],
+  "server/routes/authOld.js": [],
+  "server/routes/cameraLocations.js": [
+    "server/models/cameralocations.js"
+  ],
+  "server/routes/cityRoutes.js": [
+    "server/models/cities.js"
+  ],
+  "server/routes/frontPageRoutes.js": [
+    "server/models/cameralocations.js"
+  ],
+  "server/routes/interactions.js": [],
+  "server/routes/junk/authJunk.js": [],
+  "server/routes/reactionsRoutes.js": [
+    "server/middleware/authMiddleware.js",
+    "server/models/reactions.js"
+  ],
+  "server/routes/superHeroRoutes.js": [
+    "server/models/superheroes.js"
+  ],
+  "server/routes/userRoutes copy.js": [
+    "server/models/users.js"
+  ],
+  "server/routes/userRoutes.js": [
+    "server/models/users.js"
+  ],
+  "server/routes/videos.js": [
+    "server/models/cameralocations.js",
+    "server/models/video.js"
+  ],
+  "server/server copy.js": [
+    "server/routes/cameraLocations.js",
+    "server/routes/cityRoutes.js",
+    "server/routes/frontPageRoutes.js",
+    "server/routes/reactionsRoutes.js",
+    "server/routes/superHeroRoutes.js",
+    "server/routes/userRoutes.js",
+    "server/routes/videos.js"
+  ],
+  "server/server.js": [
+    "server/routes/cameraLocations.js",
+    "server/routes/cityRoutes.js",
+    "server/routes/frontPageRoutes.js",
+    "server/routes/reactionsRoutes.js",
+    "server/routes/superHeroRoutes.js",
+    "server/routes/userRoutes.js",
+    "server/routes/videos.js"
+  ]
+}
