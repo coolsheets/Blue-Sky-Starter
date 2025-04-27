@@ -1,72 +1,44 @@
-import { fileURLToPath } from 'url';
-import path from 'path';
-import express from 'express';
-import videosRoute from './routes/videos.js'; // Adjust the path if necessary
-
-// Should we be doing away with CORS?
+import express from "express";
 import cors from "cors";
-import dotenv from "dotenv";
-
+import path from "path";
+import { fileURLToPath } from "url";
+import userRoutes from "./routes/userRoutes.js";
 import authRoutes from "./routes/auth.js";
 import superHeroRoutes from "./routes/superHeroRoutes.js";
 import cityRoutes from "./routes/cityRoutes.js";
 import frontPageRoutes from "./routes/frontPageRoutes.js";
 import cameraLocationRoutes from "./routes/cameraLocations.js";
 import reactionsRoutes from './routes/reactionsRoutes.js';
-import userRoutes from './routes/userRoutes.js'; // <-- Added this line of code to include the user routes, Tony
+import videosRoute from './routes/videos.js'; // <-- Make sure this path matches your file name
 
 
 // Fix for __dirname in ES modules
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Load environment variables
-dotenv.config();
-
 const app = express();
 const PORT = process.env.PORT || 3000;
-// app.use(cors({
-//   origin: (origin, callback) => {
-//     if (!origin || /^(http:\/\/10\.|http:\/\/localhost)/.test(origin)) {
-//       callback(null, true);
-//     } else {
-//       callback(new Error('Not allowed by CORS'));
-//     }
-//   },
-//   credentials: true, // Allow cookies and credentials
-// }));
 
-// const cors = require('cors');
-
-app.use(cors({
-  origin: '*', // Allow all origins (or restrict to specific IPs if needed)
-  credentials: true,
-}));
-
-app.listen(PORT, '0.0.0.0', () => {
-  console.log(`Server is running on http://0.0.0.0:${PORT}`);
-});
-
+app.use(cors({ origin: '*', credentials: true }));
 app.use(express.json());
 
+// Mount your routes
+app.use("/users", userRoutes);
 app.use("/superheroes", superHeroRoutes);
 app.use("/cities", cityRoutes);
+app.use('/api/videos', videosRoute);
 
 // Use the videos route
 app.use('/api/videos', videosRoute);
 app.use('/api/reactions', reactionsRoutes); // <-- Added this line of code to include the reactions routes, Tony
 
-// Serve static files from the "public" folder
+// Serve React build
 app.use(express.static(path.join(__dirname, '../client/dist')));
 app.use(express.static(path.join(__dirname, '../client/public')));
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../client/dist/index.html'));
+});
 
-
-app.use("/login", authRoutes); // <-- Added this line of code to include the auth routes, Tony
-app.use("/frontPage", frontPageRoutes); // <-- Added this line of code to include the frontPage routes, Tony
-
-app.use("/users",userRoutes); // <-- Added this line of code to include the user routes, Tony
-
-// Start the server
-// app.listen(PORT, () => {
-//   console.log(`Server is running on http://localhost:${PORT}`);
-// });
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`Server running on http://0.0.0.0:${PORT}`);
+});

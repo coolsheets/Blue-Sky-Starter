@@ -41,7 +41,7 @@ const FrontPage = () => {
   };
 
   useEffect(() => {
-    fetch("/api/videos/top-liked")
+    fetch("http://localhost:3000/api/videos/top-liked")
       .then((res) => res.json())
       .then((data) => setTopLikedVideos(data))
       .catch((err) => console.error("Failed to fetch top liked videos:", err));
@@ -79,7 +79,7 @@ const FrontPage = () => {
         {topLikedVideos.map((video, index) => (
           <div key={video._id || index} className="video-card">
             <video
-              src={`/api/videos/${video.filename}`}
+              src={`/videos/${video.filename}`}
               muted
               autoPlay
               loop
