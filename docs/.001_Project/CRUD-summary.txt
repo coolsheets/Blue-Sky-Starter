@@ -1,0 +1,41 @@
+./client/src/component/VideoReactionCard copy.jsx:66:          const videoData = data.find(v => v.filename === selectedVideo);
+./client/src/component/VideoReactionCard.jsx:66:          const videoData = data.find(v => v.filename === selectedVideo);
+./server/routes/authOld.js:22:  const user = users.find((u) => u.email === email);
+./server/routes/authOld.js:53://   const user = users.find((u) => u.email === email);
+./server/routes/videos.js:16:    const videos = await Video.find().sort({ filename: 1 });
+./server/routes/videos.js:27:    const topVideos = await Video.find()
+./server/routes/videos.js:40:    const video = await Video.findOneAndUpdate(
+./server/routes/userRoutes.js:14:    const existingUser = await User.findOne({ email });
+./server/routes/userRoutes.js:17:    await User.create({ email, password: hashedPassword });
+./server/routes/userRoutes.js:29:    const user = await User.findOne({ email });
+./server/routes/frontPageRoutes.js:68://   const user = users.find((u) => u.email === email);
+./server/routes/frontPageRoutes.js:100:router.delete("/:cameraId", async function (req, res) {
+./server/routes/interactions.js:58:    const interaction = await Interaction.findOneAndUpdate(
+./server/routes/interactions.js:83:    const interactions = await Interaction.find({ userId: req.params.userId });
+./server/routes/interactions.js:92:router.delete("/interactions/:id", async (req, res) => {
+./server/routes/interactions.js:94:    await Interaction.findByIdAndDelete(req.params.id);
+./server/routes/superHeroRoutes.js:45:router.delete('/:heroId', async function(req, res) {
+./server/routes/userRoutes copy.js:20:    const existingUser = await User.findOne({ email });
+./server/routes/userRoutes copy.js:26:    const newUser = await User.create({ email, password: hashedPassword });
+./server/routes/userRoutes copy.js:44:    const user = await User.findOne({ email });
+./server/controllers/interactionsControllers.js:21:  return Interaction.findOneAndUpdate({ userId, videoId }, update, {
+./server/controllers/interactionsControllers.js:48:  await Video.findByIdAndUpdate(videoId, {
+./server/models/cities.js:15:    const newCity = await City.create({
+./server/models/cities.js:22:    const cities = await City.find()
+./server/models/cities.js:27:    const city = await City.findById(id)
+./server/models/users.js:15:  const newUser = await User.create({ username, password });
+./server/models/users.js:19:  return await User.findOne({ username });
+./server/models/superheroes.js:17:    const newHero = await Superhero.create({
+./server/models/superheroes.js:26:    const heroes = await Superhero.find()
+./server/models/superheroes.js:31:    const hero = await Superhero.findById(id)
+./server/models/reactions.js:17:  return await Reaction.create({
+./server/models/reactions.js:27:  return await Reaction.find().populate("User_ID", "email");
+./server/models/reactions.js:31:  return await Reaction.find({ Video_URL }).populate("User_ID", "email");
+./server/models/reactions.js:35:  return await Reaction.findOne({ User_ID, Video_URL });
+./server/models/reactions.js:40:  const reaction = await Reaction.findOne({ Video_URL, User_ID });
+./server/models/reactions.js:47:    const newReaction = await Reaction.create({
+./server/models/reactions.js:57:  const reaction = await Reaction.findOne({ Video_URL, User_ID });
+./server/models/cameralocations.js:32:    const newCameraLocation = await CameraLocation.create({
+./server/models/cameralocations.js:43:    const locations = await CameraLocation.find()
+./server/models/cameralocations.js:49:    const location = await CameraLocation.findById(new mongoose.Types.ObjectId(id))
+./server/models/cameralocations.js:55:    const location = await CameraLocation.findOne({ Camera_Name: { $regex: `^${cameraName}$`, $options: 'i' } });
