@@ -54470,17 +54470,40 @@
 │   │   ├── assets
 │   │   │   └── react.svg
 │   │   ├── colour.css
+│   │   ├── component
+│   │   │   ├── Login.css
+│   │   │   ├── Login.jsx
+│   │   │   ├── Register.css
+│   │   │   ├── Register.jsx
+│   │   │   ├── SharePopup.jsx
+│   │   │   ├── VideoPlayer.jsx
+│   │   │   ├── VideoReactionCard copy.jsx
+│   │   │   ├── VideoReactionCard.css
+│   │   │   ├── VideoReactionCard.jsx
+│   │   │   └── VideoReactionOldVersion.jsx
 │   │   ├── CounterButton.jsx
+│   │   ├── createSuffle.js
+│   │   ├── FakePage.jsx
+│   │   ├── Footer.css
+│   │   ├── Footer.jsx
+│   │   ├── Footer_old.jsx
+│   │   ├── FrontPage copy.jsx
 │   │   ├── FrontPage.css
 │   │   ├── FrontPage.jsx
-│   │   ├── images
-│   │   ├── index.css
+│   │   ├── Gallery.css
+│   │   ├── Gallery.jsx
+│   │   ├── junk
+│   │   │   ├── Navbar.css
+│   │   │   └── Navbar.jsx
+│   │   ├── Login.jsx
+│   │   ├── main.css
 │   │   ├── main.jsx
 │   │   ├── Navbar.css
 │   │   ├── Navbar.jsx
 │   │   ├── SuperheroRegistry.jsx
 │   │   └── TrafficVideo.jsx
 │   └── vite.config.js
+├── deps.json
 ├── docs
 │   ├── mondoDB
 │   │   ├── BlueSkyWatchers_MondoDB-review.docx
@@ -54490,7 +54513,13 @@
 │   │   └── TrafficCameras_20250411_k7p9-kppz.json
 │   └── OCR
 │       └── OCR Image Regions.docx
+├── findComponentDuplicates.js
+├── flowChart.md
 ├── LICENSE
+├── node
+├── node_modules
+│   └── @types
+├── package-lock.json
 ├── README.md
 ├── server
 │   ├── cli
@@ -56753,11 +56782,24 @@
 │   ├── package.json
 │   ├── package-lock.json
 │   ├── routes
+│   │   ├── authOld.js
 │   │   ├── cameraLocations.js
 │   │   ├── cityRoutes.js
 │   │   ├── frontPageRoutes.js
-│   │   └── superHeroRoutes.js
+│   │   ├── interactions.js
+│   │   ├── junk
+│   │   │   └── authJunk.js
+│   │   ├── reactionsRoutes.js
+│   │   ├── superHeroRoutes.js
+│   │   ├── userRoutes copy.js
+│   │   ├── userRoutes.js
+│   │   └── videos.js
+│   ├── server copy.js
 │   └── server.js
+├── server@1.0.0
+├── timeLapse.md
+├── TonyO
+│   └── pullTrafficCamerasAPI.js
 └── tree.txt
 
-723 directories, 5144 files
+1905 directories, 54898 files
