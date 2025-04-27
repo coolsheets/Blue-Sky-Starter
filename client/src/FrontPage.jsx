@@ -62,7 +62,7 @@ const FrontPage = () => {
           className="title-picture-image"
         />
         <div className="title-picture-text">
-          <p>Explore City timelaps</p>
+          <p>Explore City Time-Lapse</p>
           <h1>
             Choose <span> the best one</span>
           </h1>

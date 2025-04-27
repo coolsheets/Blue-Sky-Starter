@@ -172,7 +172,7 @@ export default function VideoReactionCard({ videoUrl }) {
   return (
     <Box className="video-reaction-wrapper">
       <Typography variant="h5" sx={{ mb: 2 }}>
-        Timelapse Video
+        Time-Lapse Video
       </Typography>
 
       {selectedVideo && (
