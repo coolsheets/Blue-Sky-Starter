@@ -54470,42 +54470,11 @@
 │   │   ├── assets
 │   │   │   └── react.svg
 │   │   ├── colour.css
-│   │   ├── component
-│   │   │   ├── Login.css
-│   │   │   ├── Login.jsx
-│   │   │   ├── Register.css
-│   │   │   ├── Register.jsx
-│   │   │   ├── SharePopup.jsx
-<<<<<<< HEAD
-│   │   │   ├── VideoPlayer.jsx
-│   │   │   ├── VideoReactionCard copy.jsx
-=======
->>>>>>> main
-│   │   │   ├── VideoReactionCard.css
-│   │   │   ├── VideoReactionCard.jsx
-│   │   │   └── VideoReactionOldVersion.jsx
 │   │   ├── CounterButton.jsx
-│   │   ├── createSuffle.js
-│   │   ├── FakePage.jsx
-│   │   ├── Footer.css
-│   │   ├── Footer.jsx
-│   │   ├── Footer_old.jsx
-<<<<<<< HEAD
-│   │   ├── FrontPage copy.jsx
-=======
->>>>>>> main
 │   │   ├── FrontPage.css
 │   │   ├── FrontPage.jsx
-│   │   ├── Gallery.css
-│   │   ├── Gallery.jsx
-<<<<<<< HEAD
-│   │   ├── junk
-│   │   │   ├── Navbar.css
-│   │   │   └── Navbar.jsx
-=======
->>>>>>> main
-│   │   ├── Login.jsx
-│   │   ├── main.css
+│   │   ├── images
+│   │   ├── index.css
 │   │   ├── main.jsx
 │   │   ├── Navbar.css
 │   │   ├── Navbar.jsx
@@ -54521,18 +54490,7 @@
 │   │   └── TrafficCameras_20250411_k7p9-kppz.json
 │   └── OCR
 │       └── OCR Image Regions.docx
-<<<<<<< HEAD
-├── findComponentDuplicates.js
-├── flowChart.md
 ├── LICENSE
-├── node
-=======
-├── flowChart.md
-├── LICENSE
->>>>>>> main
-├── node_modules
-│   └── @types
-├── package-lock.json
 ├── README.md
 ├── server
 │   ├── cli
@@ -56795,40 +56753,11 @@
 │   ├── package.json
 │   ├── package-lock.json
 │   ├── routes
-<<<<<<< HEAD
-=======
-│   │   ├── auth.js
->>>>>>> main
-│   │   ├── authOld.js
 │   │   ├── cameraLocations.js
 │   │   ├── cityRoutes.js
 │   │   ├── frontPageRoutes.js
-│   │   ├── interactions.js
-<<<<<<< HEAD
-│   │   ├── reactionsRoutes.js
-│   │   ├── superHeroRoutes.js
-│   │   ├── userRoutes copy.js
-│   │   ├── userRoutes.js
-│   │   └── videos.js
-│   ├── server copy.js
+│   │   └── superHeroRoutes.js
 │   └── server.js
-├── server@1.0.0
-=======
-│   │   ├── junk
-│   │   │   └── authJunk.js
-│   │   ├── reactionsRoutes.js
-│   │   ├── superHeroRoutes.js
-│   │   ├── userRoutes.js
-│   │   └── videos.js
-│   └── server.js
->>>>>>> main
-├── timeLapse.md
-├── TonyO
-│   └── pullTrafficCamerasAPI.js
 └── tree.txt
 
-<<<<<<< HEAD
-1904 directories, 54896 files
-=======
-1904 directories, 54888 files
->>>>>>> main
+723 directories, 5144 files
