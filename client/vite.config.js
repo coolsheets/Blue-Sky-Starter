@@ -5,7 +5,10 @@ export default defineConfig({
   plugins: [react()],
   server: {
     proxy: {
-      '/api': 'http://10.44.22.83:3000', // Proxy API requests to the backend
+      '/api': 'http://localhost:3000',
+      '/users': 'http://localhost:3000',
+      '/superheroes': 'http://localhost:3000',
+      '/cities': 'http://localhost:3000',
     },
     host: '0.0.0.0',
     port: 5173,
