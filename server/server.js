@@ -26,7 +26,6 @@ app.use(express.json());
 app.use("/users", userRoutes);
 app.use("/superheroes", superHeroRoutes);
 app.use("/cities", cityRoutes);
-app.use('/api/videos', videosRoute);
 
 // Use the videos route
 app.use('/api/videos', videosRoute);
