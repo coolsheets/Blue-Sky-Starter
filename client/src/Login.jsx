@@ -11,7 +11,7 @@ const Login = () => {
     e.preventDefault();
 
     try {
-      const res = await axios.post('http://localhost:3000/login', { email, password });
+      const res = await axios.post('/users/login', { email, password });
       localStorage.setItem('token', res.data.token);
       setMessage('Login successful!');
       // The above is expected to redirect or update app state as needed or if it worked out for the user

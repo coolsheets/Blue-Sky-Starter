@@ -7,7 +7,7 @@ import videosRoute from './routes/videos.js'; // Adjust the path if necessary
 import cors from "cors";
 import dotenv from "dotenv";
 
-import authRoutes from "./routes/auth.js";
+import authRoutes from "./routes/authJunk.js";
 import superHeroRoutes from "./routes/superHeroRoutes.js";
 import cityRoutes from "./routes/cityRoutes.js";
 import frontPageRoutes from "./routes/frontPageRoutes.js";

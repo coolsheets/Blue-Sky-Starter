@@ -6,6 +6,13 @@ body, html {
   background-color: #fff;
 }
 
+h3 {
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', sans-serif;
+  color: #FFDD00;
+}
+
 /* Container */
 .front-page-container {
   overflow: hidden;
@@ -87,15 +94,15 @@ body, html {
   padding: 10px 20px;
   font-size: 1rem;
   background-color: transparent;
-  color: white;
-  border: 2px solid white;
+  color: #FFDD00;
+  border: 2px solid #FFDD00;
   cursor: pointer;
   transition: 0.3s ease-in-out;
 }
 
 .title-picture-text button:hover {
-  background-color: white;
-  color: #003366;
+  background-color: #FFDD00;
+  color: #0057B7;
 }
 
 /* Video Thumbnails */

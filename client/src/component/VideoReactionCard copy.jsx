@@ -132,10 +132,6 @@ export default function VideoReactionCard({ videoUrl }) {
   };
 
   const handleSubmitReaction = async () => {
-    if (!isLoggedIn) {
-      setAlert({ open: true, message: 'You must be logged in to submit a reaction.', severity: 'info' });
-      return;
-    }
     if (!selectedVideo || !comment.trim()) {
       setAlert({ open: true, message: 'Please select a video and write a comment.', severity: 'warning' });
       return;
@@ -181,7 +177,7 @@ export default function VideoReactionCard({ videoUrl }) {
 
       {selectedVideo && (
         <Box sx={{ position: 'relative' }}>
-          <video src={`/api/videos/${selectedVideo}`} controls />
+          <video src={`/videos/${selectedVideo}`} controls />
 
           <button
             className="video-nav-button left"
