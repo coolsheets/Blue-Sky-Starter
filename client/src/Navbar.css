@@ -78,6 +78,20 @@ a {text-decoration: none; }
 }
 /* --- END: New classes for branding title --- */
 
+.navbar-login-button {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1rem;
+  cursor: pointer;
+  margin-left: 20px;
+  padding: 0;
+  font-family: inherit;
+}
+
+.navbar-login-button:hover {
+  text-decoration: underline;
+}
 .navbar-links {
   display: flex;
   flex-wrap: wrap; /* Allows wrapping on smaller screens */
