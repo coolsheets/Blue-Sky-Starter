@@ -1,0 +1,37 @@
+{
+  "name": "blue-sky-city-reactive",
+  "version": "0.0.1",
+  "description": "Social Media Interactive Platform for Blue Sky City",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "devDependencies": {},
+  "scripts": {
+  	"install:server": "cd server && npm install && cd ..",
+    "install:client": "cd client && npm install && cd ..",
+    "install": "npm run install:server && npm run install:client",
+    "build": "cd client && npm run build && cd ..",
+    "start": "cd server && npm run start && cd .."
+},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/coolsheets/Blue-Sky-Starter.git"
+  },
+  "keywords": [
+    "Blue Sky City",
+    "blue",
+    "sky",
+    "city",
+    "Calgary",
+    "Traffic",
+    "Videos",
+    "InceptionU"
+  ],
+  "author": "Cohort14_Project2_Team1",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/coolsheets/Blue-Sky-Starter/issues"
+  },
+  "homepage": "https://github.com/coolsheets/Blue-Sky-Starter#readme"
+}

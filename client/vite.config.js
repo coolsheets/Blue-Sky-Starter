@@ -7,10 +7,14 @@ export default defineConfig({
     proxy: {
       '/api': 'http://localhost:3000',
       '/users': 'http://localhost:3000',
-      '/superheroes': 'http://localhost:3000',
-      '/cities': 'http://localhost:3000',
+      // '/superheroes': 'http://localhost:3000',
+      // '/cities': 'http://localhost:3000',
     },
     host: '0.0.0.0',
     port: 5173,
   },
+	build: {
+		outDir: '../server/public',
+		emptyOutDir: true,		
+	}
 });
