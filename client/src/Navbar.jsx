@@ -7,24 +7,21 @@ import "./Navbar.css";
 const Navbar = ({ onLoginClick, onLogoutClick, isLoggedIn }) => {
   const [menuOpen, setMenuOpen] = useState(false);
 
-  const handleToggleMenu = () => {
-    setMenuOpen(!menuOpen);
-  };
-
-  const handleLinkClick = () => {
-    setMenuOpen(false); // Close menu when a link is clicked
-  };
+  const handleToggleMenu = () => setMenuOpen(!menuOpen);
+  const handleLinkClick = () => setMenuOpen(false); // Close menu when a link is clicked --- line HandlInkClick function
 
   return (
     <nav className="navbar">
-      <div className="navbar-logo">
-        <a href="https://www.visitcalgary.com/" target="_blank" rel="noopener noreferrer">
-          <img src="/img/viewsLogo.svg" alt="Views of Calgary Logo" className="views-logo" />
-        </a>
-      </div>
+      <div className="navbar-left">
+        <div className="navbar-logo">
+          <a href="https://www.visitcalgary.com/" target="_blank" rel="noopener noreferrer">
+            <img src="/img/viewsLogo.svg" alt="Views of Calgary Logo" className="views-logo" />
+          </a>
+        </div>
 
-      <div className="menu-icon" onClick={handleToggleMenu}>
-        {menuOpen ? <CloseIcon /> : <MenuIcon />}
+        <div className="menu-icon" onClick={handleToggleMenu}>
+          {menuOpen ? <CloseIcon style={{ color: 'white' }} /> : <MenuIcon style={{ color: 'white' }} />}
+        </div>
       </div>
 
       <div className={`navbar-links ${menuOpen ? 'active' : ''}`}>
@@ -45,3 +42,5 @@ const Navbar = ({ onLoginClick, onLogoutClick, isLoggedIn }) => {
 };
 
 export default Navbar;
+
+

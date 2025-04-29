@@ -1,32 +1,150 @@
 /* Navbar */
 .navbar {
   width: 100%;
-  height: 60px; /* Default height for larger screens */
+  height: 60px;
   background-color: #003366;
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  padding: 0 20px; /* Default padding for larger screens */
+  justify-content: space-between;
+  padding: 0 20px;
   color: white;
-  position: fixed; /* Stick the navbar to the top */
+  position: fixed;
   top: 0;
   z-index: 1000;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-/* Add space below navbar to prevent overlapping */
-body {
-  padding-top: 80px; /* Matches navbar height */
+.navbar-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
-
-a {text-decoration: none; }
 
 .navbar-logo {
   display: flex;
   align-items: center;
 }
 
-/* --- START: New classes for branding title --- */
+.views-logo {
+  width: 100px;
+  height: auto;
+}
+
+.menu-icon {
+  display: none;
+  font-size: 2rem;
+  cursor: pointer;
+  color: white;
+}
+
+/* .menu-icon {
+  display: none;
+  color: white;
+  font-size: 2rem;
+  cursor: pointer;
+  margin-left: 10px;
+  z-index: 1001; // Just to be ensure it's above other elements 
+  
+} */
+
+.navbar-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  padding: 40px;
+}
+
+.navbar-links a {
+  color: white;
+  text-decoration: none;
+  font-size: 1rem;
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.navbar-links a:hover {
+  text-decoration: underline;
+  color: #ddd;
+  transform: scale(1.1);
+}
+
+.navbar-login-button {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1rem;
+  cursor: pointer;
+  margin-left: 20px;
+  padding: 0;
+  font-family: inherit;
+}
+
+.navbar-login-button:hover {
+  text-decoration: underline;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .menu-icon {
+    display: block;
+  }
+
+  .navbar-links {
+    display: none;
+    flex-direction: column;
+    background-color: #003366;
+    position: absolute;
+    top: 60px;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    padding: 20px 0;
+    z-index: 999;
+  }
+
+  .navbar-links.active {
+    display: flex;
+  }
+
+  .navbar-links a {
+    font-size: 1.2rem;
+    margin: 10px 0;
+  }
+
+  .navbar-login-button {
+    margin-top: 10px;
+    font-size: 1.2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .navbar {
+    padding: 10px;
+    height: auto;
+  }
+
+  .navbar-logo {
+    font-size: 1rem;
+  }
+
+  .navbar-links a {
+    font-size: 1rem;
+  }
+}
+
+
+/* Keep the below css as stated Icon #### - WARNING ### DON'T DELETE THEM AS THEY WOULD BE NEEDED FOR OTHER FUNCTIONS */
+
+/* text character icon styles */
+
+body {
+  padding-top: 80px;
+}
+
+a {
+  text-decoration: none;
+}
+
+/* Branding text styles (unchanged, included below for completeness) */
 .branding-container {
   display: flex;
   align-items: flex-start;
@@ -75,141 +193,4 @@ a {text-decoration: none; }
   text-align: center;
   letter-spacing: 0.5px;
   line-height: 1.1;
-}
-/* --- END: New classes for branding title --- */
-
-.navbar-login-button {
-  background: none;
-  border: none;
-  color: white;
-  font-size: 1rem;
-  cursor: pointer;
-  margin-left: 20px;
-  padding: 0;
-  font-family: inherit;
-}
-
-.navbar-login-button:hover {
-  text-decoration: underline;
-}
-.navbar-links {
-  display: flex;
-  flex-wrap: wrap; /* Allows wrapping on smaller screens */
-  gap: 15px; /* Add space between links */
-  padding: 40px;
-}
-
-.navbar-links a {
-  color: white;
-  text-decoration: none;
-  font-size: 1rem;
-  transition: color 0.3s ease, transform 0.3s ease;
-}
-
-.navbar-links a:hover {
-  text-decoration: underline;
-  color: #ddd;
-  transform: scale(1.1); /* Add slight zoom effect */
-}
-
-/* Responsive Design */
-@media (max-width: 768px) {
-  .navbar {
-      height: 70px;
-      padding: 0 15px;
-      flex-direction: column;
-  }
-
-  body {
-      padding-top: 70px;
-  }
-
-  .navbar-logo {
-      margin-bottom: 10px;
-  }
-
-  .navbar-links {
-      justify-content: center;
-      gap: 10px;
-  }
-}
-
-@media (max-width: 480px) {
-  .navbar {
-      height: auto;
-      padding: 10px;
-  }
-
-  body {
-      padding-top: auto;
-  }
-
-  .navbar-logo {
-      font-size: 1rem;
-  }
-
-  .navbar-links a {
-      font-size: 0.8rem;
-  }
-}
-
-.views-logo {
-  width: 100px; /* Adjust size as needed */
-  height: auto;
-}
-
-.menu-icon {
-  display: none;
-  color: white;
-  font-size: 2rem;
-  cursor: pointer;
-}
-
-/* Default desktop view */
-.navbar-links {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 15px;
-  padding: 40px;
-}
-
-/* Hide links and show hamburger on small screens */
-@media (max-width: 768px) {
-  .menu-icon {
-    display: block;
-  }
-
-  .navbar-links {
-    display: none;
-    flex-direction: column;
-    background-color: #003366;
-    position: absolute;
-    top: 60px;
-    right: 0;
-    width: 100%;
-    text-align: center;
-    padding: 20px 0;
-    transition: all 0.3s ease-in-out;
-    z-index: 999;
-  }
-
-  .navbar-links.active {
-    display: flex;
-  }
-
-  .navbar-links a {
-    font-size: 1.2rem;
-    margin: 10px 0;
-  }
-
-  .navbar-login-button {
-    margin-top: 10px;
-    font-size: 1.2rem;
-  }
-}
-
-@media (max-width: 480px) {
-  .navbar-links a {
-    font-size: 1rem;
-  }
 }

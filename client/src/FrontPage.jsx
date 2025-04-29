@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import Navbar from "./Navbar";
+import Navbar from "./Navbar.jsx";
 import Footer from "./Footer";
 import VideoReactionCard from "./component/VideoReactionCard.jsx";
 import Login from "./component/Login.jsx";
