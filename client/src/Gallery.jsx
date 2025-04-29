@@ -11,7 +11,7 @@ const Gallery = () => {
   const [selectedVideo, setSelectedVideo] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // New states for filters/search/sort
+  // Filters/search/sorting
   const [selectedQuadrant, setSelectedQuadrant] = useState("");
   const [searchText, setSearchText] = useState("");
   const [sortOption, setSortOption] = useState("default");
@@ -50,7 +50,6 @@ const Gallery = () => {
     setSelectedVideo(null);
   };
 
-  // Apply filters, search, sort
   const filteredVideos = videos
     .filter((video) => {
       if (!selectedQuadrant) return true;
@@ -71,7 +70,7 @@ const Gallery = () => {
 
   return (
     <div className="gallery-page">
-      {/* Filters / Search / Sort section */}
+      {/* Filters / Search / Sort */}
       <div className="gallery-controls">
         <select value={selectedQuadrant} onChange={(e) => setSelectedQuadrant(e.target.value)}>
           <option value="">All Quadrants</option>
@@ -100,37 +99,42 @@ const Gallery = () => {
       <div className="gallery-container">
         {filteredVideos.slice(0, visibleCount).map((video, index) => (
           <div key={index} className="video-tile" onClick={() => handleVideoClick(video)}>
-            <video
-              ref={(el) => {
-                if (el) {
-                  el.play()
-                    .then(() => {
-                      setTimeout(() => {
-                        el.pause();
-                        el.currentTime = 0;
-                      }, 1000);
-                    })
-                    .catch((err) => {
-                      console.error("Autoplay failed:", err);
-                    });
-                }
-              }}
-              src={`/api/videos/${video.filename}`}
-              muted
-              playsInline
-              preload="auto"
-              onMouseOver={async (e) => {
-                try {
-                  await e.target.play();
-                } catch (err) {}
-              }}
-              onMouseOut={(e) => {
-                try {
-                  e.target.pause();
-                  e.target.currentTime = 0;
-                } catch (err) {}
-              }}
-            />
+            <div className="video-wrapper">
+              <video
+                ref={(el) => {
+                  if (el) {
+                    el.play()
+                      .then(() => {
+                        setTimeout(() => {
+                          el.pause();
+                          el.currentTime = 0;
+                        }, 1000);
+                      })
+                      .catch((err) => {
+                        console.error("Autoplay failed:", err);
+                      });
+                  }
+                }}
+                src={`/api/videos/${video.filename}`}
+                muted
+                playsInline
+                preload="auto"
+                onMouseOver={async (e) => {
+                  try {
+                    await e.target.play();
+                  } catch (err) {}
+                }}
+                onMouseOut={(e) => {
+                  try {
+                    e.target.pause();
+                    e.target.currentTime = 0;
+                  } catch (err) {}
+                }}
+              />
+              <div className="like-badge">
+                ❤️ {video.stats?.likes || 0}
+              </div>
+            </div>
             <div className="video-info">
               #{video.camera_number} - {video.camera_location}
             </div>
