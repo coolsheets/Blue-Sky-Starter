@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import FrontPage from "./FrontPage";
 import Gallery from "./Gallery";
-import SuperheroRegistry from "./SuperheroRegistry";
+// import SuperheroRegistry from "./SuperheroRegistry";
 import TrafficVideo from "./TrafficVideo";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
@@ -54,7 +54,7 @@ const App = () => {
       <Routes>
         <Route path="/" element={<FrontPage />} />
         <Route path="/gallery" element={<Gallery />} />
-        <Route path="/superheroes" element={<SuperheroRegistry />} />
+        {/* <Route path="/superheroes" element={<SuperheroRegistry />} /> */}
         <Route path="/video" element={<TrafficVideo />} />
       </Routes>
 
