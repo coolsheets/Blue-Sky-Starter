@@ -54,6 +54,36 @@
     background-color: #ccc;
     cursor: default;
   }
+
+  .video-info {
+    font-size: 0.8rem;
+    text-align: center;
+    margin-top: 5px;
+    color: #555;
+  }
+
+  .gallery-controls {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+    margin-top: 10px;
+  }
+  
+  .gallery-controls select,
+  .gallery-controls input {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+  }
+  
+  .video-info {
+    font-size: 0.8rem;
+    text-align: center;
+    margin-top: 5px;
+    color: #555;
+  }
   
   /* Responsive Grid */
   @media (max-width: 1024px) {
