@@ -10,14 +10,14 @@ npm install
 npm start
 ```
 
-## Development  ?
+<!-- ## Development  ?
 ```
 OPEN BASH SHELL
 cd server
 npm install
 export MONGO_URI="mongodb+srv://USERNAME:PWD@blueskywatchers.km4euad.mongodb.net/yycapidata?retryWrites=true&w=majority"
 npm run dev
-```
+``` -->
 
 ## Local Env
 
