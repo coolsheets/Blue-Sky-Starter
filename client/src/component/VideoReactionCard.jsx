@@ -4,7 +4,6 @@ import {
   Typography,
   IconButton,
   TextField,
-  Button,
   Stack,
   Snackbar,
   Alert,
@@ -32,6 +31,10 @@ export default function VideoReactionCard({ videoUrl }) {
   const [star, setStar] = useState(0);
   const [alert, setAlert] = useState({ open: false, message: '', severity: 'success' });
   const [anchorEl, setAnchorEl] = useState(null);
+
+  // 🆕 New states for camera info
+  const [cameraNumber, setCameraNumber] = useState(null);
+  const [cameraLocation, setCameraLocation] = useState(null);
 
   const isLoggedIn = !!localStorage.getItem("token");
 
@@ -75,7 +78,11 @@ export default function VideoReactionCard({ videoUrl }) {
         .then(res => res.json())
         .then(data => {
           const videoData = data.find(v => v.filename === selectedVideo);
-          if (videoData) setLikesCount(videoData.stats.likes);
+          if (videoData) {
+            setLikesCount(videoData.stats.likes);
+            setCameraNumber(videoData.camera_number);
+            setCameraLocation(videoData.camera_location);
+          }
         });
 
       if (isLoggedIn) {
@@ -184,8 +191,11 @@ export default function VideoReactionCard({ videoUrl }) {
 
   return (
     <Box className="video-reaction-wrapper">
+      {/* 🆕 Title with camera info */}
       <Typography variant="h5" sx={{ mb: 2 }}>
-        Time-Lapse Video
+        {cameraNumber !== null && cameraLocation
+          ? `#${cameraNumber} - ${cameraLocation}`
+          : 'Time-Lapse Video'}
       </Typography>
 
       {selectedVideo && (
