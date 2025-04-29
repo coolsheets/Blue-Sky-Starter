@@ -5,11 +5,11 @@ export default defineConfig({
   plugins: [react()],
   server: {
     proxy: {
-      // "/api": "http://localhost:3000",
-      // "/users": "http://localhost:3000",
+      "/api": "http://localhost:3000",
+      "/users": "http://localhost:3000",
 
-      "/api": "http://127.0.0.1:3000",
-      "/users": "http://127.0..0.1:3000",
+      // "/api": "http://127.0.0.1:3000",
+      // "/users": "http://127.0..0.1:3000",
       // '/superheroes': 'http://localhost:3000',
       // '/cities': 'http://localhost:3000',
     },
