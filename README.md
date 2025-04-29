@@ -10,8 +10,7 @@ npm install
 npm start
 ```
 
-## Development
-
+## Development  ?
 ```
 OPEN BASH SHELL
 cd server
@@ -57,3 +56,35 @@ Based on recent research using Stackoverflow and AI, it's suggested to make the 
   "sample2.mp4",
   "sample3.mp4"
 ]
+
+### This should be unnecessary if you use local file services, as designed.
+
+# To Deploy Locally
+
+From project root:
+
+```
+npm run install
+npm run build
+npm run start
+```
+
+To see your local network IP address:
+```
+hostname -I
+```
+# To run dev server
+
+From project root:
+```
+cd server
+npm install
+npm start
+```
+
+From project root:
+```
+cd client
+npm install
+npm run dev
+```
