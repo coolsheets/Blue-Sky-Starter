@@ -14,10 +14,14 @@ const FrontPage = () => {
   const [registerOpen, setRegisterOpen] = useState(false);
   const [topLikedVideos, setTopLikedVideos] = useState([]);
   const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem("token"));
+  const [selectedVideoUrl, setSelectedVideoUrl] = useState(null); // 🆕 specific video support
 
   // Modal handlers
   const handleOpenModal = () => setOpen(true);
-  const handleCloseModal = () => setOpen(false);
+  const handleCloseModal = () => {
+    setOpen(false);
+    setSelectedVideoUrl(null); // 🧹 reset to random for next Vote
+  };
 
   const handleLoginOpen = () => {
     setLoginOpen(true);
@@ -63,12 +67,17 @@ const FrontPage = () => {
         />
         <div className="title-picture-text">
           <h3>Explore City Time-Lapse</h3>
-          <h1>
-            Choose your favourites
-          </h1>
+          <h1>Choose your favourites</h1>
 
           {isLoggedIn ? (
-            <button onClick={handleOpenModal}>Vote</button>
+            <button
+              onClick={() => {
+                setSelectedVideoUrl(null); // 🟢 let VideoReactionCard pick random
+                setOpen(true);
+              }}
+            >
+              Vote
+            </button>
           ) : (
             <button onClick={handleLoginOpen}>Login to Vote</button>
           )}
@@ -77,7 +86,15 @@ const FrontPage = () => {
 
       <section className="video-preview">
         {topLikedVideos.map((video, index) => (
-          <div key={video._id || index} className="video-card">
+          <div
+            key={video._id || index}
+            className="video-card"
+            onClick={() => {
+              setSelectedVideoUrl(`/api/videos/${video.filename}`); // 🟢 specific video
+              setOpen(true);
+            }}
+            style={{ cursor: "pointer" }}
+          >
             <video
               src={`/api/videos/${video.filename}`}
               muted
@@ -98,7 +115,7 @@ const FrontPage = () => {
         classes={{ backdrop: "custom-dialog-backdrop" }}
       >
         <DialogContent className="custom-dialog-content">
-          <VideoReactionCard />
+          <VideoReactionCard videoUrl={selectedVideoUrl} />
         </DialogContent>
       </Dialog>
 

@@ -4,7 +4,6 @@ import {
   Typography,
   IconButton,
   TextField,
-  Button,
   Stack,
   Snackbar,
   Alert,
@@ -22,7 +21,7 @@ import ShareIcon from '@mui/icons-material/Share';
 import './VideoReactionCard.css';
 
 export default function VideoReactionCard({ videoUrl }) {
-  const [selectedVideo, setSelectedVideo] = useState(videoUrl);
+  const [selectedVideo, setSelectedVideo] = useState(null);
   const [videoFiles, setVideoFiles] = useState([]);
   const [reactions, setReactions] = useState([]);
   const [comment, setComment] = useState('');
@@ -33,7 +32,17 @@ export default function VideoReactionCard({ videoUrl }) {
   const [alert, setAlert] = useState({ open: false, message: '', severity: 'success' });
   const [anchorEl, setAnchorEl] = useState(null);
 
+  // 🆕 New states for camera info
+  const [cameraNumber, setCameraNumber] = useState(null);
+  const [cameraLocation, setCameraLocation] = useState(null);
+
   const isLoggedIn = !!localStorage.getItem("token");
+
+  // Helper to extract just the filename
+  const extractFilename = (path) => {
+    if (!path) return '';
+    return path.split('/').pop(); // "001.mp4" from "/api/videos/001.mp4"
+  };
 
   useEffect(() => {
     fetch('/api/videos')
@@ -41,7 +50,12 @@ export default function VideoReactionCard({ videoUrl }) {
       .then(data => {
         const filenames = data.map(v => v.filename);
         setVideoFiles(filenames);
-        if (!videoUrl && filenames.length > 0) {
+
+        if (videoUrl) {
+          // Clean incoming videoUrl to just filename
+          setSelectedVideo(extractFilename(videoUrl));
+        } else if (filenames.length > 0) {
+          // Pick random if no videoUrl passed
           const randomIndex = Math.floor(Math.random() * filenames.length);
           setSelectedVideo(filenames[randomIndex]);
         }
@@ -64,7 +78,11 @@ export default function VideoReactionCard({ videoUrl }) {
         .then(res => res.json())
         .then(data => {
           const videoData = data.find(v => v.filename === selectedVideo);
-          if (videoData) setLikesCount(videoData.stats.likes);
+          if (videoData) {
+            setLikesCount(videoData.stats.likes);
+            setCameraNumber(videoData.camera_number);
+            setCameraLocation(videoData.camera_location);
+          }
         });
 
       if (isLoggedIn) {
@@ -116,9 +134,7 @@ export default function VideoReactionCard({ videoUrl }) {
     try {
       const res = await fetch(`/api/reactions/favorite/${selectedVideo}`, {
         method: 'POST',
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`
-        }
+        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
       });
 
       if (res.ok) {
@@ -163,7 +179,7 @@ export default function VideoReactionCard({ videoUrl }) {
         setComment('');
         setStar(0);
         setLiked(false);
-        loadReactions(); // ⬅ Refresh the reactions right after submit
+        loadReactions();
       } else {
         throw new Error('Failed to submit reaction');
       }
@@ -175,8 +191,11 @@ export default function VideoReactionCard({ videoUrl }) {
 
   return (
     <Box className="video-reaction-wrapper">
+      {/* 🆕 Title with camera info */}
       <Typography variant="h5" sx={{ mb: 2 }}>
-        Time-Lapse Video
+        {cameraNumber !== null && cameraLocation
+          ? `#${cameraNumber} - ${cameraLocation}`
+          : 'Time-Lapse Video'}
       </Typography>
 
       {selectedVideo && (

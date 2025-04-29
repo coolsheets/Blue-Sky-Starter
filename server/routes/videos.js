@@ -2,26 +2,48 @@ import express from 'express';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import Video from '../models/video.js';
-import { findCameraLocationByName } from '../models/cameralocations.js';
+import { findAllCameraLocations } from '../models/cameralocations.js'; // Import your helper function
 
 const router = express.Router();
 
-// Fix for __dirname in ES modules
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// 🟩 Route: Get all videos from MongoDB (for Gallery)
+// Helper: extract camera number from filename
+const extractCameraNumber = (filename) => {
+  return parseInt(filename.split('.')[0], 10); // "001.mp4" -> 1
+};
+
+// 🟩 Route: Get all videos enriched with camera info
 router.get('/', async (req, res) => {
   try {
     const videos = await Video.find().sort({ filename: 1 });
-    res.json(videos);
+    const cameras = await findAllCameraLocations();
+
+    const enrichedVideos = videos.map((video) => {
+      const cameraNumber = extractCameraNumber(video.filename);
+
+      const matchedCamera = cameras.find(cam => {
+        return cam.Camera_Name?.toLowerCase() === `camera ${cameraNumber}`.toLowerCase();
+      });
+
+      return {
+        filename: video.filename,
+        stats: video.stats,
+        camera_number: cameraNumber,
+        camera_location: matchedCamera?.Camera_Location || "Unknown Location",
+        quadrant: matchedCamera?.Quadrant || "Unknown Quadrant",
+      };
+    });
+
+    res.json(enrichedVideos);
   } catch (error) {
-    console.error("Error fetching videos from DB:", error);
+    console.error("Error fetching enriched videos:", error);
     res.status(500).json({ error: "Failed to fetch videos" });
   }
 });
 
-// 🟦 Route: Get top 3 videos sorted by likes (for FrontPage)
+// 🟦 Route: Get top liked videos (no changes)
 router.get('/top-liked', async (req, res) => {
   try {
     const topVideos = await Video.find()
@@ -34,65 +56,16 @@ router.get('/top-liked', async (req, res) => {
   }
 });
 
-router.put('/:filename/like', async (req, res) => {
-  try {
-    const { filename } = req.params;
-    const video = await Video.findOneAndUpdate(
-      { filename },
-      { $inc: { 'stats.likes': 1 } },
-      { new: true }
-    );
-
-    if (!video) {
-      return res.status(404).json({ error: "Video not found" });
-    }
-
-    res.json(video);
-  } catch (error) {
-    console.error("Error incrementing like:", error);
-    res.status(500).json({ error: "Failed to update like" });
-  }
-});
-
-// 🟨 Legacy (optional): Map local videos to camera locations — not used right now
-router.get('/local-map', async (req, res) => {
-  try {
-    const videoDir = path.join(__dirname, '../../client/public/videos');
-    const fs = await import('fs/promises');
-    const files = (await fs.readdir(videoDir)).filter(file => file.endsWith('.mp4'));
-
-    const videoData = await Promise.all(
-      files.map(async (file) => {
-        const cameraNumber = file.split('_')[0];
-        const cameraName = `Camera ${parseInt(cameraNumber, 10)}`;
-        const cameraInfo = await findCameraLocationByName(cameraName);
-        return {
-          filename: file,
-          location: cameraInfo ? cameraInfo.Camera_Location : 'Unknown Location',
-        };
-      })
-    );
-
-    res.json(videoData);
-  } catch (error) {
-    console.error('Error mapping local videos:', error);
-    res.status(500).json({ error: 'Failed to fetch video data' });
-  }
-});
-
-// Serve video files
+// 🟥 Serve static video file
 router.get('/:filename', (req, res) => {
   const filePath = path.join(__dirname, '../../client/public/videos', req.params.filename);
 
-  // Check if the file exists before sending it
   import('fs').then(fs => {
     fs.access(filePath, fs.constants.F_OK, (err) => {
       if (err) {
         console.error(`Video file not found: ${filePath}`);
         return res.status(404).json({ error: 'Video file not found' });
       }
-
-      // Send the file if it exists
       res.sendFile(filePath);
     });
   }).catch(error => {
