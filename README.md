@@ -33,11 +33,11 @@ Tony O has cloned this file on April 4/2/2025 ---
 
 ## Project Structure
 
-[Directory tree](./tree.txt)
+[Directory tree](./docs/001_Project/tree.txt)
 
-[Flow Chart](flowChart.md)
+[Flow Chart](./docs/001_Project/flowChart.md)
 
-### [Time-Lapse](timeLapse.md)
+### [Time-Lapse](./docs/001_Project/timeLapse.md)
 
 # Repo Cloning!
 
