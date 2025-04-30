@@ -1,0 +1,87 @@
+IN GALLERY ON SELECTING VIDEO
+
+api/reactions/favorite/003.mp4:1 
+            
+            
+           Failed to load resource: the server responded with a status of 403 (Forbidden)
+index-srVWfGby.js:174 
+            
+            
+           PUT http://0.0.0.0:3000/api/videos/003.mp4/like 403 (Forbidden)
+Q @ index-srVWfGby.js:174
+cg @ index-srVWfGby.js:48
+(anonymous) @ index-srVWfGby.js:48
+vp @ index-srVWfGby.js:48
+sf @ index-srVWfGby.js:48
+xf @ index-srVWfGby.js:49
+q1 @ index-srVWfGby.js:49
+index-srVWfGby.js:174 Error: Failed to like
+    at Q (index-srVWfGby.js:174:101236)
+overrideMethod @ hook.js:608
+Q @ index-srVWfGby.js:174
+await in Q
+cg @ index-srVWfGby.js:48
+(anonymous) @ index-srVWfGby.js:48
+vp @ index-srVWfGby.js:48
+sf @ index-srVWfGby.js:48
+xf @ index-srVWfGby.js:49
+q1 @ index-srVWfGby.js:49
+
+
+ON LIKE
+
+api/reactions/favorite/003.mp4:1 
+            
+            
+           Failed to load resource: the server responded with a status of 403 (Forbidden)
+index-srVWfGby.js:174 
+            
+            
+           PUT http://0.0.0.0:3000/api/videos/003.mp4/like 403 (Forbidden)
+Q @ index-srVWfGby.js:174
+cg @ index-srVWfGby.js:48
+(anonymous) @ index-srVWfGby.js:48
+vp @ index-srVWfGby.js:48
+sf @ index-srVWfGby.js:48
+xf @ index-srVWfGby.js:49
+q1 @ index-srVWfGby.js:49
+index-srVWfGby.js:174 Error: Failed to like
+    at Q (index-srVWfGby.js:174:101236)
+overrideMethod @ hook.js:608
+Q @ index-srVWfGby.js:174
+await in Q
+cg @ index-srVWfGby.js:48
+(anonymous) @ index-srVWfGby.js:48
+vp @ index-srVWfGby.js:48
+sf @ index-srVWfGby.js:48
+xf @ index-srVWfGby.js:49
+q1 @ index-srVWfGby.js:49
+
+RESULT
+
+api/reactions/favorite/003.mp4:1 
+            
+            
+           Failed to load resource: the server responded with a status of 403 (Forbidden)
+index-srVWfGby.js:174 
+            
+            
+           PUT http://0.0.0.0:3000/api/videos/003.mp4/like 403 (Forbidden)
+Q @ index-srVWfGby.js:174
+cg @ index-srVWfGby.js:48
+(anonymous) @ index-srVWfGby.js:48
+vp @ index-srVWfGby.js:48
+sf @ index-srVWfGby.js:48
+xf @ index-srVWfGby.js:49
+q1 @ index-srVWfGby.js:49
+index-srVWfGby.js:174 Error: Failed to like
+    at Q (index-srVWfGby.js:174:101236)
+overrideMethod @ hook.js:608
+Q @ index-srVWfGby.js:174
+await in Q
+cg @ index-srVWfGby.js:48
+(anonymous) @ index-srVWfGby.js:48
+vp @ index-srVWfGby.js:48
+sf @ index-srVWfGby.js:48
+xf @ index-srVWfGby.js:49
+q1 @ index-srVWfGby.js:49
