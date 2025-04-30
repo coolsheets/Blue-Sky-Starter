@@ -14,9 +14,7 @@ import {
   ListItemText,
   Badge,
 } from '@mui/material';
-import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 import FavoriteIcon from '@mui/icons-material/Favorite';
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import ShareIcon from '@mui/icons-material/Share';
 import './VideoReactionCard.css';
 
@@ -27,22 +25,15 @@ export default function VideoReactionCard({ videoUrl }) {
   const [comment, setComment] = useState('');
   const [liked, setLiked] = useState(false);
   const [likesCount, setLikesCount] = useState(0);
-  const [favorited, setFavorited] = useState(false);
   const [star, setStar] = useState(0);
   const [alert, setAlert] = useState({ open: false, message: '', severity: 'success' });
   const [anchorEl, setAnchorEl] = useState(null);
-
-  // 🆕 New states for camera info
   const [cameraNumber, setCameraNumber] = useState(null);
   const [cameraLocation, setCameraLocation] = useState(null);
 
   const isLoggedIn = !!localStorage.getItem("token");
 
-  // Helper to extract just the filename
-  const extractFilename = (path) => {
-    if (!path) return '';
-    return path.split('/').pop(); // "001.mp4" from "/api/videos/001.mp4"
-  };
+  const extractFilename = (path) => path?.split('/').pop() || '';
 
   useEffect(() => {
     fetch('/api/videos')
@@ -52,10 +43,8 @@ export default function VideoReactionCard({ videoUrl }) {
         setVideoFiles(filenames);
 
         if (videoUrl) {
-          // Clean incoming videoUrl to just filename
           setSelectedVideo(extractFilename(videoUrl));
         } else if (filenames.length > 0) {
-          // Pick random if no videoUrl passed
           const randomIndex = Math.floor(Math.random() * filenames.length);
           setSelectedVideo(filenames[randomIndex]);
         }
@@ -63,37 +52,55 @@ export default function VideoReactionCard({ videoUrl }) {
       .catch(err => console.error('Failed to load videos', err));
   }, [videoUrl]);
 
-  const loadReactions = () => {
-    fetch(`/api/reactions/${encodeURIComponent(selectedVideo)}`)
+  const loadReactions = (userId) => {
+    if (!selectedVideo) return;
+
+    fetch(`/api/reactions/${encodeURIComponent(selectedVideo)}`, {
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem("token")}`
+      }
+    })
       .then(res => res.ok ? res.json() : [])
-      .then(setReactions)
+      .then(data => {
+        setReactions(data);
+
+        if (userId) {
+          const userLiked = data.some(r => r.Reaction_Type === 'like' && r.user === userId);
+          setLiked(userLiked);
+        } else {
+          setLiked(false);
+        }
+      })
       .catch(err => console.error('Error fetching reactions:', err));
   };
 
   useEffect(() => {
-    if (selectedVideo) {
-      loadReactions();
+    if (!selectedVideo) return;
 
-      fetch('/api/videos')
-        .then(res => res.json())
-        .then(data => {
-          const videoData = data.find(v => v.filename === selectedVideo);
-          if (videoData) {
-            setLikesCount(videoData.stats.likes);
-            setCameraNumber(videoData.camera_number);
-            setCameraLocation(videoData.camera_location);
-          }
-        });
+    let userId = null;
+    const token = localStorage.getItem("token");
 
-      if (isLoggedIn) {
-        fetch(`/api/reactions/favorite/${selectedVideo}`, {
-          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
-        })
-          .then(res => res.json())
-          .then(data => setFavorited(data.favorited))
-          .catch(() => setFavorited(false));
+    if (token) {
+      try {
+        const payload = JSON.parse(atob(token.split('.')[1]));
+        userId = payload.userId;
+      } catch (e) {
+        console.error('Invalid token');
       }
     }
+
+    loadReactions(userId);
+
+    fetch('/api/videos')
+      .then(res => res.json())
+      .then(data => {
+        const videoData = data.find(v => v.filename === selectedVideo);
+        if (videoData) {
+          setLikesCount(videoData.stats.likes);
+          setCameraNumber(videoData.camera_number);
+          setCameraLocation(videoData.camera_location);
+        }
+      });
   }, [selectedVideo]);
 
   const handleShareClick = (event) => setAnchorEl(event.currentTarget);
@@ -117,33 +124,11 @@ export default function VideoReactionCard({ videoUrl }) {
         setLikesCount(updated.stats.likes);
         setLiked(true);
       } else {
-        throw new Error('Failed to like');
+        throw new Error('You can only like it once.');
       }
     } catch (err) {
       console.error(err);
-      setAlert({ open: true, message: 'Like failed.', severity: 'error' });
-    }
-  };
-
-  const handleToggleFavorite = async () => {
-    if (!isLoggedIn) {
-      setAlert({ open: true, message: 'You must be logged in to favorite videos.', severity: 'info' });
-      return;
-    }
-
-    try {
-      const res = await fetch(`/api/reactions/favorite/${selectedVideo}`, {
-        method: 'POST',
-        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
-      });
-
-      if (res.ok) {
-        const data = await res.json();
-        setFavorited(data.favorited);
-      }
-    } catch (error) {
-      console.error(error);
-      setAlert({ open: true, message: 'Failed to toggle favorite.', severity: 'error' });
+      setAlert({ open: true, message: 'You can only like it once.', severity: 'error' });
     }
   };
 
@@ -178,8 +163,19 @@ export default function VideoReactionCard({ videoUrl }) {
         setAlert({ open: true, message: 'Reaction submitted successfully!', severity: 'success' });
         setComment('');
         setStar(0);
-        setLiked(false);
-        loadReactions();
+
+        const token = localStorage.getItem("token");
+        let userId = null;
+        if (token) {
+          try {
+            const payload = JSON.parse(atob(token.split('.')[1]));
+            userId = payload.userId;
+          } catch (e) {
+            console.error('Invalid token');
+          }
+        }
+
+        loadReactions(userId);
       } else {
         throw new Error('Failed to submit reaction');
       }
@@ -191,7 +187,6 @@ export default function VideoReactionCard({ videoUrl }) {
 
   return (
     <Box className="video-reaction-wrapper">
-      {/* 🆕 Title with camera info */}
       <Typography variant="h5" sx={{ mb: 2 }}>
         {cameraNumber !== null && cameraLocation
           ? `#${cameraNumber} - ${cameraLocation}`
@@ -226,18 +221,17 @@ export default function VideoReactionCard({ videoUrl }) {
       )}
 
       <Stack direction="row" spacing={2} justifyContent="center" sx={{ mt: 2 }}>
-        <IconButton onClick={handleLike} color={liked ? 'primary' : 'default'}>
+        <IconButton
+          onClick={handleLike}
+          disabled={liked}
+        >
           <Badge badgeContent={likesCount} color="secondary" showZero max={9999}>
-            <ThumbUpIcon />
+            <FavoriteIcon sx={{ color: liked ? 'red' : 'gray' }} />
           </Badge>
         </IconButton>
 
         <IconButton onClick={handleShareClick}>
           <ShareIcon />
-        </IconButton>
-
-        <IconButton onClick={handleToggleFavorite} color={favorited ? 'error' : 'default'}>
-          {favorited ? <FavoriteIcon /> : <FavoriteBorderIcon />}
         </IconButton>
 
         <Rating
