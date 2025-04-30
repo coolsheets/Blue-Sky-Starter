@@ -14,7 +14,9 @@
     "install:client": "cd client && npm install && cd ..",
     "install": "npm run install:server && npm run install:client",
     "build": "cd client && npm run build && cd ..",
-    "start": "cd server && npm run start && cd .."
+    "start": "cd server && npm run start && cd ..",
+    "madge:circular": "madge --circular .",
+    "madge:graph": "cd docs/001_Project && madge --image dependency-graph.svg ../.. && cd ../.."
   },
   "repository": {
     "type": "git",
