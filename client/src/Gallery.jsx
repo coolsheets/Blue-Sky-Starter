@@ -4,14 +4,13 @@ import VideoReactionCard from "./component/VideoReactionCard";
 import { Dialog, DialogContent } from "@mui/material";
 import "./Gallery.css";
 
-const Gallery = () => {
+const Gallery = ({ isLoggedIn, onLogin, onLogout }) => {
   const [videos, setVideos] = useState([]);
   const [visibleCount, setVisibleCount] = useState(12);
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedVideo, setSelectedVideo] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // Filters/search/sorting
   const [selectedQuadrant, setSelectedQuadrant] = useState("");
   const [searchText, setSearchText] = useState("");
   const [sortOption, setSortOption] = useState("default");
@@ -70,7 +69,6 @@ const Gallery = () => {
 
   return (
     <div className="gallery-page">
-      {/* Filters / Search / Sort */}
       <div className="gallery-controls">
         <select value={selectedQuadrant} onChange={(e) => setSelectedQuadrant(e.target.value)}>
           <option value="">All Quadrants</option>
@@ -103,37 +101,25 @@ const Gallery = () => {
               <video
                 ref={(el) => {
                   if (el) {
-                    el.play()
-                      .then(() => {
-                        setTimeout(() => {
-                          el.pause();
-                          el.currentTime = 0;
-                        }, 1000);
-                      })
-                      .catch((err) => {
-                        console.error("Autoplay failed:", err);
-                      });
+                    el.play().then(() => {
+                      setTimeout(() => {
+                        el.pause();
+                        el.currentTime = 0;
+                      }, 1000);
+                    }).catch((err) => console.error("Autoplay failed:", err));
                   }
                 }}
                 src={`/api/videos/${video.filename}`}
                 muted
                 playsInline
                 preload="auto"
-                onMouseOver={async (e) => {
-                  try {
-                    await e.target.play();
-                  } catch (err) {}
-                }}
+                onMouseOver={(e) => e.target.play().catch(() => {})}
                 onMouseOut={(e) => {
-                  try {
-                    e.target.pause();
-                    e.target.currentTime = 0;
-                  } catch (err) {}
+                  e.target.pause();
+                  e.target.currentTime = 0;
                 }}
               />
-              <div className="like-badge">
-                ❤️ {video.stats?.likes || 0}
-              </div>
+              <div className="like-badge">❤️ {video.stats?.likes || 0}</div>
             </div>
             <div className="video-info">
               #{video.camera_number} - {video.camera_location}

@@ -2,46 +2,18 @@ import React, { useState, useEffect } from "react";
 import Navbar from "./Navbar.jsx";
 import Footer from "./Footer";
 import VideoReactionCard from "./component/VideoReactionCard.jsx";
-import Login from "./component/Login.jsx";
-import Register from "./component/Register.jsx";
-import { Dialog, DialogContent } from "@mui/material";
+import { Dialog, DialogContent } from "@mui/material"; // ✅ needed for Vote modal
 import "./FrontPage.css";
 import "./component/VideoReactionCard.css";
 
-const FrontPage = () => {
+const FrontPage = ({ isLoggedIn, onLogin, onLogout }) => {
   const [open, setOpen] = useState(false);
-  const [loginOpen, setLoginOpen] = useState(false);
-  const [registerOpen, setRegisterOpen] = useState(false);
   const [topLikedVideos, setTopLikedVideos] = useState([]);
-  const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem("token"));
-  const [selectedVideoUrl, setSelectedVideoUrl] = useState(null); // 🆕 specific video support
+  const [selectedVideoUrl, setSelectedVideoUrl] = useState(null);
 
-  // Modal handlers
-  const handleOpenModal = () => setOpen(true);
   const handleCloseModal = () => {
     setOpen(false);
-    setSelectedVideoUrl(null); // 🧹 reset to random for next Vote
-  };
-
-  const handleLoginOpen = () => {
-    setLoginOpen(true);
-    setRegisterOpen(false);
-  };
-
-  const handleRegisterOpen = () => {
-    setRegisterOpen(true);
-    setLoginOpen(false);
-  };
-
-  const handleCloseModals = () => {
-    setLoginOpen(false);
-    setRegisterOpen(false);
-    setIsLoggedIn(!!localStorage.getItem("token"));
-  };
-
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    setIsLoggedIn(false);
+    setSelectedVideoUrl(null);
   };
 
   useEffect(() => {
@@ -54,8 +26,8 @@ const FrontPage = () => {
   return (
     <div className="front-page-container">
       <Navbar
-        onLoginClick={handleLoginOpen}
-        onLogoutClick={handleLogout}
+        onLoginClick={onLogin}
+        onLogoutClick={onLogout}
         isLoggedIn={isLoggedIn}
       />
 
@@ -72,14 +44,14 @@ const FrontPage = () => {
           {isLoggedIn ? (
             <button
               onClick={() => {
-                setSelectedVideoUrl(null); // 🟢 let VideoReactionCard pick random
+                setSelectedVideoUrl(null);
                 setOpen(true);
               }}
             >
               Vote
             </button>
           ) : (
-            <button onClick={handleLoginOpen}>Login to Vote</button>
+            <button onClick={onLogin}>Login to Vote</button>
           )}
         </div>
       </header>
@@ -90,7 +62,7 @@ const FrontPage = () => {
             key={video._id || index}
             className="video-card"
             onClick={() => {
-              setSelectedVideoUrl(`/api/videos/${video.filename}`); // 🟢 specific video
+              setSelectedVideoUrl(`/api/videos/${video.filename}`);
               setOpen(true);
             }}
             style={{ cursor: "pointer" }}
@@ -116,38 +88,6 @@ const FrontPage = () => {
       >
         <DialogContent className="custom-dialog-content">
           <VideoReactionCard videoUrl={selectedVideoUrl} />
-        </DialogContent>
-      </Dialog>
-
-      {/* Login Modal */}
-      <Dialog
-        open={loginOpen}
-        onClose={handleCloseModals}
-        maxWidth="xs"
-        fullWidth
-        classes={{ backdrop: "custom-dialog-backdrop" }}
-      >
-        <DialogContent className="custom-dialog-content">
-          <Login
-            onSuccess={handleCloseModals}
-            switchToRegister={handleRegisterOpen}
-          />
-        </DialogContent>
-      </Dialog>
-
-      {/* Register Modal */}
-      <Dialog
-        open={registerOpen}
-        onClose={handleCloseModals}
-        maxWidth="xs"
-        fullWidth
-        classes={{ backdrop: "custom-dialog-backdrop" }}
-      >
-        <DialogContent className="custom-dialog-content">
-          <Register
-            onSuccess={handleCloseModals}
-            switchToLogin={handleLoginOpen}
-          />
         </DialogContent>
       </Dialog>
 
