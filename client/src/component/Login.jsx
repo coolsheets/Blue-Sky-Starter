@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Login.css";
 
+console.log('Using Login.jsx from client/src/component');
+
 const Login = ({ onSuccess, switchToRegister }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
