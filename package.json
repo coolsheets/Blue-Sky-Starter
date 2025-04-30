@@ -6,14 +6,16 @@
   "directories": {
     "doc": "docs"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "madge": "^8.0.0"
+  },
   "scripts": {
-  	"install:server": "cd server && npm install && cd ..",
+    "install:server": "cd server && npm install && cd ..",
     "install:client": "cd client && npm install && cd ..",
     "install": "npm run install:server && npm run install:client",
     "build": "cd client && npm run build && cd ..",
     "start": "cd server && npm run start && cd .."
-},
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/coolsheets/Blue-Sky-Starter.git"
