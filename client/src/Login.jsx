@@ -12,7 +12,7 @@ const Login = () => {
     e.preventDefault();
 
     try {
-      console.log('Using Login.jsx from client/src');
+      console.log('Using Login.jsx from client/src'); //To find where Login is coming from
       const res = await axios.post('/users/login', { email, password });
       localStorage.setItem('token', res.data.token);
       setMessage('Login successful!');
