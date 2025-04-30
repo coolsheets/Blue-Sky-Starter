@@ -3,6 +3,6 @@
     "fileExtensions": ["js", "jsx", "ts", "tsx", "css"],
     "includeNpm": true,
     "exclude": ["node_modules/**"],
-    "image": "docs/001_Project/dependency-graph.svg"   
+    "image": "dependency-graph.svg"   
   }
   
