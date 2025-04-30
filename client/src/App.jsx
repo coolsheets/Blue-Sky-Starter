@@ -15,9 +15,38 @@ const App = () => {
   const [loginOpen, setLoginOpen] = useState(false);
   const [registerOpen, setRegisterOpen] = useState(false);
 
+  // Check token + timestamp on mount
   useEffect(() => {
     const token = localStorage.getItem("token");
-    setIsLoggedIn(!!token);
+    const loginTime = parseInt(localStorage.getItem("loginTime"), 10);
+    const now = Date.now();
+
+    if (token && loginTime) {
+      const hoursPassed = (now - loginTime) / (1000 * 60 * 60);
+      if (hoursPassed >= 4) {
+        handleLogout();
+      } else {
+        setIsLoggedIn(true);
+      }
+    }
+  }, []);
+
+  // Periodically auto-logout expired token (every 60s)
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const token = localStorage.getItem("token");
+      const loginTime = parseInt(localStorage.getItem("loginTime"), 10);
+      const now = Date.now();
+
+      if (token && loginTime) {
+        const hoursPassed = (now - loginTime) / (1000 * 60 * 60);
+        if (hoursPassed >= 4) {
+          handleLogout();
+        }
+      }
+    }, 60 * 1000); // every 60s
+
+    return () => clearInterval(interval);
   }, []);
 
   const handleLoginOpen = () => {
@@ -33,11 +62,13 @@ const App = () => {
   const handleCloseModals = () => {
     setLoginOpen(false);
     setRegisterOpen(false);
+    localStorage.setItem("loginTime", Date.now().toString()); // 🕒 Save login timestamp
     setIsLoggedIn(!!localStorage.getItem("token"));
   };
 
   const handleLogout = () => {
     localStorage.removeItem("token");
+    localStorage.removeItem("loginTime");
     setIsLoggedIn(false);
   };
 
