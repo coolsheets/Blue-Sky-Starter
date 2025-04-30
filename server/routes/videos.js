@@ -2,76 +2,93 @@ import express from 'express';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import Video from '../models/video.js';
-import { findAllCameraLocations } from '../models/cameralocations.js'; // Import your helper function
+import { findAllCameraLocations } from '../models/cameralocations.js';
+import { authenticateToken } from '../middleware/authMiddleware.js';
 
 const router = express.Router();
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Helper: extract camera number from filename
-const extractCameraNumber = (filename) => {
-  return parseInt(filename.split('.')[0], 10); // "001.mp4" -> 1
-};
+// extract camera #
+const extractCameraNumber = (filename) => parseInt(filename.split('.')[0], 10);
 
-// 🟩 Route: Get all videos enriched with camera info
+// GET all videos
 router.get('/', async (req, res) => {
   try {
     const videos = await Video.find().sort({ filename: 1 });
     const cameras = await findAllCameraLocations();
 
-    const enrichedVideos = videos.map((video) => {
-      const cameraNumber = extractCameraNumber(video.filename);
-
-      const matchedCamera = cameras.find(cam => {
-        return cam.Camera_Name?.toLowerCase() === `camera ${cameraNumber}`.toLowerCase();
-      });
-
+    const enriched = videos.map((video) => {
+      const camNum = extractCameraNumber(video.filename);
+      const match = cameras.find(cam => cam.Camera_Name?.toLowerCase() === `camera ${camNum}`.toLowerCase());
       return {
         filename: video.filename,
         stats: video.stats,
-        camera_number: cameraNumber,
-        camera_location: matchedCamera?.Camera_Location || "Unknown Location",
-        quadrant: matchedCamera?.Quadrant || "Unknown Quadrant",
+        camera_number: camNum,
+        camera_location: match?.Camera_Location || "Unknown Location",
+        quadrant: match?.Quadrant || "Unknown Quadrant",
       };
     });
 
-    res.json(enrichedVideos);
-  } catch (error) {
-    console.error("Error fetching enriched videos:", error);
+    res.json(enriched);
+  } catch (err) {
+    console.error("Error fetching enriched videos:", err);
     res.status(500).json({ error: "Failed to fetch videos" });
   }
 });
 
-// 🟦 Route: Get top liked videos (no changes)
+// GET top liked videos
 router.get('/top-liked', async (req, res) => {
   try {
-    const topVideos = await Video.find()
-      .sort({ 'stats.likes': -1 })
-      .limit(3);
-    res.json(topVideos);
-  } catch (error) {
-    console.error('Error fetching top liked videos:', error);
+    const top = await Video.find().sort({ 'stats.likes': -1 }).limit(3);
+    res.json(top);
+  } catch (err) {
+    console.error('Error fetching top liked videos:', err);
     res.status(500).json({ error: 'Failed to fetch top liked videos' });
   }
 });
 
-// 🟥 Serve static video file
+// GET static video
 router.get('/:filename', (req, res) => {
   const filePath = path.join(__dirname, '../../client/public/videos', req.params.filename);
-
   import('fs').then(fs => {
     fs.access(filePath, fs.constants.F_OK, (err) => {
-      if (err) {
-        console.error(`Video file not found: ${filePath}`);
-        return res.status(404).json({ error: 'Video file not found' });
-      }
+      if (err) return res.status(404).json({ error: 'Video not found' });
       res.sendFile(filePath);
     });
-  }).catch(error => {
-    console.error('Error accessing video file:', error);
-    res.status(500).json({ error: 'Failed to serve video file' });
+  }).catch(err => {
+    console.error('Error accessing video file:', err);
+    res.status(500).json({ error: 'Failed to serve video' });
   });
+});
+
+// ✅ NEW: PUT /:filename/like (1 like per user)
+router.put('/:filename/like', authenticateToken, async (req, res) => {
+  const { filename } = req.params;
+  const userId = req.user.userId;
+
+  try {
+    const video = await Video.findOne({ filename });
+    if (!video) return res.status(404).json({ message: 'Video not found' });
+
+    if (!video.likedBy) video.likedBy = [];
+
+    const hasLiked = video.likedBy.includes(userId);
+
+    if (hasLiked) {
+      return res.status(400).json({ message: "User already liked this video" });
+    }
+
+    video.stats.likes = (video.stats.likes || 0) + 1;
+    video.likedBy.push(userId);
+    await video.save();
+
+    res.json(video);
+  } catch (err) {
+    console.error("Failed to like video:", err);
+    res.status(500).json({ message: 'Failed to like video' });
+  }
 });
 
 export default router;

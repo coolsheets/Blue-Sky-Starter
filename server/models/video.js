@@ -10,6 +10,7 @@ const videoSchema = new mongoose.Schema(
       favorites: { type: Number, default: 0 },
       averageRating: { type: Number, default: 0 },
     },
+    likedBy: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
   },
   {
     timestamps: true,
