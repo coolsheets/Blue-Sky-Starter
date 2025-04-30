@@ -2,7 +2,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 
-console.log('Using Login.jsx from client/src');
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -13,6 +12,7 @@ const Login = () => {
     e.preventDefault();
 
     try {
+      console.log('Using Login.jsx from client/src');
       const res = await axios.post('/users/login', { email, password });
       localStorage.setItem('token', res.data.token);
       setMessage('Login successful!');

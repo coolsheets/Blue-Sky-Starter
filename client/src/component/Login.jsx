@@ -2,8 +2,6 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Login.css";
 
-console.log('Using Login.jsx from client/src/component');
-
 const Login = ({ onSuccess, switchToRegister }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -13,6 +11,7 @@ const Login = ({ onSuccess, switchToRegister }) => {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
+      console.log('Using Login.jsx from client/src/component');
       const response = await fetch("/users/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
