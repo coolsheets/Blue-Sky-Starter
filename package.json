@@ -1,5 +1,6 @@
 {
   "name": "blue-sky-city-reactive",
+  "type": "module",
   "version": "0.0.1",
   "description": "Social Media Interactive Platform for Blue Sky City",
   "main": "index.js",
