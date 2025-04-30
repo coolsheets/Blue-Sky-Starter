@@ -13,7 +13,7 @@ This document outlines the steps to debug and resolve the `403 Forbidden` error 
 
 ## **Steps to Debug and Fix**
 
-### **1. Verify Backend Authentication Middleware**
+### **1. Verify Backend Authentication Middleware**  <u>`LOOKS GOOD !!`</u>
 - Ensure the backend route for `PUT /api/videos/:videoId/like` is protected by an authentication middleware.
 - Example middleware:
   ```javascript
@@ -37,10 +37,11 @@ This document outlines the steps to debug and resolve the `403 Forbidden` error 
     // Route logic
   });
   ```
+  ###  <u>`IN VIDEOS.JS !!`</u>
 
 ---
 
-### **2. Check Frontend API Requests**
+### **2. Check Frontend API Requests**          <u>`SEE VideoReactionCard.jsx !!`</u>
 - Ensure the frontend sends the `Authorization` header with a valid token:
   ```javascript
   const handleLike = async (videoId, userId) => {
@@ -77,6 +78,11 @@ This document outlines the steps to debug and resolve the `403 Forbidden` error 
     ```env
     VITE_API_BASE_URL=http://localhost:3000
     ```
+###    <u>`Added to client/.env`</u>
+
+###    <u>`CONSULT ON THIS NEXT EDIT!`</u>
+`Changes FrontPage.jsx, Gallery.jsx, SharePopup.jsx, VideoPlayer.jsx, VideoReactionCard.jsx`
+
   - Update the API calls in the frontend to use the environment variable:
     ```javascript
     const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;

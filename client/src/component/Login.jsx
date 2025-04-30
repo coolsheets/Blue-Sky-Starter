@@ -11,6 +11,7 @@ const Login = ({ onSuccess, switchToRegister }) => {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
+      console.log('Using Login.jsx from client/src/component'); //To find where Login is coming from
       const response = await fetch("/users/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
