@@ -17,7 +17,8 @@
     "build": "cd client && npm run build && cd ..",
     "start": "cd server && npm run start && cd ..",
     "madge:circular": "madge --circular .",
-    "madge:graph": "cd docs/001_Project && madge --image dependency-graph.svg ../.. && cd ../.."
+    "madge:graph": "cd docs/001_Project && madge --image dependency-graph.svg ../.. && cd ../..",
+    "reVidMe": "sed -i 's/\r$//' scripts/rename_videos.sh && bash scripts/rename_videos.sh"
   },
   "repository": {
     "type": "git",

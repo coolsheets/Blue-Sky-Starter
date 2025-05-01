@@ -28,9 +28,11 @@ client/*.sw?
 
 # Testing folders
 client/exclude
+
+# Video folders
 client/public/videos
 
-#server ignores
+# server ignores
 
 # Logs
 server/logs 
