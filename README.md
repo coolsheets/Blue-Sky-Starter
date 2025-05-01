@@ -88,3 +88,11 @@ cd client
 npm install
 npm run dev
 ```
+---
+# How to rename video files
+
+From your project root:
+
+```
+npm run reVidMe
+```
