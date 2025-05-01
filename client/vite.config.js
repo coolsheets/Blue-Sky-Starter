@@ -1,8 +1,15 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
+import { visualizer } from 'rollup-plugin-visualizer';
+
 
 export default defineConfig({
-  plugins: [react()],
+  plugins: [
+    react(),
+    visualizer({
+      // open: true, // Automatically open the report in the browser
+  }),
+  ],
   server: {
     proxy: {
       "/api": "http://localhost:3000",
@@ -19,5 +26,8 @@ export default defineConfig({
   build: {
     outDir: "../server/public",
     emptyOutDir: true,
+  },
+  optimizeDeps: {
+    exclude: ['some-large-package'], // Exclude unnecessary packages
   },
 });

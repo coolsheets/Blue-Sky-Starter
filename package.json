@@ -8,7 +8,8 @@
     "doc": "docs"
   },
   "devDependencies": {
-    "madge": "^8.0.0"
+    "madge": "^8.0.0",
+    "rollup-plugin-visualizer": "^5.14.0"
   },
   "scripts": {
     "install:server": "cd server && npm install && cd ..",
