@@ -6,9 +6,7 @@ import { visualizer } from 'rollup-plugin-visualizer';
 export default defineConfig({
   plugins: [
     react(),
-    visualizer({
-      // open: true, // Automatically open the report in the browser
-  }),
+
   ],
   server: {
     proxy: {
