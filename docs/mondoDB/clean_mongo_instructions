@@ -1,0 +1,80 @@
+# MongoDB Atlas Cleanup Script Instructions
+
+This guide walks you through backing up and cleaning MongoDB Atlas collections using a Node.js script with per-collection JSON files.
+
+---
+
+## ✅ Prerequisites
+
+- Node.js installed (v16+ recommended)
+- A MongoDB Atlas connection string with delete permissions
+- JSON files for each collection, named as `collectionName.json`
+- The following folder structure:
+
+```
+project-root/
+├── clean_mongo.js
+├── collection-cleanup-json/
+│   ├── users.json
+│   ├── sessions.json
+│   └── logs.json
+```
+
+Each `.json` file should contain an array of delete criteria. Example:
+
+### `users.json`
+```json
+[
+  { "email": "test@example.com" },
+  { "role": "guest" }
+]
+```
+
+---
+
+## 🛠️ Setup
+
+1. Copy `clean_mongo.js` to your project directory.
+2. Create a `collection-cleanup-json/` folder in the same directory.
+3. Add your delete criteria files (`collectionName.json`) to the folder.
+4. Open `clean_mongo.js` and replace:
+   - `YOUR_ATLAS_CONNECTION_STRING` with your actual MongoDB Atlas URI
+   - `YOUR_DATABASE_NAME` with your database name
+
+---
+
+## ▶️ Run the Script
+
+```bash
+node clean_mongo.js
+```
+
+The script will:
+- Connect to MongoDB Atlas
+- Read each JSON file in `collection-cleanup-json/`
+- Delete matching records from each respective collection
+
+---
+
+## 📋 Notes
+
+- The script does **not** drop collections — it only deletes specified records.
+- Output logs will show how many records were deleted per criteria.
+- Always test on a staging database before running in production.
+
+---
+
+## 🧯 Want to backup first?
+
+Use `mongoexport` for each collection, or configure an Atlas backup snapshot.
+
+```bash
+mongoexport --uri="<your_atlas_connection_string>" --collection=users --out=users_backup.json
+```
+
+Repeat for each collection you'd like to export.
+
+---
+
+For help modifying this script to drop collections or handle larger data volumes, feel free to ask!
+

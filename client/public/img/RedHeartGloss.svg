@@ -1,0 +1,63 @@
+<?xml version="1.0"?>
+<svg xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://www.w3.org/2000/svg" xmlns:cc="http://web.resource.org/cc/" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:svg="http://www.w3.org/2000/svg" id="svg2" viewBox="0 0 30.997 30.143" version="1.0">
+  <defs id="defs4">
+    <linearGradient id="linearGradient3518">
+      <stop id="stop3520" stop-color="#fff" stop-opacity=".77124" offset="0"/>
+      <stop id="stop3522" stop-color="#fff" stop-opacity=".15686" offset="1"/>
+    </linearGradient>
+    <linearGradient id="linearGradient4270" y2="691.74" gradientUnits="userSpaceOnUse" y1="436.17" x2="578.82" x1="273.75">
+      <stop id="stop2778" stop-color="#ff2929" offset="0"/>
+      <stop id="stop4262" stop-color="#f00000" offset=".5"/>
+      <stop id="stop2780" stop-color="#820000" offset="1"/>
+    </linearGradient>
+    <linearGradient id="linearGradient4272" y2="402.54" xlink:href="#linearGradient3518" gradientUnits="userSpaceOnUse" x2="260" y1="355.22" x1="250"/>
+    <linearGradient id="linearGradient4274" y2="402.54" xlink:href="#linearGradient3518" gradientUnits="userSpaceOnUse" y1="355.22" gradientTransform="translate(292.86 -6.4286)" x2="260" x1="250"/>
+  </defs>
+  <g id="layer1" transform="translate(-.38221 -.84987)">
+    <g id="g4264" fill-rule="evenodd" transform="matrix(.054015 0 0 .054015 -5.941 -16.177)">
+      <path id="path2784" d="m270.43 330.39c-81.4-2.71-148.86 73.92-128.56 171.44 38.58 185.36 176.84 192.41 271.13 365.78v5.66c0.12-0.24 0.25-0.45 0.37-0.69 0.12 0.24 0.25 0.45 0.38 0.69v-1.35c0.27-0.51 0.53-0.99 0.81-1.5 0.27 0.52 0.57 0.99 0.84 1.5v1.35c0.13-0.24 0.25-0.45 0.38-0.69 0.12 0.24 0.25 0.45 0.37 0.69v-5.66c94.29-173.37 232.55-180.42 271.13-365.78 20.29-97.52-47.16-174.15-128.57-171.44-75.13 2.51-126.43 40.77-144.12 108.5-17.69-67.73-69.02-105.99-144.16-108.5z" fill-opacity=".56542"/>
+      <path id="path1310" stroke-linejoin="round" d="m254.27 320.29c-81.4-2.71-148.86 73.92-128.56 171.44 38.57 185.36 176.84 192.41 271.12 365.78v5.66c0.13-0.24 0.25-0.46 0.38-0.69 0.12 0.23 0.25 0.45 0.37 0.69v-1.35c0.27-0.51 0.54-0.99 0.82-1.5 0.27 0.52 0.56 0.99 0.84 1.5v1.35c0.12-0.24 0.25-0.46 0.37-0.69 0.13 0.23 0.26 0.45 0.38 0.69v-5.66c94.28-173.37 232.55-180.42 271.12-365.78 20.3-97.52-47.15-174.15-128.56-171.44-75.13 2.51-126.43 40.77-144.12 108.5-17.69-67.73-69.02-105.99-144.16-108.5z" stroke="#8d0000" stroke-linecap="round" stroke-width="10" fill="url(#linearGradient4270)"/>
+      <path id="path3514" d="m155.71 463.79c-3.57 4.58-5-64.28 58.58-110 32.52-23.39 100.35-12.14 85.71 14.29s-68.68-1.2-144.29 95.71z" fill="url(#linearGradient4272)"/>
+      <path id="path4252" d="m432.14 435.93c-3.57 4.58-6.43-41.42 57.15-87.14 32.52-23.39 133.21-4.28 110 10.72-25.38 16.39-91.54-20.49-167.15 76.42z" fill="url(#linearGradient4274)"/>
+    </g>
+  </g>
+  <metadata>
+    <rdf:RDF>
+      <cc:Work>
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+        <cc:license rdf:resource="http://creativecommons.org/licenses/publicdomain/"/>
+        <dc:publisher>
+          <cc:Agent rdf:about="http://openclipart.org/">
+            <dc:title>Openclipart</dc:title>
+          </cc:Agent>
+        </dc:publisher>
+        <dc:title>hearth christoph brill 04r</dc:title>
+        <dc:date>2011-02-16T18:00:43</dc:date>
+        <dc:description>originally uploaded by Christoph Brill for OCAL 0.18</dc:description>
+        <dc:source>http://openclipart.org/detail/119011/hearth-christoph-brill-04r-by-anonymous</dc:source>
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>Anonymous</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <dc:subject>
+          <rdf:Bag>
+            <rdf:li>clip art</rdf:li>
+            <rdf:li>clipart</rdf:li>
+            <rdf:li>heart</rdf:li>
+            <rdf:li>love</rdf:li>
+            <rdf:li>red</rdf:li>
+            <rdf:li>symbol</rdf:li>
+            <rdf:li>valentine</rdf:li>
+          </rdf:Bag>
+        </dc:subject>
+      </cc:Work>
+      <cc:License rdf:about="http://creativecommons.org/licenses/publicdomain/">
+        <cc:permits rdf:resource="http://creativecommons.org/ns#Reproduction"/>
+        <cc:permits rdf:resource="http://creativecommons.org/ns#Distribution"/>
+        <cc:permits rdf:resource="http://creativecommons.org/ns#DerivativeWorks"/>
+      </cc:License>
+    </rdf:RDF>
+  </metadata>
+</svg>

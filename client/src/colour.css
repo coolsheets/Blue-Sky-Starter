@@ -1,12 +1,19 @@
 * {
-    /* eyedrop from https://www.visitcalgary.com/ */
+    /* eyedrop from https://brand.visitcalgary.com/#section-colour*/
     --main-background-color: white;
     --main-color: black;
-    --blue-sky-color: #0064ff;
-    --sun-color: #ffda24;
-    --newsletter-background-color: #40c2f3;
-    --newsletter-color: #003b95;
-    --chat-icon-color: #e70033;
+    /* Primary */
+    --rivers: #0064ff;
+    --sun: #ffda24;
+    --sky: #40c2f3;
+    --energy: #ef3340;
+    /* Secondary */
+    --light-blue:#7BE6FE;
+    --hazy-blue:#4584FF;
+    --deep-blue:#003B95;
+    --warm-orange:#FFA740;
+    --pure-black:#000000;
+
 	/* from https://www.flagcolorcodes.com/ukraine */
 	--ukraine-blue: #0057B7;
 	--ukraine-yellow: #FFDD00;
@@ -14,4 +21,12 @@
 	--calgary-grey: #4b4f55;
 	--calgary-light-grey: #ededee;
 	--calgary-header-background: #f6f6f6;
+
+    /* Fonts */
+    font-family: poppins; inter;
+
+
 }
+
+
+
