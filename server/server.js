@@ -33,10 +33,10 @@ app.use('/api/videos', videosRoute);
 app.use('/api/reactions', reactionsRoutes); // <-- Added this line of code to include the reactions routes, Tony
 
 // Serve React build
-app.use(express.static(path.join(__dirname, '../client/dist')));
-app.use(express.static(path.join(__dirname, '../client/public')));
+// app.use(express.static(path.join(__dirname, '../client/dist')));
+// app.use(express.static(path.join(__dirname, '../client/public')));
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../client/dist/index.html'));
+  res.sendFile(path.join(__dirname, 'public/index.html'));
 });
 
 app.listen(PORT, '0.0.0.0', () => {
